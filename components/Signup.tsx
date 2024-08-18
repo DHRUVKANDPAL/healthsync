@@ -73,7 +73,7 @@ const Signup = () => {
     
   }
   return (
-    <Card className="w-[300px] sm:w-[500px] md:w-[600px]">
+    <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Sign up here.</CardDescription>
