@@ -22,19 +22,19 @@ const Header = async (props: Props) => {
         <div className="nav-links flex justify-between items-center gap-12 text-slate-950">
           <a
             href="#"
-            className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+            className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
           >
             Home
           </a>
           <a
             href="#"
-            className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+            className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
           >
             About
           </a>
           <a
             href="#"
-            className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+            className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
           >
             Contact Us
           </a>
@@ -42,13 +42,13 @@ const Header = async (props: Props) => {
             <>
               <a
                 href="#"
-                className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+                className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
               >
                 Dashboard
               </a>
               <a
                 href="#"
-                className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+                className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
               >
                 Logout
               </a>
@@ -57,13 +57,13 @@ const Header = async (props: Props) => {
             <>
               <a
                 href="#"
-                className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+                className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
               >
                 Login
               </a>
               <a
                 href="#"
-                className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+                className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
               >
                 Register
               </a>
@@ -71,7 +71,7 @@ const Header = async (props: Props) => {
           )}
           <a
             href="#"
-            className="hover:text-orange-900 hover:scale-110 transition-transform duration-300"
+            className="hover:text-blue-950 hover:scale-110 transition-transform duration-300"
           >
             Complaints
           </a>
