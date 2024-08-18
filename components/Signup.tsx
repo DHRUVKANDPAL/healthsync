@@ -73,7 +73,7 @@ const Signup = () => {
     
   }
   return (
-    <Card className="w-[310px] sm:w-[500px]">
+    <Card className="w-[300px] sm:w-[500px] md:w-[600px]">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Sign up here.</CardDescription>
@@ -112,7 +112,7 @@ const Signup = () => {
               name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>gender</FormLabel>
+                  <FormLabel>Gender</FormLabel>
                   <FormControl>
                     <Input placeholder="Male" type="text" {...field} />
                   </FormControl>
@@ -125,7 +125,7 @@ const Signup = () => {
               name="bloodgroup"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>bloodgroup</FormLabel>
+                  <FormLabel>Blood Group</FormLabel>
                   <FormControl>
                     <Input placeholder="B-" type="text" {...field} />
                   </FormControl>
@@ -138,7 +138,7 @@ const Signup = () => {
               name="contactno"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>contactNo</FormLabel>
+                  <FormLabel>Contact No</FormLabel>
                   <FormControl>
                     <Input placeholder="8756680899" type="text" {...field} />
                   </FormControl>
@@ -151,7 +151,7 @@ const Signup = () => {
               name="alternatecontactno"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>alternatecontactno</FormLabel>
+                  <FormLabel>Alternate Contact No</FormLabel>
                   <FormControl>
                     <Input placeholder="9999888877" type="text" {...field} />
                   </FormControl>
@@ -164,7 +164,7 @@ const Signup = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>email</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="suraj@gmail.com" type="email" {...field} />
                   </FormControl>
@@ -177,7 +177,7 @@ const Signup = () => {
               name="aadharno"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>aadharno</FormLabel>
+                  <FormLabel>Aadhar no</FormLabel>
                   <FormControl>
                     <Input placeholder="123456784321" type="text" {...field} />
                   </FormControl>
