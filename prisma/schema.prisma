@@ -13,12 +13,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Patient{
-  id String @id @default(cuid())
-  email String @unique
-  name String 
-  hashedPassword String?
-  session PatientSession[]
+model Patient {
+  id              String   @id @default(cuid())
+  email           String?  
+  name            String
+  gender          String
+  dob             DateTime
+  aadharno        String
+  bloodgroup      String
+  hashedPassword  String?
+  contactno       String
+  alternatecontactno String?
+  address         String
+  emergencycontact String?
+  prevHis          String?
+  medHis          MedicalHistory[]
+  session         PatientSession[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+model MedicalHistory{
+  id        String   @id
+  medId    String
+  condition String
+  treatmentdetails String?
+  patient Patient@relation(fields: [medId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 model PatientSession {
   id        String   @id

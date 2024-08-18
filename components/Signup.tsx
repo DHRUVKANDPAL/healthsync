@@ -26,8 +26,17 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signup } from "@/app/patient-auth/auth.actions";
 export const SignUpSchema = z.object({
-   email: z.string().email("This is not a valid email"),
+  email: z.string().email("This is not a valid email"),
   username: z.string().min(2).max(50),
+  gender:z.string(),
+  dob:z.string().datetime(),
+  aadharno:z.string(),
+  bloodgroup:z.string(),
+  contactno:z.string(),
+  alternatecontactno:z.string(),
+  address:z.string(),
+  emregencycontact:z.string(),
+  prevHis:z.string(),
   password: z.string().min(6),
   confirmPassword: z.string().min(6),
 }).refine(data => data.password === data.confirmPassword, {
@@ -39,8 +48,15 @@ const Signup = () => {
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      email:"",
+      email:"nil@gmail.com",
       username: "",
+      gender:"",
+      aadharno:"",
+      dob:new Date().toISOString(),
+      bloodgroup:"",
+      contactno:"",
+      alternatecontactno:"",
+      prevHis:"",
       password:"",
       confirmPassword:"",
     },
@@ -72,7 +88,20 @@ const Signup = () => {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" type="text" {...field} />
+                    <Input placeholder="Suraj" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dob"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>DOB</FormLabel>
+                  <FormControl>
+                    <Input placeholder="shadcn" type="datetime" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -80,17 +109,83 @@ const Signup = () => {
             />
              <FormField
               control={form.control}
-              name="email"
+              name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>gender</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn@gmail.com" type="email" {...field} />
+                    <Input placeholder="Male" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="bloodgroup"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>bloodgroup</FormLabel>
+                  <FormControl>
+                    <Input placeholder="B-" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contactno"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>contactNo</FormLabel>
+                  <FormControl>
+                    <Input placeholder="8756680899" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="alternatecontactno"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>alternatecontactno</FormLabel>
+                  <FormControl>
+                    <Input placeholder="9999888877" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="suraj@gmail.com" type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="aadharno"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>aadharno</FormLabel>
+                  <FormControl>
+                    <Input placeholder="123456784321" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
             <FormField
               control={form.control}
               name="password"
