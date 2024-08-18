@@ -21,11 +21,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header></Header>
-<<<<<<< HEAD
-        <Hero></Hero>
-=======
-        {/* <Hero></Hero> */}
->>>>>>> 28f1c9522c1a1c5633ca001bdfad0d70011f2250
         {children}
         <Toaster></Toaster>
       </body>
