@@ -13,6 +13,7 @@ const Header = (props: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [location, setLocation] = useState<string | null>(null);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const searchRef = useRef<HTMLDivElement | null>(null);
 
@@ -40,6 +41,14 @@ const Header = (props: Props) => {
       ) {
         setIsSearchOpen(false);
       }
+      const checkScreenSize = () => {
+        setIsSmallScreen(window.innerWidth < 640);
+      };
+
+      checkScreenSize();
+      window.addEventListener("resize", checkScreenSize);
+
+      return () => window.removeEventListener("resize", checkScreenSize);
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position) => {
           const { latitude, longitude } = position.coords;
@@ -116,7 +125,7 @@ const Header = (props: Props) => {
               className="search flex items-center ml-4 sm:ml-0"
             >
               {/* Search button only visible on smaller screens */}
-              {window.innerWidth < 640 ? (
+              {isSmallScreen ? (
                 <>
                   <button
                     onClick={toggleSearch}
