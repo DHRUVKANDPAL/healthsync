@@ -52,7 +52,7 @@ const Signup = () => {
       username: "",
       gender:"",
       aadharno:"",
-      dob:new Date().toISOString(),
+      dob:"",
       bloodgroup:"",
       contactno:"",
       alternatecontactno:"",
