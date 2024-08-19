@@ -5,6 +5,7 @@ import { FaRegClock } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { CiSearch } from "react-icons/ci";
 import { IoMenu } from "react-icons/io5";
+import Logo from "./Logo";
 
 type Props = {};
 
@@ -86,9 +87,7 @@ const Header = (props: Props) => {
     <>
       <header>
         <section className="flex flex-col sm:flex-row sm:justify-around sm:items-center py-4">
-          <h1 className="text-3xl sm:text-4xl font-poppins-font font-semibold text-teal-500 text-center sm:text-left">
-            Health<span className="text-teal-700 font-bold">Sync</span>
-          </h1>
+          <Logo></Logo>
           <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs ">
             <li className="flex items-center justify-center gap-1 sm:gap-4">
               <FiPhoneCall className="text-teal-500 h-4 w-4 sm:h-6 sm:w-6" />
