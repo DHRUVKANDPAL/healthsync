@@ -18,8 +18,8 @@ model Patient {
   email           String?  
   name            String
   gender          String
-  dob             DateTime
-  aadharno        String
+  dob             String
+  aadharno        String @unique
   bloodgroup      String
   hashedPassword  String?
   contactno       String
