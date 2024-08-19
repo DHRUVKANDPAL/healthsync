@@ -1,10 +1,18 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
-type Props = {};
+type Props = {
+  className?: string;
+};
 
-const Logo = (props: Props) => {
+const Logo = ({ className }: Props) => {
   return (
-    <h1 className="text-3xl sm:text-4xl font-poppins-font font-semibold text-teal-500 text-center sm:text-left">
+    <h1
+      className={cn(
+        "text-3xl sm:text-4xl font-poppins-font font-semibold text-teal-500 text-center sm:text-left ",
+        className
+      )}
+    >
       Health<span className="text-teal-700 font-bold">Sync</span>
     </h1>
   );

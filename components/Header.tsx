@@ -17,7 +17,7 @@ const Header = (props: Props) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const searchRef = useRef<HTMLDivElement | null>(null);
-
+  const [showLogo, setShowLogo] = useState(true);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
   const toggleSearch = () => {
@@ -25,7 +25,16 @@ const Header = (props: Props) => {
       setIsSearchOpen(!isSearchOpen);
     }
   };
-
+  useEffect(() => {
+    if (!isSearchOpen) {
+      const timer = setTimeout(() => {
+        setShowLogo(true);
+      }, 300); // Show logo after 300ms
+      return () => clearTimeout(timer); // Clear timeout if component unmounts or search opens again
+    } else {
+      setShowLogo(false); // Hide logo immediately when search opens
+    }
+  }, [isSearchOpen]);
   useEffect(() => {
     setIsSmallScreen(window.innerWidth < 640);
   }, []);
@@ -85,8 +94,8 @@ const Header = (props: Props) => {
 
   return (
     <>
-      <header className="">
-        <section className="flex flex-col sm:flex-row sm:justify-around sm:items-center py-4">
+      <header className="sticky -top-[72px] z-30">
+        <section className="sm:flex hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white">
           <Logo></Logo>
           <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs ">
             <li className="flex items-center justify-center gap-1 sm:gap-4">
@@ -114,7 +123,7 @@ const Header = (props: Props) => {
             </li>
           </ul>
         </section>
-        <nav className="bg-blue-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 z-10">
+        <nav className=" bg-blue-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 ">
           <div className="flex justify-between items-center w-full sm:w-auto">
             <button
               onClick={toggleMenu}
@@ -122,11 +131,11 @@ const Header = (props: Props) => {
             >
               <IoMenu className="text-teal-50 h-8 w-8" />
             </button>
+            {!isSearchOpen && showLogo && <Logo className="sm:hidden" />}
             <div
               ref={searchRef}
               className="search flex items-center ml-4 sm:ml-0"
             >
-              {/* Search button only visible on smaller screens */}
               {isSmallScreen ? (
                 <>
                   <button
