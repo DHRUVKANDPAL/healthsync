@@ -22,27 +22,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { hospitalsignup } from "@/app/hospital-auth/authhos.actions";
+import { toast } from "sonner";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 export const HospitalSignUpSchema = z
   .object({
     email: z.string().email("This is not a valid email"),
-    username: z.string().min(2).max(50),
-    gender: z.string(),
-    dob: z.string(),
-    aadharno: z.string().length(12,"This is not a valid Aadhar no"),
-    bloodgroup: z.string(),
-    contactno: z.string().length(10,"This is not a valid Contact no"),
-    alternatecontactno: z.string(),
-    address: z.string(),
-    emregencycontact: z.string(),
-    prevHis: z.string(),
+    name: z.string().min(2).max(50),
+    licenceno:z.string(),
+    estyear:z.number(),
+    Website:z.string(),
+    contactno:z.string().length(10,"This is not a valid Contact no"),
+    alternatecontactno:z.string().length(10,"This is not a valid Contact no"),
+    address:z.string(),
+    city:z.string(),
+    state:z.string(),
+    zipcode:z.string(),
+    noofbeds:z.number(),
+    noofopds:z.number(),
+    nooficu:z.number(),
+    nooflabs:z.number(),
+    noofdoctorsregistered:z.number(),
+    anyotherdetails:z.string(),
+    idToLogin:z.string().min(6,"Must be minimum 6 character"),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
   })
@@ -55,27 +57,17 @@ const HospitalSignUp = () => {
   const form = useForm<z.infer<typeof HospitalSignUpSchema>>({
     resolver: zodResolver(HospitalSignUpSchema),
     defaultValues: {
-      email: "",
-      username: "",
-      gender: "",
-      aadharno: "",
-      dob: "",
-      bloodgroup: "",
-      contactno: "",
-      alternatecontactno: "",
-      prevHis: "",
-      password: "",
-      confirmPassword: "",
+      
     },
   });
   async function onSubmit(values: z.infer<typeof HospitalSignUpSchema>) {
-   //  const res = await HospitalSignUp(values);
-   //  if (res.success) {
-   //    toast.success("Account created successfully");
-   //    router.push(`/patient-dash/${res.id}`);
-   //  } else {
-   //    toast.error(res.error);
-   //  }
+    const res = await hospitalsignup(values);
+    if (res.success) {
+      toast.success("Hospital registered successfully");
+      router.push(`/hospital-dash`);
+    } else {
+      toast.error(res.error);
+    }
   }
   return (
     <Card className="w-[300px] sm:w-[430px] md:w-[720px] lg:w-[800px]">
@@ -88,12 +80,12 @@ const HospitalSignUp = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:grid grid-cols-2 gap-4 md:space-y-0">
             <FormField 
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
-                <FormItem >
-                  <FormLabel>Username </FormLabel>
+                <FormItem className="col-span-2">
+                  <FormLabel>Name </FormLabel>
                   <FormControl>
-                    <Input placeholder="Suraj" type="text" {...field} />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,14 +93,14 @@ const HospitalSignUp = () => {
             />
             <FormField 
               control={form.control}
-              name="dob"
+              name="licenceno"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>DOB</FormLabel>
+                  <FormLabel>Licence No</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="25 Aug 2004"
-                      type="datetime"
+                      placeholder="NIN2HFI"
+                      type="text"
                       {...field}
                     />
                   </FormControl>
@@ -116,114 +108,76 @@ const HospitalSignUp = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            <FormField 
               control={form.control}
-              name="gender"
+              name="estyear"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a verified Gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Male">Male</SelectItem>
-                      <SelectItem value="Female">Female</SelectItem>
-                      <SelectItem value="Others">Others</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Established Year</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="1987"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+            <FormField 
               control={form.control}
-              name="bloodgroup"
+              name="Website"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Blood Group</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a verified Blood Group" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="A+">A+</SelectItem>
-                      <SelectItem value="A-">A-</SelectItem>
-                      <SelectItem value="B+">B+</SelectItem>
-                      <SelectItem value="B-">B-</SelectItem>
-                      <SelectItem value="O+">O+</SelectItem>
-                      <SelectItem value="O-">O-</SelectItem>
-                      <SelectItem value="AB+">AB+</SelectItem>
-                      <SelectItem value="AB-">AB-</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <FormItem className="col-span-2">
+                  <FormLabel>Website</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://www.manshospital.com"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+            
+            <FormField 
               control={form.control}
               name="contactno"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contact No</FormLabel>
                   <FormControl>
-                    <Input placeholder="9999988888" type="text" {...field} />
+                    <Input
+                      placeholder="7531594862"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField 
               control={form.control}
               name="alternatecontactno"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Alternate Contact No </FormLabel>
+                  <FormLabel>Alternate Contact No</FormLabel>
                   <FormControl>
-                    <Input placeholder="7777755555" type="text" {...field} />
+                    <Input
+                      placeholder="7531594332"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Rajiv Chowk , New Delhi , India" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="emregencycontact"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Emergency Contact No</FormLabel>
-                  <FormControl>
-                    <Input placeholder="7777755555" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+             <FormField 
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -231,8 +185,8 @@ const HospitalSignUp = () => {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="suraj@gmail.com"
-                      type="email"
+                      placeholder="manash@gmail.com"
+                      type="text"
                       {...field}
                     />
                   </FormControl>
@@ -240,58 +194,195 @@ const HospitalSignUp = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            <FormField 
               control={form.control}
-              name="aadharno"
-              render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Aadhar no</FormLabel>
-                  <FormControl>
-                    <Input placeholder="123456784321" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="prevHis"
-              render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Previous Medical History</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Diabetes" type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
+              name="zipcode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Zipcode</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" type="password" {...field} />
+                    <Input
+                      placeholder="Uttar Pradesh"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+            <FormField 
               control={form.control}
-              name="confirmPassword"
+              name="address"
+              render={({ field }) => (
+                <FormItem >
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Near Rajendra Nagar"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField 
+              control={form.control}
+              name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" type="password" {...field} />
+                    <Input
+                      placeholder="Noida"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormField 
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Uttar Pradesh"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField 
+              control={form.control}
+              name="noofbeds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>No of Beds</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="200"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name="noofopds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>No of OPDs</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="10"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name="nooficu"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>No of ICU</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="7"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name="nooflabs"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>No of Labs</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="2"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name="noofdoctorsregistered"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>No of Doctors Registerd</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="50"
+                      type="number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name="idToLogin"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Unique Id to Login</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Mh127a"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField 
+              control={form.control}
+              name="anyotherdetails"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Any Other Details</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button type="submit" className="col-span-2">Submit</Button>
           </form>
         </Form>

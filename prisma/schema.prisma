@@ -66,7 +66,9 @@ model Hospital{
   nooficu Int
   nooflabs Int
   noofdoctorsregistered Int
-  anyotherdetails String 
+  anyotherdetails String?
+  hashedPassword  String?
+  idToLogin String @unique
   isVerified Boolean @default(false)
   hospitaldep Department[]
   session HospitalSession[]
