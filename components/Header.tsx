@@ -115,7 +115,7 @@ const Header = (props: Props) => {
             </li>
           </ul>
         </section>
-        <nav className="bg-blue-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 relative z-10">
+        <nav className="bg-blue-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 z-10">
           <div className="flex justify-between items-center w-full sm:w-auto">
             <button
               onClick={toggleMenu}
@@ -174,7 +174,7 @@ const Header = (props: Props) => {
               </a>
               <a
                 href="#"
-                className="hover:underline text-center"
+                className="hover:underline sm:text-center"
                 onClick={closeMenu}
               >
                 Contact Us
