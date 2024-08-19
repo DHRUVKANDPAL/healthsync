@@ -21,7 +21,7 @@ const Testimonial = () => {
         <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1 w-full">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center px-4 h-80 w-full">
+                <CardContent className="flex aspect-square items-center justify-center px-4 h-[700px]  md:h-80 w-full">
                   <CardHeader>
                     <CardTitle className="font-semibold text-xl">Rajiv Verma</CardTitle>
                     <CardDescription>
@@ -36,7 +36,7 @@ const Testimonial = () => {
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center px-4 h-80 w-full">
+                <CardContent className="flex aspect-square items-center justify-center px-4 h-[700px]  md:h-80 w-full">
                   <CardHeader>
                     <CardTitle className="font-semibold text-xl">Anita Sharma</CardTitle>
                     <CardDescription>
@@ -51,7 +51,7 @@ const Testimonial = () => {
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center px-4 h-80 w-full">
+                <CardContent className="flex aspect-square items-center justify-center px-4 h-[700px]  md:h-80 w-full">
                   <CardHeader>
                     <CardTitle className="font-semibold text-xl">Rohan Mehta</CardTitle>
                     <CardDescription>
@@ -66,7 +66,7 @@ const Testimonial = () => {
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center px-4 h-80 w-full">
+                <CardContent className="flex aspect-square items-center justify-center px-4 h-[700px]  md:h-80 w-full">
                   <CardHeader>
                     <CardTitle className="font-semibold text-xl">Priya Singh</CardTitle>
                     <CardDescription>
@@ -81,7 +81,7 @@ const Testimonial = () => {
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center px-4 h-80 w-full">
+                <CardContent className="flex aspect-square items-center justify-center px-4 h-[700px]  md:h-80 w-full">
                   <CardHeader>
                     <CardTitle className="font-semibold text-xl">Vikram Patel</CardTitle>
                     <CardDescription>
@@ -96,7 +96,7 @@ const Testimonial = () => {
           <CarouselItem className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center px-4 h-80 w-full">
+                <CardContent className="flex aspect-square items-center justify-center px-4 h-[700px]  md:h-80 w-full">
                   <CardHeader>
                     <CardTitle className="font-semibold text-xl">Sanjana Rao</CardTitle>
                     <CardDescription>
