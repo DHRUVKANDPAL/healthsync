@@ -38,7 +38,7 @@ export const getUser = async () => {
       );
     }
   } catch (error) {}
-  if (user) {
+
     const dbUser = await prisma?.patient?.findUnique({
       where: {
         id: user?.id,
@@ -50,6 +50,5 @@ export const getUser = async () => {
       },
     });
     return dbUser;
-  }
-  return null
+
 };

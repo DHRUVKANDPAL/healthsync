@@ -52,8 +52,6 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
 
 
 
-
-
 export const signIn = async (values: z.infer<typeof SigninSchema>) => {
   try {
     const patient = await prisma.patient.findUnique({
