@@ -44,7 +44,7 @@ const Signin = () => {
     const res = await signIn(values);
     if (res.success) {
       toast.success("Logged in successfully");
-      router.push("/patient-dash");
+      router.push(`/patient-dash/${res.id}`);
     } else {
       toast.error(res.error);
     }

@@ -74,7 +74,7 @@ const Signup = () => {
     const res = await signup(values);
     if (res.success) {
       toast.success("Account created successfully");
-      router.push("/patient-dash");
+      router.push(`/patient-dash/${res.id}`);
     } else {
       toast.error(res.error);
     }
