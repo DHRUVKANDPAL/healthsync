@@ -9,7 +9,7 @@ type Props = {};
 const Hero = (props: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
-    <div className="relative h-[550px] flex items-center overflow-hidden">
+    <div className="relative h-[550px] flex items-center overflow-hidden mb-10">
       <img
         src="https://i.imghippo.com/files/12v761724049730.jpg"
         alt="hero"
