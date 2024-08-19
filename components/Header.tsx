@@ -29,10 +29,10 @@ const Header = (props: Props) => {
     if (!isSearchOpen) {
       const timer = setTimeout(() => {
         setShowLogo(true);
-      }, 300); // Show logo after 300ms
-      return () => clearTimeout(timer); // Clear timeout if component unmounts or search opens again
+      }, 300);
+      return () => clearTimeout(timer);
     } else {
-      setShowLogo(false); // Hide logo immediately when search opens
+      setShowLogo(false);
     }
   }, [isSearchOpen]);
   useEffect(() => {
@@ -62,34 +62,51 @@ const Header = (props: Props) => {
       window.addEventListener("resize", checkScreenSize);
 
       return () => window.removeEventListener("resize", checkScreenSize);
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const response = await fetch(
-              `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=35479a4fe2f641d9a9f24251f17c2bb8`
-            );
-            const data = await response.json();
-            if (data.results.length > 0) {
-              const city =
-                data.results[0].components.city ||
-                data.results[0].components.town ||
-                data.results[0].components.village;
-              setLocation(city || "Location not found");
-            } else {
-              setLocation("Location not found");
-            }
-          } catch (error) {
-            setLocation("Error fetching location");
-          }
-        });
-      } else {
-        setLocation("Geolocation not supported");
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  useEffect(() => {
+    const fetchLocation = async ({
+      latitude,
+      longitude,
+    }: {
+      latitude: any;
+      longitude: any;
+    }) => {
+      try {
+        const response = await fetch(
+          `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=35479a4fe2f641d9a9f24251f17c2bb8`
+        );
+        const data = await response.json();
+        if (data.results.length > 0) {
+          const city =
+            data.results[0].components.city ||
+            data.results[0].components.town ||
+            data.results[0].components.village;
+          setLocation(city || "Location not found");
+        } else {
+          setLocation("Location not found");
+        }
+      } catch (error) {
+        setLocation("Error fetching location");
+      }
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchLocation({ latitude, longitude });
+        },
+        (error) => {
+          setLocation("Error getting location");
+        }
+      );
+    } else {
+      setLocation("Geolocation not supported");
+    }
   }, []);
 
   return (
