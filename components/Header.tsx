@@ -131,7 +131,7 @@ const Header = (props: Props) => {
             >
               <IoMenu className="text-teal-50 h-8 w-8" />
             </button>
-            {!isSearchOpen && showLogo && <Logo />}
+            {!isSearchOpen && showLogo && <Logo className="sm:hidden" />}
             <div
               ref={searchRef}
               className="search flex items-center ml-4 sm:ml-0"
