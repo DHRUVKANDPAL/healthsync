@@ -72,30 +72,35 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
 
 
 export const signIn = async (values: z.infer<typeof SigninSchema>) => {
-  const patient = await prisma.patient.findUnique({
-    where: {
-      aadharno:values.aadharno
-    },
-  });
-  if (!patient || !patient.hashedPassword) {
-    return { success: false, error: "Invalid Credentials!" };
+  try {
+    const patient = await prisma.patient.findUnique({
+      where: {
+        aadharno:values.aadharno
+      },
+    });
+    if (!patient || !patient.hashedPassword) {
+      return { success: false, error: "Invalid Credentials!" };
+    }
+    const passwordMatch = await new Argon2id().verify(
+      patient.hashedPassword,
+      values.password
+    );
+    if (!passwordMatch) {
+      return { success: false, error: "Invalid Credentials!" };
+    }
+  
+    const session = await lucia.createSession(patient.id, {});
+    const sessionCookie = await lucia.createSessionCookie(session.id);
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+    return { success: true, id: patient.id };
+  } catch (error) {
+    console.log("Error in auth.actions.ts",error)
+    return { success: false };
   }
-  const passwordMatch = await new Argon2id().verify(
-    patient.hashedPassword,
-    values.password
-  );
-  if (!passwordMatch) {
-    return { success: false, error: "Invalid Credentials!" };
-  }
-
-  const session = await lucia.createSession(patient.id, {});
-  const sessionCookie = await lucia.createSessionCookie(session.id);
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes
-  );
-  return { success: true, id: patient.id };
 };
 
 // export const logout=async(id:string )=>{
