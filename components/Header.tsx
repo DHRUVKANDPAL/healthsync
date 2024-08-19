@@ -155,7 +155,7 @@ const Header = (props: Props) => {
                   </label>
                   <input
                     type="search"
-                    className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-64"
+                    className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
                     placeholder="Search..."
                   />
                 </div>
@@ -164,11 +164,11 @@ const Header = (props: Props) => {
           </div>
           <div
             ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-64 bg-blue-900 transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm md:text-lg bg-blue-900 transform transition-transform duration-300 ease-in-out ${
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
-            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0 leading-[1rem]">
+            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0 leading-[1rem] ">
               <a href="#" className="hover:underline" onClick={closeMenu}>
                 Home
               </a>
