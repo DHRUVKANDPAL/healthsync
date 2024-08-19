@@ -24,14 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-// import { Signin } from "@/app/patient-auth/auth.actions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { signIn } from "@/app/patient-auth/auth.actions";
 export const SigninSchema = z
   .object({
     aadharno: z.string(),
@@ -48,13 +41,13 @@ const Signin = () => {
   });
   async function onSubmit(values: z.infer<typeof SigninSchema>) {
     console.log(values);
-    // const res = await Signin(values);
-    // if (res.success) {
-    //   toast.success("Account created successfully");
-    //   router.push("/patient-dash");
-    // } else {
-    //   toast.error(res.error);
-    // }
+    const res = await signIn(values);
+    if (res.success) {
+      toast.success("Logged in successfully");
+      router.push("/patient-dash");
+    } else {
+      toast.error(res.error);
+    }
   }
   return (
     <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
@@ -78,7 +71,6 @@ const Signin = () => {
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="password"
@@ -93,7 +85,7 @@ const Signin = () => {
               )}
             />
             
-            <Button type="submit" >Submit</Button>
+            <Button type="submit" className="w-full">Submit</Button>
           </form>
         </Form>
       </CardContent>

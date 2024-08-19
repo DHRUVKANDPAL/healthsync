@@ -5,6 +5,7 @@ import prisma from "@/lib/db";
 import { z } from "zod";
 import { lucia } from "@/lib/lucia";
 import { cookies } from "next/headers";
+import { SigninSchema } from "@/components/Signin";
 
 export const signup = async (values: z.infer<typeof SignUpSchema>) => {
   try {
@@ -70,32 +71,32 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
 // };
 
 
-// export const signIn = async (values: z.infer<typeof SignInSchema>) => {
-//   const patient = await prisma.patient.findUnique({
-//     where: {
-//       email: values.email,
-//     },
-//   });
-//   if (!patient || !patient.hashedPassword) {
-//     return { success: false, error: "Invalid Credentials!" };
-//   }
-//   const passwordMatch = await new Argon2id().verify(
-//     patient.hashedPassword,
-//     values.password
-//   );
-//   if (!passwordMatch) {
-//     return { success: false, error: "Invalid Credentials!" };
-//   }
+export const signIn = async (values: z.infer<typeof SigninSchema>) => {
+  const patient = await prisma.patient.findUnique({
+    where: {
+      aadharno:values.aadharno
+    },
+  });
+  if (!patient || !patient.hashedPassword) {
+    return { success: false, error: "Invalid Credentials!" };
+  }
+  const passwordMatch = await new Argon2id().verify(
+    patient.hashedPassword,
+    values.password
+  );
+  if (!passwordMatch) {
+    return { success: false, error: "Invalid Credentials!" };
+  }
 
-//   const session = await lucia.createSession(patient.id, {});
-//   const sessionCookie = await lucia.createSessionCookie(session.id);
-//   cookies().set(
-//     sessionCookie.name,
-//     sessionCookie.value,
-//     sessionCookie.attributes
-//   );
-//   return { success: true, id: patient.id };
-// };
+  const session = await lucia.createSession(patient.id, {});
+  const sessionCookie = await lucia.createSessionCookie(session.id);
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
+  return { success: true, id: patient.id };
+};
 
 // export const logout=async(id:string )=>{
 //    try {
