@@ -15,7 +15,7 @@ const Hero = (props: Props) => {
         alt="hero"
         className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px]"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-teal-50 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent"></div>
       <div className="relative z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
         <p className="text-sm sm:text-base uppercase tracking-wider mb-2 sm:mb-4 text-teal-800">
           CARING FOR LIFE
