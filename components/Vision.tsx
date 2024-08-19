@@ -24,7 +24,7 @@ const Vision = () => {
               healthcare experience for everyone involved.
             </p>
             <p className="text-gray-700 mb-6">
-              Our commitment extends beyond mere convenience. We're dedicated to
+              Our commitment extends beyond mere convenience. We&apos;re dedicated to
               empowering individuals to take charge of their health through
               informed decision-making and easy access to their medical
               information. We believe that by doing so, we can contribute to

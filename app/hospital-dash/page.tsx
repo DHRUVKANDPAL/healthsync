@@ -1,11 +1,12 @@
-import React from 'react'
-
-type Props = {}
+import React from "react";
+type Props = {};
 
 const HospitalDashboard = (props: Props) => {
   return (
-    <div>HospitalDashboard</div>
-  )
-}
+    <>
+    <div>Hospital Dashboard</div>
+    </>
+  );
+};
 
-export default HospitalDashboard
+export default HospitalDashboard;

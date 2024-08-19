@@ -11,7 +11,7 @@ export const lucia = new Lucia(adapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  sessionExpiresIn: new TimeSpan(1, "d"),
+  sessionExpiresIn: new TimeSpan(1, "h"),
 });
 
 export const getUser = async () => {
