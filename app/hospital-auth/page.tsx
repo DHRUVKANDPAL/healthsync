@@ -1,9 +1,9 @@
 import React from 'react'
 
-const HospitalDash = () => {
+const HospitalAuth = () => {
   return (
-    <div>HospitalDash</div>
+    <div>HospitalAuth</div>
   )
 }
 
-export default HospitalDash
+export default HospitalAuth
