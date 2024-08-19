@@ -2,12 +2,12 @@ import React from "react";
 
 type Props = {};
 
-const Hero = async (props: Props) => {
+const Hero =  (props: Props) => {
   return (
     <div className="hero flex flex-col md:flex-row justify-between items-center w-screen bg-gradient-to-br from-teal-200 via-slate-100 to-cyan-100 h-80">
       <section className="w-full md:w-2/5 mb-10 md:mb-0 p-4">
         <h1 className="text-4xl md:text-5xl font-bold text-wrap leading-tight mb-4">
-          "Saving Lives, One Drop at a Time"
+          Saving Lives, One Drop at a Time
         </h1>
         <p className="text-xl md:text-3xl text-wrap text-gray-700">
           Connecting donors, patients, and hospitals
