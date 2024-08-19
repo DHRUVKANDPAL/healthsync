@@ -26,6 +26,9 @@ const Header = (props: Props) => {
   };
 
   useEffect(() => {
+    setIsSmallScreen(window.innerWidth < 640);
+  }, []);
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         menuRef.current &&
@@ -86,7 +89,7 @@ const Header = (props: Props) => {
           <h1 className="text-3xl sm:text-4xl font-poppins-font font-semibold text-teal-500 text-center sm:text-left">
             Health<span className="text-teal-700 font-bold">Sync</span>
           </h1>
-          <ul className="md:flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs hidden ">
+          <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs ">
             <li className="flex items-center justify-center gap-1 sm:gap-4">
               <FiPhoneCall className="text-teal-500 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
@@ -101,7 +104,7 @@ const Header = (props: Props) => {
                 <p className="text-teal-500">24x7</p>
               </div>
             </li>
-            <li className="flex items-center justify-center gap-1 sm:gap-4">
+            <li className="sm:flex  hidden items-center justify-center gap-1 sm:gap-4">
               <GrLocation className="text-teal-500 h-5 w-5 sm:h-7 sm:w-7" />
               <div className="text-center sm:text-left">
                 <p className="text-teal-700">Location</p>
@@ -135,12 +138,12 @@ const Header = (props: Props) => {
                   </button>
                   <div
                     className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                      isSearchOpen ? "w-56" : "w-0"
+                      isSearchOpen ? "w-48" : "w-0"
                     }`}
                   >
                     <input
                       type="search"
-                      className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-48 sm:w-64"
+                      className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
                       placeholder="Search..."
                     />
                   </div>
@@ -152,7 +155,7 @@ const Header = (props: Props) => {
                   </label>
                   <input
                     type="search"
-                    className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-32 sm:w-64"
+                    className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-64"
                     placeholder="Search..."
                   />
                 </div>
@@ -165,11 +168,15 @@ const Header = (props: Props) => {
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto`}
           >
-            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0">
+            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0 leading-[1rem]">
               <a href="#" className="hover:underline" onClick={closeMenu}>
                 Home
               </a>
-              <a href="#" className="hover:underline" onClick={closeMenu}>
+              <a
+                href="#"
+                className="hover:underline text-center"
+                onClick={closeMenu}
+              >
                 Contact Us
               </a>
               <a href="#" className="hover:underline" onClick={closeMenu}>
