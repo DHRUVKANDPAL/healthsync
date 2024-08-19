@@ -47,3 +47,40 @@ model PatientSession {
   expiresAt DateTime
   patient Patient @relation(fields: [userId], references: [id])
 }
+
+model Hospital{
+  id              String   @id @default(cuid())
+  name String
+  licenceno String
+  estyear Int
+  Website String
+  contactno String
+  alternatecontactno String
+  email String
+  address String
+  City String
+  State String
+  Zipcode String 
+  noofbeds Int
+  noofopds Int
+  nooficu Int
+  nooflabs Int
+  noofdoctorsregistered Int
+  anyotherdetails String 
+  isVerified Boolean @default(false)
+  hospitaldep Department[]
+  session HospitalSession[]
+}
+model Department{
+  id              String   @id @default(cuid())
+  hospitalid String
+  hod String
+  name String
+  hospital Hospital @relation(fields: [hospitalid], references: [id])
+}
+model HospitalSession {
+  id        String   @id
+  hId    String
+  expiresAt DateTime
+  hospital Hospital @relation(fields: [hId], references: [id])
+}

@@ -6,6 +6,8 @@ import { z } from "zod";
 import { lucia } from "@/lib/lucia";
 import { cookies } from "next/headers";
 import { SigninSchema } from "@/components/Signin";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const signup = async (values: z.infer<typeof SignUpSchema>) => {
   try {
@@ -52,25 +54,6 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
 
 
 
-// export const deleteAllPatients = async () => {
-//   try {
-//     const removesessions=await prisma.patientSession.deleteMany({})
-//     const result = await prisma.patient.deleteMany({});
-    
-//     if (result.count > 0) {
-//       console.log(`Deleted ${result.count} patients.`);
-//       return { success: true };
-//     } else {
-//       console.log('No patients to delete.');
-//       return { success: false, message: 'No patients to delete' };
-//     }
-//   } catch (error) {
-//     console.error("Error deleting patients:", error);
-//     return { success: false, error: "Failed to delete patients" };
-//   }
-// };
-
-
 export const signIn = async (values: z.infer<typeof SigninSchema>) => {
   try {
     const patient = await prisma.patient.findUnique({
@@ -103,20 +86,15 @@ export const signIn = async (values: z.infer<typeof SigninSchema>) => {
   }
 };
 
-// export const logout=async(id:string )=>{
-//    try {
-//       const sessionCookie = await lucia.createBlankSessionCookie()
-//       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-      
-//       const deleteSession=await prisma.patientSession.deleteMany({
-//          where:{
-//             patientId:id
-//          }
-//       })
-//       redirect('/authenticate')
-//    } catch (error) {
-//     redirect('/authenticate')
-//    }
-
-// }
+export const logout=async()=>{
+   try {
+      const sessionCookie = await lucia.createBlankSessionCookie()
+      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+      redirect("/patient-auth")
+   } catch (error) {
+    console.log("Error")
+   }
+  //  location.reload();
+   revalidatePath("/patient-dash")
+}
 
