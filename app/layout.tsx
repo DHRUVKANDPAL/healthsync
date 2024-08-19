@@ -28,8 +28,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header></Header>
         {children}
-        <Toaster richColors></Toaster>
         <Footer></Footer>
+        <Toaster richColors></Toaster>
       </body>
     </html>
   );
