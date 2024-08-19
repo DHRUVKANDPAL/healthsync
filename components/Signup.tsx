@@ -80,20 +80,20 @@ const Signup = () => {
     }
   }
   return (
-    <Card className="w-[300px] sm:w-[430px] md:w-[580px]">
+    <Card className="w-[300px] sm:w-[430px] md:w-[720px]">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Sign up here.</CardDescription>
       </CardHeader>
       <CardContent className="">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:grid grid-cols-2 gap-4 md:space-y-0">
+            <FormField 
               control={form.control}
               name="username"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
+                <FormItem >
+                  <FormLabel>Username </FormLabel>
                   <FormControl>
                     <Input placeholder="Suraj" type="text" {...field} />
                   </FormControl>
@@ -101,7 +101,7 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            <FormField 
               control={form.control}
               name="dob"
               render={({ field }) => (
@@ -191,7 +191,33 @@ const Signup = () => {
               name="alternatecontactno"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Alternate Contact No</FormLabel>
+                  <FormLabel>Alternate Contact No </FormLabel>
+                  <FormControl>
+                    <Input placeholder="7777755555" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Rajiv Chowk , New Delhi , India" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="emregencycontact"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Emergency Contact No</FormLabel>
                   <FormControl>
                     <Input placeholder="7777755555" type="text" {...field} />
                   </FormControl>
@@ -220,7 +246,7 @@ const Signup = () => {
               control={form.control}
               name="aadharno"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="col-span-2">
                   <FormLabel>Aadhar no</FormLabel>
                   <FormControl>
                     <Input placeholder="123456784321" type="text" {...field} />
@@ -229,7 +255,19 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="prevHis"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Previous Medical History</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Diabetes" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="password"
@@ -256,7 +294,7 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className="col-span-2">Submit</Button>
           </form>
         </Form>
       </CardContent>

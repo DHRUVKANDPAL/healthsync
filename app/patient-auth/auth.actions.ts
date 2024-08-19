@@ -10,7 +10,7 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
   try {
     const existingpatient = await prisma.patient.findUnique({
       where: {
-        email: values.email,
+        aadharno:values.aadharno
       },
     });
     if (existingpatient) {
@@ -23,6 +23,15 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
         email: values.email.toLowerCase(),
         hashedPassword: hashedPassword,
         name: values.username,
+        gender:values.gender,
+        dob:values.dob,
+        aadharno:values.aadharno,
+        bloodgroup:values.bloodgroup,
+        contactno:values.contactno,
+        alternatecontactno:values.alternatecontactno,
+        address:values.address,
+        emergencycontact:values.emregencycontact,
+        prevHis:values.prevHis
       },
     });
     const session = await lucia.createSession(patient.id, {});

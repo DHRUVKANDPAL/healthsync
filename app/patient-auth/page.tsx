@@ -8,7 +8,7 @@ type Props = {};
 const page = (props: Props) => {
   return (
     // <></>
-    <div className="min-h-screen max-w-full flex justify-center pt-10">
+    <div className="min-h-screen max-w-full flex justify-center py-10">
       <Tabswitcher
         signUpTab={<Signup></Signup>}
         signinTab={<Signin></Signin>}
