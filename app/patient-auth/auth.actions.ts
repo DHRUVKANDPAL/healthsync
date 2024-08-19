@@ -51,23 +51,23 @@ export const signup = async (values: z.infer<typeof SignUpSchema>) => {
 
 
 
-export const deleteAllPatients = async () => {
-  try {
-    const removesessions=await prisma.patientSession.deleteMany({})
-    const result = await prisma.patient.deleteMany({});
+// export const deleteAllPatients = async () => {
+//   try {
+//     const removesessions=await prisma.patientSession.deleteMany({})
+//     const result = await prisma.patient.deleteMany({});
     
-    if (result.count > 0) {
-      console.log(`Deleted ${result.count} patients.`);
-      return { success: true };
-    } else {
-      console.log('No patients to delete.');
-      return { success: false, message: 'No patients to delete' };
-    }
-  } catch (error) {
-    console.error("Error deleting patients:", error);
-    return { success: false, error: "Failed to delete patients" };
-  }
-};
+//     if (result.count > 0) {
+//       console.log(`Deleted ${result.count} patients.`);
+//       return { success: true };
+//     } else {
+//       console.log('No patients to delete.');
+//       return { success: false, message: 'No patients to delete' };
+//     }
+//   } catch (error) {
+//     console.error("Error deleting patients:", error);
+//     return { success: false, error: "Failed to delete patients" };
+//   }
+// };
 
 
 // export const signIn = async (values: z.infer<typeof SignInSchema>) => {
