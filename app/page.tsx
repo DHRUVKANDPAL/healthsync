@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main>
       <Hero></Hero>
-      <Testimonial></Testimonial>
+      <div className='w-5/6  mx-auto'><Testimonial></Testimonial></div>
     </main>
   );
 }
