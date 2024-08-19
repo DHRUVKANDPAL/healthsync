@@ -9,7 +9,7 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <footer className="w-full bg-blue-900 text-teal-50 py-10 px-6">
+    <footer className="w-full bg-blue-950 text-teal-50 py-10 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="flex flex-col items-center sm:items-start">
