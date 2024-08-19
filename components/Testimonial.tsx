@@ -18,7 +18,7 @@ const Testimonial = () => {
         }}
       >
         <CarouselContent>
-        <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+        <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
             <div className="p-1 w-full">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center px-4 h-84  md:h-80 w-full">
@@ -33,7 +33,7 @@ const Testimonial = () => {
             </div>
           </CarouselItem>
 
-          <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center px-4 h-84  md:h-80 w-full">
@@ -48,7 +48,7 @@ const Testimonial = () => {
             </div>
           </CarouselItem>
 
-          <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center px-4 h-84  md:h-80 w-full">
@@ -63,7 +63,7 @@ const Testimonial = () => {
             </div>
           </CarouselItem>
 
-          <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center px-4 h-84  md:h-80 w-full">
@@ -78,7 +78,7 @@ const Testimonial = () => {
             </div>
           </CarouselItem>
 
-          <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center px-4 h-84  md:h-80 w-full">
@@ -93,7 +93,7 @@ const Testimonial = () => {
             </div>
           </CarouselItem>
 
-          <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem className="sm:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center px-4 h-84  md:h-80 w-full">
