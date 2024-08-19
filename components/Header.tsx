@@ -94,7 +94,7 @@ const Header = (props: Props) => {
 
   return (
     <>
-      <header className="sticky top-0 z-30">
+      <header className="sticky -top-[72px] z-30">
         <section className="sm:flex hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white">
           <Logo></Logo>
           <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs ">
