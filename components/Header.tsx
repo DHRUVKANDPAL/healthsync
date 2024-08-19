@@ -166,7 +166,7 @@ const Header = (props: Props) => {
             ref={menuRef}
             className={`fixed top-0 left-0 h-full w-64 bg-blue-900 transform transition-transform duration-300 ease-in-out ${
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
-            } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto`}
+            } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
             <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0 leading-[1rem]">
               <a href="#" className="hover:underline" onClick={closeMenu}>
@@ -206,7 +206,7 @@ const Header = (props: Props) => {
         </nav>
         {isMenuOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-0"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={closeMenu}
           ></div>
         )}
