@@ -11,7 +11,7 @@ const Hero = (props: Props) => {
   return (
     <div className="relative h-[550px] flex items-center overflow-hidden">
       <img
-        src="https://res-console.cloudinary.com/djhehoyxl/media_explorer_thumbnails/d0c197dc3fc4e75c0e92f06182561233/detailed"
+        src="https://i.imghippo.com/files/12v761724049730.jpg"
         alt="hero"
         className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px]"
       />
