@@ -17,6 +17,7 @@ const Hero = (props: Props) => {
         className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px]"
         width={5184}
         height={3456}
+        priority
       />
       <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent"></div>
       <div className="relative z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
