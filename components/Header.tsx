@@ -299,6 +299,11 @@ const Header = (props: Props) => {
                 </>
               )}
             </ul>
+
+            <Logo className="flex-grow sm:hidden h-1/2 flex items-end justify-center"></Logo>
+            <p className=" text-teal-100 mb-4 sm:hidden text-sm flex text-center justify-center ">
+              © 2024 HealthSync. All rights reserved.
+            </p>
           </div>
         </nav>
         {isMenuOpen && (
