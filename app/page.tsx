@@ -6,7 +6,7 @@ import Vision from "@/components/Vision";
 
 export default function Home() {
   return (
-    <main>
+    <main className="select-none">
       <Hero></Hero>
       <Vision></Vision>
       <Features></Features>
