@@ -1,5 +1,5 @@
 import React from "react";
-
+import Image from "next/image";
 const Vision = () => {
   return (
     <section className="bg-white py-20 px-4">
@@ -24,9 +24,9 @@ const Vision = () => {
               healthcare experience for everyone involved.
             </p>
             <p className="text-gray-700 mb-6">
-              Our commitment extends beyond mere convenience. We&apos;re dedicated to
-              empowering individuals to take charge of their health through
-              informed decision-making and easy access to their medical
+              Our commitment extends beyond mere convenience. We&apos;re
+              dedicated to empowering individuals to take charge of their health
+              through informed decision-making and easy access to their medical
               information. We believe that by doing so, we can contribute to
               better health outcomes and a more efficient healthcare system.
             </p>
@@ -44,10 +44,12 @@ const Vision = () => {
               {/* Placeholder for image */}
               <div className="w-full">
                 <div className="rounded-lg overflow-hidden shadow-lg">
-                  <img
+                  <Image
                     src="https://i.imghippo.com/files/GqGSf1724064367.jpg"
                     alt="Our Vision for Healthcare"
                     className=""
+                    width={1024}
+                    height={1024}
                   />
                 </div>
               </div>

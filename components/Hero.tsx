@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { Button } from "react-day-picker";
 import { IoIosArrowForward } from "react-icons/io";
+import Image from "next/image";
 
 type Props = {};
 
@@ -10,10 +11,12 @@ const Hero = (props: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div className="relative h-[550px] flex items-center overflow-hidden">
-      <img
+      <Image
         src="https://i.imghippo.com/files/12v761724049730.jpg"
         alt="hero"
         className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px]"
+        width={5184}
+        height={3456}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent"></div>
       <div className="relative z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">

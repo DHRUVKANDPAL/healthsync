@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   IoNotifications,
   IoQrCode,
@@ -66,10 +67,12 @@ const Features = () => {
 
   return (
     <section className="relative py-20 px-4 overflow-hidden">
-      <img
+      <Image
         src="https://i.imghippo.com/files/B9VWw1724063218.jpg"
         alt="Healthcare background"
         className="absolute inset-0 w-full h-full object-cover"
+        width={1227}
+        height={629}
       />
       <div className="absolute inset-0 bg-blue-900 bg-opacity-70"></div>
       <div className="relative max-w-6xl mx-auto z-10">
