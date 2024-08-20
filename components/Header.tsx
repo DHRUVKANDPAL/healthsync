@@ -11,6 +11,7 @@ type Props = {};
 
 const Header = (props: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [location, setLocation] = useState<string | null>(null);
@@ -25,6 +26,8 @@ const Header = (props: Props) => {
       setIsSearchOpen(!isSearchOpen);
     }
   };
+  const toggleLoginDropdown = () =>
+    setIsLoginDropdownOpen(!isLoginDropdownOpen);
   useEffect(() => {
     if (!isSearchOpen) {
       const timer = setTimeout(() => {
@@ -54,19 +57,27 @@ const Header = (props: Props) => {
       ) {
         setIsSearchOpen(false);
       }
-      const checkScreenSize = () => {
-        setIsSmallScreen(window.innerWidth < 640);
-      };
-
-      checkScreenSize();
-      window.addEventListener("resize", checkScreenSize);
-
-      return () => window.removeEventListener("resize", checkScreenSize);
+      if (isLoginDropdownOpen && event.target instanceof Element) {
+        const clickedElement = event.target as Element;
+        if (!clickedElement.closest(".login-dropdown")) {
+          setIsLoginDropdownOpen(false);
+        }
+      }
     };
 
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isLoginDropdownOpen, closeMenu]);
   useEffect(() => {
     const fetchLocation = async ({
       latitude,
@@ -218,12 +229,40 @@ const Header = (props: Props) => {
                 </>
               ) : (
                 <>
-                  <a href="#" className="hover:underline" onClick={closeMenu}>
-                    Login
-                  </a>
-                  <a href="#" className="hover:underline" onClick={closeMenu}>
+                  <div className="relative">
+                    <div className="relative login-dropdown">
+                      <a
+                        href="#"
+                        className="hover:underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleLoginDropdown();
+                          closeMenu();
+                        }}
+                      >
+                        Login
+                      </a>
+                      {isLoginDropdownOpen && (
+                        <div className="absolute top-full left-0 bg-blue-800 rounded-md shadow-lg z-50">
+                          <a
+                            href="/patient-auth"
+                            className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                          >
+                            Patient Login
+                          </a>
+                          <a
+                            href="/hospital-auth"
+                            className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                          >
+                            Hospital Login
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {/* <a href="#" className="hover:underline" onClick={closeMenu}>
                     Register
-                  </a>
+                  </a> */}
                 </>
               )}
             </ul>
