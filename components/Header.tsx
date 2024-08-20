@@ -122,7 +122,7 @@ const Header = (props: Props) => {
 
   return (
     <>
-      <header className="sticky -top-[72px] z-30">
+      <header className="sticky sm:-top-[72px] top-0 z-30">
         <section className="sm:flex hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white">
           <Logo></Logo>
           <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs ">
@@ -237,7 +237,6 @@ const Header = (props: Props) => {
                         onClick={(e) => {
                           e.preventDefault();
                           toggleLoginDropdown();
-                          closeMenu();
                         }}
                       >
                         Login
@@ -247,12 +246,18 @@ const Header = (props: Props) => {
                           <a
                             href="/patient-auth"
                             className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            onClick={() => {
+                              closeMenu();
+                            }}
                           >
                             Patient Login
                           </a>
                           <a
                             href="/hospital-auth"
                             className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            onClick={() => {
+                              closeMenu();
+                            }}
                           >
                             Hospital Login
                           </a>
