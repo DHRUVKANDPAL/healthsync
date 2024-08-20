@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { logout } from "../../patient-auth/auth.actions";
+import Image from "next/image";
 
 interface PatientData {
   id: string;
@@ -66,56 +67,83 @@ const PatientDashboard = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Patient Dashboard</h1>
-      {userData && (
-        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Patient Information</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p>
-                <strong>Name:</strong> {userData.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {userData.email}
-              </p>
-              <p>
-                <strong>Gender:</strong> {userData.gender}
-              </p>
-              <p>
-                <strong>Date of Birth:</strong> {userData.dob}
-              </p>
-              <p>
-                <strong>Blood Group:</strong> {userData.bloodgroup}
-              </p>
-              <p>
-                <strong>Aadhar Number:</strong> {userData.aadharno}
-              </p>
-            </div>
-            <div>
-              <p>
-                <strong>Contact Number:</strong> {userData.contactno}
-              </p>
-              <p>
-                <strong>Alternate Contact:</strong>{" "}
-                {userData.alternatecontactno}
-              </p>
-              <p>
-                <strong>Emergency Contact:</strong> {userData.emergencycontact}
-              </p>
-              <p>
-                <strong>Address:</strong> {userData.address}
-              </p>
-              <p>
-                <strong>Previous History:</strong> {userData.prevHis}
-              </p>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-blue-600 text-white p-4">
+          <h1 className="text-2xl font-bold">Patient Dashboard</h1>
+        </div>
+        {userData && (
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row">
+              <div className="md:w-1/3 mb-4 md:mb-0">
+                <div className="w-48 h-48 mx-auto bg-gray-300 rounded-full overflow-hidden">
+                  <Image
+                    src="/placeholder-avatar.png"
+                    alt="Patient"
+                    width={192}
+                    height={192}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <h2 className="text-xl font-semibold text-center mt-4">
+                  {userData.name}
+                </h2>
+              </div>
+              <div className="md:w-2/3 md:pl-6">
+                <h3 className="text-lg font-semibold mb-4 text-blue-600">
+                  Patient Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InfoItem label="Email" value={userData.email} />
+                  <InfoItem label="Gender" value={userData.gender} />
+                  <InfoItem label="Date of Birth" value={userData.dob} />
+                  <InfoItem label="Blood Group" value={userData.bloodgroup} />
+                  <InfoItem label="Aadhar Number" value={userData.aadharno} />
+                  <InfoItem label="Contact Number" value={userData.contactno} />
+                  <InfoItem
+                    label="Alternate Contact"
+                    value={userData.alternatecontactno}
+                  />
+                  <InfoItem
+                    label="Emergency Contact"
+                    value={userData.emergencycontact}
+                  />
+                  <InfoItem label="Address" value={userData.address} span={2} />
+                  <InfoItem
+                    label="Previous History"
+                    value={userData.prevHis}
+                    span={2}
+                  />
+                </div>
+              </div>
             </div>
           </div>
+        )}
+        <div className="p-4 bg-gray-50 border-t">
+          <Button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 text-white"
+          >
+            Logout
+          </Button>
         </div>
-      )}
-      <Button onClick={handleLogout}>Logout</Button>
+      </div>
     </div>
   );
 };
+const InfoItem = ({
+  label,
+  value,
+  span = 1,
+}: {
+  label: any;
+  value: any;
+  span?: any;
+}) => (
+  <div className={`col-span-${span}`}>
+    <p className="text-sm font-medium text-gray-500">{label}</p>
+    <p className="mt-1">{value}</p>
+  </div>
+);
 
 export default PatientDashboard;
