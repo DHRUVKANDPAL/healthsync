@@ -4,6 +4,7 @@ import { FiPhoneCall } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { CiSearch } from "react-icons/ci";
+import { IoIosArrowDown } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 import Link from "next/link";
 import Logo from "./Logo";
@@ -231,29 +232,51 @@ const Header = (props: Props) => {
               ) : (
                 <>
                   <div className="relative">
-                    <div className="relative login-dropdown">
+                    <div
+                      className="relative login-dropdown"
+                      onMouseEnter={() => {
+                        setIsLoginDropdownOpen(true);
+                      }}
+                    >
                       <a
                         href="#"
-                        className="hover:underline"
+                        className="hover:underline flex justify-center items-center "
                         onClick={(e) => {
                           e.preventDefault();
                           toggleLoginDropdown();
-                          closeMenu();
                         }}
                       >
-                        Login
+                        <p className="text-left w-full ">
+                          Login
+                          <IoIosArrowDown
+                            className={`transform inline transition-transform duration-300 ${
+                              isLoginDropdownOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </p>
                       </a>
                       {isLoginDropdownOpen && (
-                        <div className="absolute top-full left-0 bg-blue-800 rounded-md shadow-lg z-50">
+                        <div
+                          className="absolute top-6 left-0 mt-2 bg-blue-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          onMouseLeave={() => {
+                            setIsLoginDropdownOpen(false);
+                          }}
+                        >
                           <Link
                             href="/patient-auth"
                             className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            onClick={() => {
+                              closeMenu();
+                            }}
                           >
                             Patient Login
                           </Link>
                           <Link
                             href="/hospital-auth"
                             className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            onClick={() => {
+                              closeMenu();
+                            }}
                           >
                             Hospital Login
                           </Link>
