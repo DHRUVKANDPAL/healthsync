@@ -206,7 +206,16 @@ const Header = (props: Props) => {
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
-            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0 leading-[1rem] ">
+            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-6 sm:p-0 leading-[1rem] ">
+              <li className="flex absolute top-8 items-center justify-center gap-1 sm:gap-4 sm:hidden">
+                <GrLocation className="text-teal-500 h-7 w-7 sm:h-7 sm:w-7" />
+                <div className="text-center sm:text-left">
+                  <p className="text-teal-500 pb-2">Location</p>
+                  <p className="text-teal-300">
+                    {location ? location : "Fetching location..."}
+                  </p>
+                </div>
+              </li>
               <Link href="/." className="hover:underline" onClick={closeMenu}>
                 Home
               </Link>
