@@ -13,7 +13,7 @@ export async function GET(req:Request,{params}:{params:{id:string}}){
   }
   if(user){
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({user, success: true }),
       {
         headers: { 'Content-Type': 'application/json' },
       }

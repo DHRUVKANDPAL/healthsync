@@ -47,6 +47,18 @@ export const getUser = async () => {
         id: true,
         name: true,
         email: true,
+        gender:true,
+        dob:true,
+        aadharno:true,
+        bloodgroup:true,
+        contactno:true,
+        alternatecontactno:true,
+        address:true,
+        emergencycontact:true,
+        prevHis:true,
+        medHis:true,
+        createdAt:true,
+        updatedAt:true
       },
     });
     return dbUser;

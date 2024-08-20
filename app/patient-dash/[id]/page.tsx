@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { logout } from "../../patient-auth/auth.actions";
+import { Patient } from "@prisma/client";
 
 const PatientDashboard = ({ params }: { params: { id: string } }) => {
   const [userExists, setUserExists] = useState<boolean | null>(null);
   const router = useRouter();
   const id = params.id;
-
+  const [userData,setUserData]=useState<Patient|null>(null);
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -20,7 +21,9 @@ const PatientDashboard = ({ params }: { params: { id: string } }) => {
         if (!data.success) {
           router.push("/patient-auth");
         } else {
+          // console.log(data.user);
           setUserExists(true); 
+          setUserData(data.user)
         }
       } catch (error) {
         toast.error("Error checking user.");
