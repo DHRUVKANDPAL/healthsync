@@ -5,6 +5,7 @@ import { FaRegClock } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { CiSearch } from "react-icons/ci";
 import { IoMenu } from "react-icons/io5";
+import Link from "next/link";
 import Logo from "./Logo";
 
 type Props = {};
@@ -205,9 +206,9 @@ const Header = (props: Props) => {
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
             <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-4 sm:p-0 leading-[1rem] ">
-              <a href="#" className="hover:underline" onClick={closeMenu}>
+              <Link href="/." className="hover:underline" onClick={closeMenu}>
                 Home
-              </a>
+              </Link>
               <a
                 href="#"
                 className="hover:underline sm:text-center"
@@ -237,30 +238,25 @@ const Header = (props: Props) => {
                         onClick={(e) => {
                           e.preventDefault();
                           toggleLoginDropdown();
+                          closeMenu();
                         }}
                       >
                         Login
                       </a>
                       {isLoginDropdownOpen && (
                         <div className="absolute top-full left-0 bg-blue-800 rounded-md shadow-lg z-50">
-                          <a
+                          <Link
                             href="/patient-auth"
                             className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
-                            onClick={() => {
-                              closeMenu();
-                            }}
                           >
                             Patient Login
-                          </a>
-                          <a
+                          </Link>
+                          <Link
                             href="/hospital-auth"
                             className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
-                            onClick={() => {
-                              closeMenu();
-                            }}
                           >
                             Hospital Login
-                          </a>
+                          </Link>
                         </div>
                       )}
                     </div>
