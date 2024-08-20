@@ -5,7 +5,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["res.cloudinary.com", "i.imghippo.com"],
+    domains: ["res.cloudinary.com", "i.imghippo.com","via.placeholder.com"],
   },
 };
 

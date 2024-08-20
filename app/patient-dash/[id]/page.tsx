@@ -78,8 +78,8 @@ const PatientDashboard = ({ params }: { params: { id: string } }) => {
               <div className="md:w-1/3 mb-4 md:mb-0">
                 <div className="w-48 h-48 mx-auto bg-gray-300 rounded-full overflow-hidden">
                   <Image
-                    src="/placeholder-avatar.png"
-                    alt="Patient"
+                    src="https://via.placeholder.com/150"
+                    alt=""
                     width={192}
                     height={192}
                     className="object-cover w-full h-full"
