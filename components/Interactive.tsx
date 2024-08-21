@@ -1,14 +1,8 @@
+"use client";
 
-
-
-
-
-
-"use client"
-
-import * as React from "react"
-import { Label, Pie, PieChart, Sector } from "recharts"
-import { PieSectorDataItem } from "recharts/types/polar/Pie"
+import * as React from "react";
+import { Label, Pie, PieChart, Sector } from "recharts";
+import { PieSectorDataItem } from "recharts/types/polar/Pie";
 
 import {
   Card,
@@ -16,28 +10,29 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartStyle,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-const desktopData = [
-  { month: "january", desktop: 186, fill: "var(--color-january)" },
-  { month: "february", desktop: 305, fill: "var(--color-february)" },
-  { month: "march", desktop: 237, fill: "var(--color-march)" },
-  { month: "april", desktop: 173, fill: "var(--color-april)" },
-  { month: "may", desktop: 209, fill: "var(--color-may)" },
-]
+} from "@/components/ui/select";
+// const desktopData = [
+//   { month: "january", desktop: 186, fill: "var(--color-january)" },
+//   { month: "february", desktop: 305, fill: "var(--color-february)" },
+//   { month: "march", desktop: 237, fill: "var(--color-march)" },
+//   { month: "april", desktop: 173, fill: "var(--color-april)" },
+//   { month: "may", desktop: 209, fill: "var(--color-may)" },
+//   { month: "july", desktop: 209, fill: "var(--color-july)" },
+// ];
 
 const chartConfig = {
   visitors: {
@@ -97,18 +92,24 @@ const chartConfig = {
     label: "December",
     color: "hsl(var(--chart-2))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
+interface InteractData {
+  month: string;
+  desktop: number;
+}
+interface InteractiveProps {
+  data: InteractData[];
+}
 
-
-export default function Interactive() {
-  const id = "pie-interactive"
-  const [activeMonth, setActiveMonth] = React.useState(desktopData[0].month)
+export default function Interactive({ data }: InteractiveProps) {
+  const id = "pie-interactive";
+  const [activeMonth, setActiveMonth] = React.useState(data[5].month);
 
   const activeIndex = React.useMemo(
-    () => desktopData.findIndex((item) => item.month === activeMonth),
+    () => data.findIndex((item) => item.month === activeMonth),
     [activeMonth]
-  )
-  const months = React.useMemo(() => desktopData.map((item) => item.month), [])
+  );
+  const months = React.useMemo(() => data.map((item) => item.month), []);
 
   return (
     <Card data-chart={id} className="flex flex-col">
@@ -127,10 +128,10 @@ export default function Interactive() {
           </SelectTrigger>
           <SelectContent align="end" className="rounded-xl">
             {months.map((key) => {
-              const config = chartConfig[key as keyof typeof chartConfig]
+              const config = chartConfig[key as keyof typeof chartConfig];
 
               if (!config) {
-                return null
+                return null;
               }
 
               return (
@@ -149,7 +150,7 @@ export default function Interactive() {
                     {config?.label}
                   </div>
                 </SelectItem>
-              )
+              );
             })}
           </SelectContent>
         </Select>
@@ -166,7 +167,7 @@ export default function Interactive() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={desktopData}
+              data={data}
               dataKey="desktop"
               nameKey="month"
               innerRadius={60}
@@ -201,7 +202,7 @@ export default function Interactive() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {desktopData[activeIndex].desktop.toLocaleString()}
+                          {data[activeIndex].desktop.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -211,7 +212,7 @@ export default function Interactive() {
                           Visitors
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -220,5 +221,5 @@ export default function Interactive() {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

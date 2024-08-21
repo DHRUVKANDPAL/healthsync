@@ -68,11 +68,11 @@ export default function Chartstats() {
     fetchData();
   },[]);
   if (chartData.length === 0) return <></>;
-  // const desktopData: InteractData[] = chartData.map((item: ChartData) => ({
-  //   month: item.month.toLowerCase(),
-  //   desktop: item.count,
-  //   fill: "var(--color-january)",
-  // }));
+  const desktopData: InteractData[] = chartData.map((item: ChartData) => ({
+    month: item.month.toLowerCase(),
+    desktop: item.count,
+    fill: "var(--color-january)",
+  }));
   // console.log(desktopData);
 
   return (
@@ -123,7 +123,7 @@ export default function Chartstats() {
           </div>
         </CardFooter>
       </Card>
-      {/* <Interactive></Interactive> */}
+      <Interactive data={desktopData}></Interactive>
     </div>
   );
 }
