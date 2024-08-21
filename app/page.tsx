@@ -1,3 +1,4 @@
+import Chartstats from "@/components/Chartstats";
 import Faq from "@/components/faq";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero></Hero>
       <Vision></Vision>
       <Features></Features>
+      <Chartstats></Chartstats>
       <div className="w-5/6 mx-auto ">
         <Testimonial></Testimonial>
       </div>
