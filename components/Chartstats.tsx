@@ -59,7 +59,7 @@ export default function Chartstats() {
   useEffect(() => {
     async function fetchData() {
       console.log('here')
-      const response = await fetch("/api/chartdata");
+      const response = await fetch("https://healthsync-alpha.vercel.app/api/chartdata");
       const data = await response.json();
       console.log(data);
       setChartData(data.chartData);
