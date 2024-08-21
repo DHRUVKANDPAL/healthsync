@@ -58,6 +58,7 @@ export default function Chartstats() {
 
   useEffect(() => {
     async function fetchData() {
+      console.log('here')
       const response = await fetch("/api/chartdata");
       const data = await response.json();
       console.log(data);
@@ -65,14 +66,14 @@ export default function Chartstats() {
     }
 
     fetchData();
-  }, []);
+  },[]);
   if (chartData.length === 0) return <></>;
   const desktopData: InteractData[] = chartData.map((item: ChartData) => ({
     month: item.month.toLowerCase(),
     desktop: item.count,
     fill: "var(--color-january)",
   }));
-  console.log(desktopData);
+  // console.log(desktopData);
 
   return (
     <div className="md:w-5/6 md:max-w-[1200px] mx-auto md:grid grid-cols-2 gap-4 pt-10 ">
