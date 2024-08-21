@@ -25,14 +25,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// const desktopData = [
-//   { month: "january", desktop: 186, fill: "var(--color-january)" },
-//   { month: "february", desktop: 305, fill: "var(--color-february)" },
-//   { month: "march", desktop: 237, fill: "var(--color-march)" },
-//   { month: "april", desktop: 173, fill: "var(--color-april)" },
-//   { month: "may", desktop: 209, fill: "var(--color-may)" },
-//   { month: "july", desktop: 209, fill: "var(--color-july)" },
-// ];
+const desktopData = [
+  { month: "january", desktop: 186, fill: "var(--color-january)" },
+  { month: "february", desktop: 305, fill: "var(--color-february)" },
+  { month: "march", desktop: 237, fill: "var(--color-march)" },
+  { month: "april", desktop: 173, fill: "var(--color-april)" },
+  { month: "may", desktop: 209, fill: "var(--color-may)" },
+  { month: "june", desktop: 209, fill: "var(--color-june)" },
+];
 
 const chartConfig = {
   visitors: {
@@ -46,51 +46,51 @@ const chartConfig = {
   },
   january: {
     label: "January",
-    color: "hsl(var(--chart-1))",
+    color: "#2dd4bf",
   },
   february: {
     label: "February",
-    color: "hsl(var(--chart-2))",
+    color: "#0f766e",
   },
   march: {
     label: "March",
-    color: "hsl(var(--chart-3))",
+    color: "#14b8a6",
   },
   april: {
     label: "April",
-    color: "hsl(var(--chart-4))",
+    color: "#115e59",
   },
   may: {
     label: "May",
-    color: "hsl(var(--chart-5))",
+    color: "#0d9488",
   },
   june: {
     label: "June",
-    color: "hsl(var(--chart-1))",
+    color: "#134e4a",
   },
   july: {
     label: "July",
-    color: "hsl(var(--chart-2))",
+    color: "#2dd4bf",
   },
   august: {
     label: "August",
-    color: "hsl(var(--chart-3))",
+    color: "#0f766e",
   },
   september: {
     label: "September",
-    color: "hsl(var(--chart-4))",
+    color: "#14b8a6",
   },
   october: {
     label: "October",
-    color: "hsl(var(--chart-5))",
+    color: "#115e59",
   },
   november: {
     label: "November",
-    color: "hsl(var(--chart-1))",
+    color: "#0d9488",
   },
   december: {
     label: "December",
-    color: "hsl(var(--chart-2))",
+    color: "#134e4a",
   },
 } satisfies ChartConfig;
 interface InteractData {
@@ -102,6 +102,7 @@ interface InteractiveProps {
 }
 
 export default function Interactive({ data }: InteractiveProps) {
+  // data = desktopData;
   const id = "pie-interactive";
   const [activeMonth, setActiveMonth] = React.useState(data[5].month);
 
@@ -116,8 +117,8 @@ export default function Interactive({ data }: InteractiveProps) {
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
-          <CardTitle>Pie Chart - Interactive</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardTitle>Patient Engagement Pie </CardTitle>
+          <CardDescription className="capitalize">{data[0].month} - {data[5].month} {new Date().getFullYear()}</CardDescription>
         </div>
         <Select value={activeMonth} onValueChange={setActiveMonth}>
           <SelectTrigger
@@ -155,7 +156,7 @@ export default function Interactive({ data }: InteractiveProps) {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="flex flex-1 justify-center pb-0">
+      <CardContent className="flex flex-1 justify-center pb-2">
         <ChartContainer
           id={id}
           config={chartConfig}
