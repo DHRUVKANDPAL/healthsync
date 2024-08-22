@@ -1,14 +1,45 @@
 "use client";
-import React from "react";
-import { useState } from "react";
-import { Button } from "react-day-picker";
-import { IoIosArrowForward } from "react-icons/io";
+import React, { useState, useEffect, useRef } from "react";
+import { IoClose } from "react-icons/io5";
+import { IoIosArrowDown } from "react-icons/io";
+import Link from "next/link";
 import Image from "next/image";
 
 type Props = {};
 
 const Hero = (props: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsLoginDropdownOpen(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const toggleLoginDropdown = () =>
+    setIsLoginDropdownOpen(!isLoginDropdownOpen);
+
   return (
     <div className="relative h-[550px] flex items-center overflow-hidden">
       <Image
@@ -30,13 +61,42 @@ const Hero = (props: Props) => {
         {isLoggedIn ? (
           <button className="bg-teal-600 hover:bg-teal-700 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center gap-2 group">
             Dashboard
-            <IoIosArrowForward className="transform transition-transform duration-300 group-hover:translate-x-2" />
+            <IoIosArrowDown className="transform transition-transform duration-300 group-hover:translate-y-1" />
           </button>
         ) : (
-          <button className="bg-teal-600 hover:bg-teal-700 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center gap-2 group">
-            Login/Register
-            <IoIosArrowForward className="transform transition-transform duration-300 group-hover:translate-x-2" />
-          </button>
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={toggleLoginDropdown}
+              className="bg-teal-600 hover:bg-teal-700 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center justify-between gap-2 group w-48"
+            >
+              <span>Login/Register</span>
+              {isLoginDropdownOpen ? (
+                <IoClose className="w-5 h-5" />
+              ) : (
+                <IoIosArrowDown
+                  className={`transform transition-transform duration-300 ${
+                    isLoginDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              )}
+            </button>
+            {isLoginDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 w-48 bg-teal-600 rounded-md shadow-lg z-50 overflow-hidden">
+                <Link
+                  href="/patient-auth"
+                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 transition duration-300"
+                >
+                  Patient Login
+                </Link>
+                <Link
+                  href="/hospital-auth"
+                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 transition duration-300"
+                >
+                  Hospital Login
+                </Link>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

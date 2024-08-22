@@ -291,9 +291,6 @@ const Header = (props: Props) => {
                       )}
                     </div>
                   </div>
-                  {/* <a href="#" className="hover:underline" onClick={closeMenu}>
-                    Register
-                  </a> */}
                 </>
               )}
             </ul>
