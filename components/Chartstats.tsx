@@ -72,10 +72,10 @@ export default function Chartstats() {
     return (
       <div className="w-11/12 space-y-5 md:space-y-0 md:w-5/6 md:max-w-[1100px] mx-auto md:grid grid-cols-2 gap-10 pt-10 md:pt-20 relative">
         <div className="col-span-2 flex justify-center text-2xl md:text-4xl font-poppins-font font-extrabold text-center text-teal-500 relative overflow-hidden">
-          <div className="absolute w-full h-full bg-transparent blur-[70px]">
+          {/* <div className="absolute w-full h-full bg-transparent blur-[70px]">
             <div className="absolute hidden md:block bg-teal-600 h-10 w-32 top-0 left-20"></div>
             <div className="absolute hidden md:block bg-sky-500 h-6 w-64 bottom-0 right-20"></div>
-          </div>
+          </div> */}
           <p className="bg-[#ffffff10] p-5">
             <span className="text-blue-800">
               Empowering Patient Connections{" "}
@@ -101,10 +101,10 @@ export default function Chartstats() {
   return (
     <div className="w-11/12 space-y-5 md:space-y-0 md:w-5/6 md:max-w-[1100px] mx-auto md:grid grid-cols-2 gap-10 pt-10 md:pt-20 relative">
       <div className="col-span-2 flex justify-center text-2xl md:text-4xl font-poppins-font font-extrabold text-center text-teal-500 relative overflow-hidden">
-        <div className="absolute w-full h-full bg-transparent blur-[70px]">
+        {/* <div className="absolute w-full h-full bg-transparent blur-[70px]">
           <div className="absolute hidden md:block bg-teal-600 h-10 w-32 top-0 left-20"></div>
           <div className="absolute hidden md:block bg-sky-500 h-6 w-64 bottom-0 right-20"></div>
-        </div>
+        </div> */}
         <p className="bg-[#ffffff10] p-5">
           <span className="text-blue-800">Empowering Patient Connections </span>{" "}
           Watch HealthSync Thrive with Numbers That Prove It

@@ -27,6 +27,7 @@ model Patient {
   address         String
   emergencycontact String?
   prevHis          String?
+  isVerified Boolean? @default(false)
   medHis          MedicalHistory[]
   session         PatientSession[]
   createdAt       DateTime @default(now())
@@ -68,6 +69,11 @@ model Hospital{
   noofdoctorsregistered Int
   anyotherdetails String?
   hashedPassword  String?
+  bedsAvailable Int? @default(0)
+  opdsAvailable Int? @default(0)
+  icuAvailable Int? @default(0)
+  labsAvailable Int? @default(0)
+  doctorsAvailable Int? @default(0)
   idToLogin String @unique
   isVerified Boolean @default(false)
   hospitaldep Department[]
@@ -78,6 +84,8 @@ model Department{
   hospitalid String
   hod String
   name String
+  noOfDoctors String
+  doctorsAvailable String
   hospital Hospital @relation(fields: [hospitalid], references: [id])
 }
 model HospitalSession {

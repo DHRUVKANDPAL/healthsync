@@ -22,7 +22,7 @@ export async function GET(req:Request,{params}:{params:{id:string}}){
           }
        }
     })
-    console.log(userCount)
+   //  console.log(userCount)
     chartData.push({
        month:monthDate.toLocaleString('default',{month:'long'}),
        count:userCount
