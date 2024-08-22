@@ -27,6 +27,7 @@ model Patient {
   address         String
   emergencycontact String?
   prevHis          String?
+  isVerified Boolean? @default(false)
   medHis          MedicalHistory[]
   session         PatientSession[]
   createdAt       DateTime @default(now())
