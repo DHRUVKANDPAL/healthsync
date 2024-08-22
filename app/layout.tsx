@@ -7,7 +7,6 @@ import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
   title: "HealthSync",
   description: "HealthSync provides well being of our society.",

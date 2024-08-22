@@ -30,6 +30,7 @@ const Header = (props: Props) => {
   };
   const toggleLoginDropdown = () =>
     setIsLoginDropdownOpen(!isLoginDropdownOpen);
+
   useEffect(() => {
     if (!isSearchOpen) {
       const timer = setTimeout(() => {
@@ -246,14 +247,14 @@ const Header = (props: Props) => {
                       onMouseEnter={() => {
                         setIsLoginDropdownOpen(true);
                       }}
+                      onClick={
+                        () => setIsLoginDropdownOpen(true)
+                        // e.preventDefault();
+                      }
                     >
-                      <a
-                        href="#"
+                      <div
                         className="hover:underline flex justify-center items-center "
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleLoginDropdown();
-                        }}
+                        onClick={() => toggleLoginDropdown()}
                       >
                         <p className="text-left w-full ">
                           Login
@@ -263,7 +264,7 @@ const Header = (props: Props) => {
                             }`}
                           />
                         </p>
-                      </a>
+                      </div>
                       {isLoginDropdownOpen && (
                         <div
                           className="absolute top-6 left-0 mt-2 bg-blue-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
@@ -299,11 +300,17 @@ const Header = (props: Props) => {
                 </>
               )}
             </ul>
-
-            <Logo className="flex-grow sm:hidden h-1/2 flex items-end justify-center"></Logo>
-            <p className=" text-teal-100 mb-4 sm:hidden text-sm flex text-center justify-center ">
-              © 2024 HealthSync. All rights reserved.
-            </p>
+            <div
+              className="h-full flex items-center flex-col justify-end pb-60"
+              onClick={() => {
+                closeMenu();
+              }}
+            >
+              <Logo className="flex-grow sm:hidden flex items-end justify-center"></Logo>
+              <p className=" text-teal-100 mb-4 sm:hidden text-sm flex text-center justify-center ">
+                © 2024 HealthSync. All rights reserved.
+              </p>
+            </div>
           </div>
         </nav>
         {isMenuOpen && (
