@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
+import { Loader, Loader2, TrendingUp } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import Interactive from "./Interactive";
+
+import { Skeleton } from "./ui/skeleton";
 type ChartData = {
   month: string;
   count: number;
@@ -52,7 +54,6 @@ const chartConfig = {
     color: "hsl(var(--background))",
   },
 } satisfies ChartConfig;
-
 export default function Chartstats() {
   const [chartData, setChartData] = useState<any>([]);
 
@@ -67,7 +68,29 @@ export default function Chartstats() {
 
     fetchData();
   }, []);
-  if (chartData.length === 0) return <></>;
+  if (chartData.length === 0)
+    return (
+      <div className="w-11/12 space-y-5 md:space-y-0 md:w-5/6 md:max-w-[1100px] mx-auto md:grid grid-cols-2 gap-10 pt-10 md:pt-20 relative">
+        <div className="col-span-2 flex justify-center text-2xl md:text-4xl font-poppins-font font-extrabold text-center text-teal-500 relative overflow-hidden">
+          <div className="absolute w-full h-full bg-transparent blur-[70px]">
+            <div className="absolute hidden md:block bg-teal-600 h-10 w-32 top-0 left-20"></div>
+            <div className="absolute hidden md:block bg-sky-500 h-6 w-64 bottom-0 right-20"></div>
+          </div>
+          <p className="bg-[#ffffff10] p-5">
+            <span className="text-blue-800">
+              Empowering Patient Connections{" "}
+            </span>{" "}
+            Watch HealthSync Thrive with Numbers That Prove It
+          </p>
+        </div>
+        <div className="col-span-2">
+          <Skeleton className="h-[400px] w-full flex flex-col justify-center items-center">
+            <Loader className="size-10 animate-spin text-slate-700 " />
+            <div className="hidden md:block pt-3">Loading Patient Engagement Statistics ...</div>
+          </Skeleton>
+        </div>
+      </div>
+    );
   const desktopData: InteractData[] = chartData.map((item: ChartData) => ({
     month: item.month.toLowerCase(),
     desktop: item.count,
@@ -83,7 +106,7 @@ export default function Chartstats() {
           <div className="absolute hidden md:block bg-sky-500 h-6 w-64 bottom-0 right-20"></div>
         </div>
         <p className="bg-[#ffffff10] p-5">
-          <span className="text-blue-800">Empowering Patient Connections  </span>{" "}
+          <span className="text-blue-800">Empowering Patient Connections </span>{" "}
           Watch HealthSync Thrive with Numbers That Prove It
         </p>
       </div>
