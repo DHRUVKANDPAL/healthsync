@@ -245,12 +245,9 @@ const Header = (props: Props) => {
                     <div
                       className="relative login-dropdown"
                       onMouseEnter={() => {
-                        setIsLoginDropdownOpen(true);
+                        if (!isSmallScreen) setIsLoginDropdownOpen(true);
                       }}
-                      onClick={
-                        () => setIsLoginDropdownOpen(true)
-                        // e.preventDefault();
-                      }
+                      onClick={() => toggleLoginDropdown()}
                     >
                       <div
                         className="hover:underline flex justify-center items-center "
@@ -301,7 +298,7 @@ const Header = (props: Props) => {
               )}
             </ul>
             <div
-              className="h-full flex items-center flex-col justify-end pb-60"
+              className="h-full flex items-center flex-col justify-end pb-60 sm:hidden"
               onClick={() => {
                 closeMenu();
               }}
