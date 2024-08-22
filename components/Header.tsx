@@ -245,12 +245,9 @@ const Header = (props: Props) => {
                     <div
                       className="relative login-dropdown"
                       onMouseEnter={() => {
-                        setIsLoginDropdownOpen(true);
+                        if (!isSmallScreen) setIsLoginDropdownOpen(true);
                       }}
-                      onClick={
-                        () => setIsLoginDropdownOpen(true)
-                        // e.preventDefault();
-                      }
+                      onClick={() => toggleLoginDropdown()}
                     >
                       <div
                         className="hover:underline flex justify-center items-center "
