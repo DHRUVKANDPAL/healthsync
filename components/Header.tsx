@@ -301,7 +301,7 @@ const Header = (props: Props) => {
               )}
             </ul>
             <div
-              className="h-full flex items-center flex-col justify-end pb-60"
+              className="h-full flex items-center flex-col justify-end pb-60 sm:hidden"
               onClick={() => {
                 closeMenu();
               }}
