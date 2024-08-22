@@ -148,7 +148,7 @@ export default function Chartstats() {
                   cursor={false}
                   content={<ChartTooltipContent hideLabel />}
                 />
-                <Bar dataKey="count" fill="#0d9488" radius={[8, 8, 0, 0]}>
+                <Bar dataKey="count" fill="#2563eb" radius={[8, 8, 0, 0]}>
                   <LabelList
                     position="top"
                     offset={12}
@@ -160,7 +160,7 @@ export default function Chartstats() {
             </ResponsiveContainer>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg">
+        <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg pt-4">
           {/* <div className="flex gap-2 font-medium leading-none">
             Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
           </div> */}
