@@ -27,24 +27,23 @@ import { toast } from "sonner";
 
 export const HospitalSignUpSchema = z
   .object({
-    email: z.string().email("This is not a valid email"),
     name: z.string().min(2).max(50),
-    licenceno:z.string(),
-    estyear:z.number(),
-    Website:z.string(),
-    contactno:z.string().length(10,"This is not a valid Contact no"),
-    alternatecontactno:z.string().length(10,"This is not a valid Contact no"),
+    licence:z.string(),
+    estyear:z.coerce.number(),
+    website:z.string(),
+    contactNo:z.string(),
+    alternateContactNo:z.string(),
+    email:z.string().email(),
     address:z.string(),
     city:z.string(),
     state:z.string(),
     zipcode:z.string(),
-    noofbeds:z.number(),
-    noofopds:z.number(),
-    nooficu:z.number(),
-    nooflabs:z.number(),
-    noofdoctorsregistered:z.number(),
-    anyotherdetails:z.string(),
-    idToLogin:z.string().min(6,"Must be minimum 6 character"),
+    noOfBeds:z.coerce.number(),
+    noOfOpds:z.coerce.number(),
+    noOfIcu:z.coerce.number(),
+    noOfLabs:z.coerce.number(),
+    noOfDoctorsRegistered:z.coerce.number(),
+    idToLogin:z.string(),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
   })
@@ -61,6 +60,7 @@ const HospitalSignUp = () => {
     },
   });
   async function onSubmit(values: z.infer<typeof HospitalSignUpSchema>) {
+    console.log(values)
     const res = await hospitalsignup(values);
     if (res.success) {
       toast.success("Hospital registered successfully");
@@ -73,17 +73,17 @@ const HospitalSignUp = () => {
     <Card className="w-[300px] sm:w-[430px] md:w-[720px] lg:w-[800px]">
       <CardHeader>
         <CardTitle>Register Hospital</CardTitle>
-        <CardDescription>Register Hospital here.</CardDescription>
+        <CardDescription>Register here.</CardDescription>
       </CardHeader>
       <CardContent className="">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:grid grid-cols-2 gap-4 md:space-y-0">
-            <FormField 
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:grid md:grid-cols-2 md:space-y-0 gap-4">
+            <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Name </FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
@@ -91,299 +91,242 @@ const HospitalSignUp = () => {
                 </FormItem>
               )}
             />
-            <FormField 
+             <FormField
               control={form.control}
-              name="licenceno"
+              name="licence"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Licence No</FormLabel>
+                <FormItem >
+                  <FormLabel>Licence no</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="NIN2HFI"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="NIN2HFIH" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
               name="estyear"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Established Year</FormLabel>
+                <FormItem >
+                  <FormLabel>Established year</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="1987"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
-              name="Website"
+              name="website"
               render={({ field }) => (
-                <FormItem className="col-span-2">
+                <FormItem >
                   <FormLabel>Website</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="https://www.manshospital.com"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
-            <FormField 
+            <FormField
               control={form.control}
-              name="contactno"
+              name="contactNo"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>Contact No</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="7531594862"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField 
+            <FormField
               control={form.control}
-              name="alternatecontactno"
+              name="alternateContactNo"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>Alternate Contact No</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="7531594332"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField 
+            <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="manash@gmail.com"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
-              control={form.control}
-              name="zipcode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Zipcode</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Uttar Pradesh"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField 
+            <FormField
               control={form.control}
               name="address"
               render={({ field }) => (
-                <FormItem >
+                <FormItem className="col-span-2">
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Near Rajendra Nagar"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField 
+            <FormField
               control={form.control}
               name="city"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Noida"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
               name="state"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>State</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Uttar Pradesh"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="zipcode"
+              render={({ field }) => (
+                <FormItem >
+                  <FormLabel>Zipcode</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            <FormField 
+            <FormField
               control={form.control}
-              name="noofbeds"
+              name="noOfBeds"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>No of Beds</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="200"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
-              name="noofopds"
+              name="noOfOpds"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>No of OPDs</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="10"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
-              name="nooficu"
+              name="noOfIcu"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>No of ICU</FormLabel>
+                <FormItem >
+                  <FormLabel>No of ICUs</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="7"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
-              name="nooflabs"
+              name="noOfLabs"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>No of Labs</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="2"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
-              name="noofdoctorsregistered"
+              name="noOfDoctorsRegistered"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>No of Doctors Registerd</FormLabel>
+                <FormItem >
+                  <FormLabel>No of Doctors Registered</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="50"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
               name="idToLogin"
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel>Unique Id to Login</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Mh127a"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Manas Hospital" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
-              name="anyotherdetails"
+              name="password"
               render={({ field }) => (
-                <FormItem className="col-span-2">
-                  <FormLabel>Any Other Details</FormLabel>
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder=""
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="******" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <Button type="submit" className="col-span-2">Submit</Button>
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="******" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full col-span-2">Submit</Button>
           </form>
         </Form>
       </CardContent>

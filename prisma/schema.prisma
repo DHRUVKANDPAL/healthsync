@@ -90,7 +90,7 @@ model Department{
 }
 model HospitalSession {
   id        String   @id
-  hId    String
+  userId    String
   expiresAt DateTime
-  hospital Hospital @relation(fields: [hId], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id])
 }
