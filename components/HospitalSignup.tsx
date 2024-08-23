@@ -64,7 +64,7 @@ const HospitalSignUp = () => {
     const res = await hospitalsignup(values);
     if (res.success) {
       toast.success("Hospital registered successfully");
-      router.push(`/hospital-dash`);
+      router.push(`/hospital-dash/${res.id}`);
     } else {
       toast.error(res.error);
     }
