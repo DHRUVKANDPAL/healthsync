@@ -96,3 +96,10 @@ export const logout=async()=>{
    revalidatePath("/patient-dash")
 }
 
+export const image=async()=>{
+  try {
+    
+  } catch (error) {
+    
+  }
+}
