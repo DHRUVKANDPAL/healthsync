@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { logout } from "../../patient-auth/auth.actions";
 import PatientDashboardContent from "@/components/PatientDashboardContent";
+import PatientImageEdit from "@/components/PatientImageEdit";
 
 interface PatientData {
   id: string;
@@ -23,8 +24,9 @@ interface PatientData {
   createdAt: string;
   updatedAt: string;
   medHis: any[];
+  imageUrl?:string;
 }
-
+export const dynamic = 'force-dynamic'
 const PatientDashboard = ({ params }: { params: { id: string } }) => {
   const [userExists, setUserExists] = useState<boolean | null>(null);
   const router = useRouter();
@@ -70,7 +72,10 @@ const PatientDashboard = ({ params }: { params: { id: string } }) => {
   }
 
   return (
+    <>
+    <PatientImageEdit id={id}></PatientImageEdit>
     <PatientDashboardContent userData={userData} handleLogout={handleLogout} />
+    </>
   );
 };
 

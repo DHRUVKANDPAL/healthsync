@@ -18,6 +18,7 @@ interface PatientData {
   prevHis: string;
   createdAt: string;
   updatedAt: string;
+  imageUrl?:string;
   medHis: any[];
 }
 
@@ -42,13 +43,24 @@ const PatientDashboardContent: React.FC<PatientDashboardContentProps> = ({
           <div className="flex flex-col lg:flex-row">
             <div className="lg:w-1/3 mb-6 lg:mb-0">
               <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gray-300 rounded-full overflow-hidden shadow-lg mb-4">
-                <Image
+                {
+                  userData?.imageUrl && <Image 
+                  src={`${userData.imageUrl}`}
+                  alt={userData.name}
+                  width={160}
+                  height={160}
+                  className="object-cover w-full h-full"
+                />
+                }
+                {
+                  !userData?.imageUrl && <Image
                   src={`https://via.placeholder.com/150`}
                   alt={userData.name}
                   width={160}
                   height={160}
                   className="object-cover w-full h-full"
                 />
+                }
               </div>
               <h2 className="text-xl sm:text-2xl font-semibold text-center text-gray-800">
                 {userData.name}
