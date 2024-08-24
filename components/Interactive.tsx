@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -25,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Activity, TrendingUp, Users } from "lucide-react";
 const desktopData = [
   { month: "january", desktop: 186, fill: "var(--color-january)" },
   { month: "february", desktop: 305, fill: "var(--color-february)" },
@@ -110,19 +112,31 @@ export default function Interactive({ data }: InteractiveProps) {
     () => data.findIndex((item) => item.month === activeMonth),
     [activeMonth]
   );
+  const totalEngagement = data.reduce(
+    (sum: any, item: any) => sum + item.desktop,
+    0
+  );
   const months = React.useMemo(() => data.map((item) => item.month), []);
 
   return (
-    <Card data-chart={id} className="flex flex-col">
+    <Card
+      data-chart={id}
+      className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
       <ChartStyle id={id} config={chartConfig} />
-      <CardHeader className="flex-row items-start space-y-0 pb-0">
+      <CardHeader className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-t-lg pb-4">
         <div className="grid gap-1">
-          <CardTitle>Patient Engagement Pie </CardTitle>
-          <CardDescription className="capitalize">{data[0].month} - {data[5].month} {new Date().getFullYear()}</CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <Activity className="h-6 w-6" />
+            Patient Engagement Pie
+          </CardTitle>
+          <CardDescription className=" text-teal-100">
+            {data[0].month} - {data[5].month} {new Date().getFullYear()}
+          </CardDescription>
         </div>
         <Select value={activeMonth} onValueChange={setActiveMonth}>
           <SelectTrigger
-            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
+            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5 text-blue-950"
             aria-label="Select a value"
           >
             <SelectValue placeholder="Select month" />
@@ -221,6 +235,19 @@ export default function Interactive({ data }: InteractiveProps) {
           </PieChart>
         </ChartContainer>
       </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg pt-4">
+        {/* <div className="flex gap-2 font-medium leading-none">
+            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          </div> */}
+        <div className="flex items-center gap-2 font-medium text-teal-700">
+          <Users className="h-5 w-5" />
+          Total Engagement: {totalEngagement}
+        </div>
+        <div className="flex items-center gap-2 font-medium text-blue-700">
+          <TrendingUp className="h-5 w-5" />
+          Showing total visitors for the last 6 months
+        </div>
+      </CardFooter>
     </Card>
   );
 }
