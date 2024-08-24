@@ -130,7 +130,7 @@ export default function Interactive({ data }: InteractiveProps) {
             <Activity className="h-6 w-6" />
             Patient Engagement Pie
           </CardTitle>
-          <CardDescription className=" text-teal-100">
+          <CardDescription className=" text-teal-100 capitalize">
             {data[0].month} - {data[5].month} {new Date().getFullYear()}
           </CardDescription>
         </div>

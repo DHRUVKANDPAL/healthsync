@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { SingleImageDropzone } from "@/components/SingleImageDropzone";
 import { Progress } from "@/components/ui/progress";
@@ -20,7 +20,7 @@ export default function Test() {
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const [progress, setProgress] = useState<number>(0);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false); 
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const isSmallDevice = useMediaQuery("only screen and (max-width : 400px)");
 
   const handleSaveClick = async () => {
@@ -28,7 +28,7 @@ export default function Test() {
       setIsDialogOpen(true);
       const res = await edgestore.publicFiles.upload({
         file,
-        onProgressChange: (progress) => {
+        onProgressChange: (progress: any) => {
           setProgress(progress);
           if (progress === 100) {
             setIsDialogOpen(false);
@@ -45,8 +45,12 @@ export default function Test() {
     <div className="">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="rounded-2xl" onClick={() => setIsDialogOpen(true)}>
-          <PlusCircleIcon></PlusCircleIcon>
+          <Button
+            variant="outline"
+            className="rounded-2xl"
+            onClick={() => setIsDialogOpen(true)}
+          >
+            <PlusCircleIcon></PlusCircleIcon>
           </Button>
         </DialogTrigger>
         {isSmallDevice ? (
@@ -67,7 +71,7 @@ export default function Test() {
                 value={file}
                 onChange={(file) => {
                   setFile(file);
-                  setProgress(0); 
+                  setProgress(0);
                 }}
               />
               <Progress value={progress}></Progress>
@@ -96,10 +100,10 @@ export default function Test() {
                 value={file}
                 onChange={(file) => {
                   setFile(file);
-                  setProgress(0); 
+                  setProgress(0);
                 }}
               />
-              <Progress className="w-[320px]"  value={progress}></Progress>
+              <Progress className="w-[320px]" value={progress}></Progress>
               <div className="pt-2">
                 <Button onClick={handleSaveClick} className="w-[320px]">
                   Save
