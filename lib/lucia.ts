@@ -58,7 +58,8 @@ export const getUser = async () => {
         prevHis:true,
         medHis:true,
         createdAt:true,
-        updatedAt:true
+        updatedAt:true,
+        imageUrl:true,
       },
     });
     return dbUser;

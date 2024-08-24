@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { Toaster } from "sonner";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header></Header>
-        {children}
+        <EdgeStoreProvider>{children}</EdgeStoreProvider>
         <Footer></Footer>
         <Toaster richColors></Toaster>
       </body>

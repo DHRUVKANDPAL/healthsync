@@ -27,6 +27,7 @@ model Patient {
   address         String
   emergencycontact String?
   prevHis          String?
+  imageUrl         String?
   isVerified Boolean? @default(false)
   medHis          MedicalHistory[]
   session         PatientSession[]
@@ -35,10 +36,10 @@ model Patient {
 }
 model MedicalHistory{
   id        String   @id
-  medId    String
+  userId    String
   condition String
   treatmentdetails String?
-  patient Patient@relation(fields: [medId], references: [id])
+  patient Patient@relation(fields: [userId], references: [id])
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -78,19 +79,24 @@ model Hospital{
   isVerified Boolean @default(false)
   hospitaldep Department[]
   session HospitalSession[]
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
 }
 model Department{
   id              String   @id @default(cuid())
-  hospitalid String
+  userId String
   hod String
   name String
   noOfDoctors String
   doctorsAvailable String
-  hospital Hospital @relation(fields: [hospitalid], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id])
+  
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
 }
 model HospitalSession {
   id        String   @id
-  hId    String
+  userId    String
   expiresAt DateTime
-  hospital Hospital @relation(fields: [hId], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id])
 }
