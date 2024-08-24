@@ -79,8 +79,16 @@ model Hospital{
   isVerified Boolean @default(false)
   hospitaldep Department[]
   session HospitalSession[]
+  room Room[]
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
+}
+model Room{
+  id              String   @id @default(cuid())
+  userId String
+  isAvailabel Boolean @default(false)
+  Bookedby String?
+  hospital Hospital @relation(fields: [userId], references: [id])
 }
 model Department{
   id              String   @id @default(cuid())
