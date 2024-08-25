@@ -124,7 +124,7 @@ export default function Interactive({ data }: InteractiveProps) {
       className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-900 dark:text-slate-100"
     >
       <ChartStyle id={id} config={chartConfig} />
-      <CardHeader className="bg-gradient-to-r from-teal-500 to-blue-500 text-white dark:from-blue-800 dark:to-slate-800  rounded-t-lg pb-4">
+      <CardHeader className="bg-gradient-to-r from-teal-500 to-blue-500 text-white dark:from-blue-950 dark:to-slate-800  rounded-t-lg pb-4">
         <div className="grid gap-1">
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-6 w-6" />

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const HospitalDashboard = ({ params }: { params: { id: string } }) => {
-   const [userExists, setUserExists] = useState<boolean | null>(null);
+  const [userExists, setUserExists] = useState<boolean | null>(null);
   const router = useRouter();
   const id = params.id;
   const [userData, setUserData] = useState<any>(null);
@@ -43,7 +43,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
 
   if (userExists === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
@@ -51,8 +51,10 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   console.log(userData);
   return (
     <>
-    <div className="font-2xl font-extrabold">Hospital Dashboard</div>
-    <Button onClick={handleLogout}>Logout</Button>
+      <div className="font-2xl font-extrabold bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+        Hospital Dashboard
+      </div>
+      <Button onClick={handleLogout}>Logout</Button>
     </>
   );
 };

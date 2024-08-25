@@ -50,7 +50,7 @@ const testimonials = [
 const Testimonial = () => {
   return (
     <>
-      <h2 className="text-4xl font-bold text-center text-teal-950 dark:text-teal-100 my-4 mt-10 transition-colors duration-300">
+      <h2 className="text-4xl font-bold text-center text-teal-950 dark:text-teal-100 my-4 mt-32 transition-colors duration-300">
         What Our Users Say
       </h2>
       <p className="text-xl text-center text-teal-700 dark:text-teal-300 mb-12 transition-colors duration-300">

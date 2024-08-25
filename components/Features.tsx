@@ -18,7 +18,7 @@ const FeatureCard = ({
   title: any;
   description: any;
 }) => (
-  <div className="bg-white bg-opacity-90 dark:bg-slate-800 dark:bg-opacity-80 rounded-lg shadow-md p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm">
+  <div className="bg-white bg-opacity-90 dark:bg-slate-900 dark:bg-opacity-80 rounded-lg shadow-md p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm">
     <div className="text-teal-600 dark:text-teal-400 mb-4">{icon}</div>
     <h3 className="text-xl font-semibold text-blue-900 dark:text-slate-100 mb-2">
       {title}
@@ -76,9 +76,9 @@ const Features = () => {
         width={1227}
         height={629}
       />
-      <div className="absolute inset-0 bg-blue-900 bg-opacity-70 dark:bg-slate-900 dark:bg-opacity-80"></div>
+      <div className="absolute inset-0 bg-blue-900 bg-opacity-70 dark:bg-slate-950 dark:bg-opacity-80"></div>
       <div className="relative max-w-6xl mx-auto z-10">
-        <h2 className="text-4xl font-bold text-center text-white mb-12 dark:text-slate-100">
+        <h2 className="text-4xl font-bold text-center text-white mb-12 dark:text-teal-100">
           Our Features
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

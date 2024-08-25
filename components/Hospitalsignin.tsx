@@ -25,11 +25,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PlusCircleIcon } from "lucide-react";
 import { hospitalSignIn } from "@/app/hospital-auth/authhos.actions";
-export const HospitalSigninSchema = z
-  .object({
-    uniqueIdToLogin:z.string(),
-    password: z.string().min(6),
-  })
+export const HospitalSigninSchema = z.object({
+  uniqueIdToLogin: z.string(),
+  password: z.string().min(6),
+});
 const Hospitalsignin = () => {
   const router = useRouter();
   const form = useForm<z.infer<typeof HospitalSigninSchema>>({
@@ -52,7 +51,10 @@ const Hospitalsignin = () => {
   return (
     <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
       <CardHeader>
-        <CardTitle><span>Hospital Login</span> <PlusCircleIcon className="inline-block font-extrabold w-7"></PlusCircleIcon></CardTitle>
+        <CardTitle>
+          <span>Hospital Login</span>{" "}
+          <PlusCircleIcon className="inline-block font-extrabold w-7"></PlusCircleIcon>
+        </CardTitle>
         <CardDescription>Login in here.</CardDescription>
       </CardHeader>
       <CardContent className="">
@@ -62,7 +64,7 @@ const Hospitalsignin = () => {
               control={form.control}
               name="uniqueIdToLogin"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Unique Id to Login </FormLabel>
                   <FormControl>
                     <Input placeholder="******" type="text" {...field} />
@@ -84,7 +86,12 @@ const Hospitalsignin = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Submit</Button>
+            <Button
+              type="submit"
+              className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>
@@ -93,8 +100,3 @@ const Hospitalsignin = () => {
 };
 
 export default Hospitalsignin;
-
-
-
-
-

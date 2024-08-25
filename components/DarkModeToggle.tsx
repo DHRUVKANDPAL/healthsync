@@ -27,9 +27,9 @@ const DarkModeToggle: React.FC = () => {
       aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
     >
       {darkMode ? (
-        <FaSun className="w-6 h-6 text-yellow-400" />
+        <FaSun className="w-4 h-4 text-yellow-400" />
       ) : (
-        <FaMoon className="w-6 h-6 text-gray-800" />
+        <FaMoon className="w-4 h-4 text-teal-700" />
       )}
     </button>
   );

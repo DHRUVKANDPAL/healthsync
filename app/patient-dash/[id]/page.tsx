@@ -24,9 +24,9 @@ interface PatientData {
   createdAt: string;
   updatedAt: string;
   medHis: any[];
-  imageUrl?:string;
+  imageUrl?: string;
 }
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 const PatientDashboard = ({ params }: { params: { id: string } }) => {
   const [userExists, setUserExists] = useState<boolean | null>(null);
   const router = useRouter();
@@ -65,7 +65,7 @@ const PatientDashboard = ({ params }: { params: { id: string } }) => {
 
   if (userExists === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
@@ -73,8 +73,10 @@ const PatientDashboard = ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-    <PatientImageEdit id={id}></PatientImageEdit>
-    <PatientDashboardContent userData={userData} handleLogout={handleLogout} />
+      <PatientDashboardContent
+        userData={userData}
+        handleLogout={handleLogout}
+      />
     </>
   );
 };

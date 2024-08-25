@@ -50,7 +50,7 @@ const faqItems = [
 const Faq = () => {
   return (
     <section className="faq-section my-8">
-      <h2 className="text-2xl font-bold text-center mb-6 text-teal-900 dark:text-teal-100 transition-colors duration-300">
+      <h2 className="text-2xl font-bold text-center mb-6 text-teal-900 dark:text-teal-100 transition-colors duration-300 mt-20">
         Frequently Asked Questions
       </h2>
       <Accordion type="single" collapsible className="w-full">

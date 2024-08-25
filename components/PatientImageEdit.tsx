@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { imageEditPatient } from "@/app/patient-auth/auth.actions";
-import { PlusCircleIcon } from "lucide-react";
-import {  useRouter } from "next/navigation";
-
+import { Edit3 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PatientImageEdit({ id }: { id: string }) {
   const [file, setFile] = useState<File>();
@@ -42,7 +41,7 @@ export default function PatientImageEdit({ id }: { id: string }) {
 
           setIsDialogOpen(false);
 
-          location.reload()
+          location.reload();
         } else {
           console.error("Failed to update patient:", result.error);
           // Handle error (e.g., show error message to user)
@@ -55,11 +54,15 @@ export default function PatientImageEdit({ id }: { id: string }) {
   };
 
   return (
-    <div className="">
+    <div className="absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" onClick={() => setIsDialogOpen(true)}>
-            <PlusCircleIcon></PlusCircleIcon>
+          <Button
+            variant="outline"
+            onClick={() => setIsDialogOpen(true)}
+            className="rounded-full w-12 h-12 bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-lg flex items-center justify-center"
+          >
+            <Edit3 size={20} className="text-gray-600" />
           </Button>
         </DialogTrigger>
         {isSmallDevice ? (
@@ -112,9 +115,15 @@ export default function PatientImageEdit({ id }: { id: string }) {
                   setProgress(0);
                 }}
               />
-              <Progress className="w-[320px]" value={progress}></Progress>
+              <Progress
+                className="w-[320px] dark:bg-slate-700"
+                value={progress}
+              ></Progress>
               <div className="pt-2">
-                <Button onClick={handleSaveClick} className="w-[320px]">
+                <Button
+                  onClick={handleSaveClick}
+                  className="w-[320px] dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100"
+                >
                   Save
                 </Button>
               </div>

@@ -1,7 +1,19 @@
-// components/PatientDashboardContent.tsx
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import PatientImageEdit from "@/components/PatientImageEdit";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Activity,
+  AlertCircle,
+  User,
+  Calendar,
+  Droplet,
+  CreditCard,
+  Heart,
+} from "lucide-react";
 
 interface PatientData {
   id: string;
@@ -18,7 +30,7 @@ interface PatientData {
   prevHis: string;
   createdAt: string;
   updatedAt: string;
-  imageUrl?:string;
+  imageUrl?: string;
   medHis: any[];
 }
 
@@ -34,75 +46,109 @@ const PatientDashboardContent: React.FC<PatientDashboardContentProps> = ({
   if (!userData) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 sm:p-6">
-          <h1 className="text-2xl sm:text-3xl font-bold">Patient Dashboard</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 dark:bg-gradient-to-r dark:from-gray-950 dark:via-gray-900 dark:to-slate-950">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900 shadow-2xl rounded-3xl overflow-hidden transition-all duration-300">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-gray-900/20 dark:to-slate-900/20 text-white p-8">
+          <h1 className="text-4xl font-bold">Patient Dashboard</h1>
         </div>
-        <div className="p-4 sm:p-6">
-          <div className="flex flex-col lg:flex-row">
-            <div className="lg:w-1/3 mb-6 lg:mb-0">
-              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gray-300 rounded-full overflow-hidden shadow-lg mb-4">
-                {
-                  userData?.imageUrl && <Image 
-                  src={`${userData.imageUrl}`}
+        <div className="p-8 bg-gray-50 dark:bg-gray-800">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-12">
+            <div className="relative">
+              <div className="w-48 h-48 rounded-full overflow-hidden shadow-lg border-4 border-white dark:border-indigo-500 transition-all duration-300">
+                <Image
+                  src={userData.imageUrl || "https://via.placeholder.com/150"}
                   alt={userData.name}
-                  width={160}
-                  height={160}
-                  className="object-cover w-full h-full"
+                  width={192}
+                  height={192}
+                  className="rounded-full object-cover"
                 />
-                }
-                {
-                  !userData?.imageUrl && <Image
-                  src={`https://via.placeholder.com/150`}
-                  alt={userData.name}
-                  width={160}
-                  height={160}
-                  className="object-cover w-full h-full"
-                />
-                }
               </div>
-              <h2 className="text-xl sm:text-2xl font-semibold text-center text-gray-800">
+              <PatientImageEdit id={userData.id} />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-2">
                 {userData.name}
               </h2>
-              <p className="text-center text-gray-600 mt-2">{userData.email}</p>
-            </div>
-            <div className="lg:w-2/3 lg:pl-8">
-              <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-indigo-600 border-b pb-2">
-                Patient Information
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <InfoItem label="Gender" value={userData.gender} />
-                <InfoItem label="Date of Birth" value={userData.dob} />
-                <InfoItem label="Blood Group" value={userData.bloodgroup} />
-                <InfoItem label="Aadhar Number" value={userData.aadharno} />
-                <InfoItem label="Contact Number" value={userData.contactno} />
-                <InfoItem
-                  label="Alternate Contact"
-                  value={userData.alternatecontactno}
-                />
-                <InfoItem
-                  label="Emergency Contact"
-                  value={userData.emergencycontact}
-                />
-                <InfoItem label="Previous History" value={userData.prevHis} />
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <span className="flex items-center gap-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-2 rounded-full text-sm">
+                  <Mail size={16} /> {userData.email}
+                </span>
+                <span className="flex items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-4 py-2 rounded-full text-sm">
+                  <Phone size={16} /> {userData.contactno}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <Section
+                  title="Personal Information"
+                  icon={<User size={24} className="text-indigo-500" />}
+                >
+                  <InfoItem
+                    label="Gender"
+                    value={userData.gender}
+                    icon={<User size={16} />}
+                  />
+                  <InfoItem
+                    label="Date of Birth"
+                    value={userData.dob}
+                    icon={<Calendar size={16} />}
+                  />
+                  <InfoItem
+                    label="Blood Group"
+                    value={userData.bloodgroup}
+                    icon={<Droplet size={16} />}
+                  />
+                  <InfoItem
+                    label="Aadhar Number"
+                    value={userData.aadharno}
+                    icon={<CreditCard size={16} />}
+                  />
+                </Section>
+                <Section
+                  title="Emergency Contact"
+                  icon={<AlertCircle size={24} className="text-red-500" />}
+                >
+                  <InfoItem
+                    label="Emergency Contact"
+                    value={userData.emergencycontact}
+                    icon={<Phone size={16} />}
+                  />
+                  <InfoItem
+                    label="Alternate Contact"
+                    value={userData.alternatecontactno}
+                    icon={<Phone size={16} />}
+                  />
+                  <Button className="mt-4 bg-green-500 hover:bg-green-600 text-white transition duration-300 ease-in-out transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-500">
+                    Add Emergency Contact
+                  </Button>
+                </Section>
+              </div>
+              <Section
+                title="Additional Information"
+                icon={<Heart size={24} className="text-pink-500" />}
+                className="mt-8"
+              >
                 <InfoItem
                   label="Address"
                   value={userData.address}
-                  className="sm:col-span-2"
+                  icon={<MapPin size={16} />}
                 />
-              </div>
+                <InfoItem
+                  label="Previous History"
+                  value={userData.prevHis}
+                  icon={<Activity size={16} />}
+                />
+              </Section>
             </div>
           </div>
         </div>
-        <div className="p-4 sm:p-6 bg-gray-50 border-t flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="p-6 bg-gray-100 dark:bg-gray-900 border-t dark:border-gray-800 flex justify-between items-center">
           <Button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white transition duration-300 ease-in-out transform hover:scale-105"
+            className="bg-red-500 hover:bg-red-600 text-white transition duration-300 ease-in-out transform hover:scale-105 dark:bg-red-600 dark:hover:bg-red-700"
           >
             Logout
           </Button>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Last updated: {new Date(userData.updatedAt).toLocaleString()}
           </p>
         </div>
@@ -111,20 +157,47 @@ const PatientDashboardContent: React.FC<PatientDashboardContentProps> = ({
   );
 };
 
+const Section = ({
+  title,
+  children,
+  className = "",
+  icon,
+}: {
+  title: any;
+  children: any;
+  className?: any;
+  icon: any;
+}) => (
+  <div
+    className={`bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md transition-all duration-300 ${className}`}
+  >
+    <h3 className="text-xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400 border-b border-gray-200 dark:border-gray-700 pb-2 flex items-center gap-2">
+      {icon}
+      {title}
+    </h3>
+    <div className="space-y-4">{children}</div>
+  </div>
+);
+
 const InfoItem = ({
   label,
   value,
-  className = "",
+  icon,
 }: {
   label: string;
   value: string;
-  className?: string;
+  icon: React.ReactNode;
 }) => (
-  <div
-    className={`bg-white p-3 sm:p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out ${className}`}
-  >
-    <p className="text-sm font-medium text-gray-500">{label}</p>
-    <p className="mt-1 sm:mt-2 text-gray-800">{value}</p>
+  <div className="flex items-start">
+    <span className="mr-3 mt-1 p-2 bg-indigo-100 dark:bg-indigo-900 rounded-full text-indigo-600 dark:text-indigo-400">
+      {icon}
+    </span>
+    <div>
+      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        {label}
+      </p>
+      <p className="mt-1 text-gray-800 dark:text-gray-200">{value}</p>
+    </div>
   </div>
 );
 

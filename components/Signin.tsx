@@ -25,11 +25,10 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "@/app/patient-auth/auth.actions";
-export const SigninSchema = z
-  .object({
-    aadharno: z.string().length(12,"This is not a valid Aadhar no"),
-    password: z.string().min(6),
-  })
+export const SigninSchema = z.object({
+  aadharno: z.string().length(12, "This is not a valid Aadhar no"),
+  password: z.string().min(6),
+});
 const Signin = () => {
   const router = useRouter();
   const form = useForm<z.infer<typeof SigninSchema>>({
@@ -62,7 +61,7 @@ const Signin = () => {
               control={form.control}
               name="aadharno"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Aadhar no</FormLabel>
                   <FormControl>
                     <Input placeholder="123456784321" type="text" {...field} />
@@ -84,7 +83,12 @@ const Signin = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Submit</Button>
+            <Button
+              type="submit"
+              className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>

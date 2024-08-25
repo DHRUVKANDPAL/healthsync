@@ -38,9 +38,9 @@ export const SignUpSchema = z
     username: z.string().min(2).max(50),
     gender: z.string(),
     dob: z.string(),
-    aadharno: z.string().length(12,"This is not a valid Aadhar no"),
+    aadharno: z.string().length(12, "This is not a valid Aadhar no"),
     bloodgroup: z.string(),
-    contactno: z.string().length(10,"This is not a valid Contact no"),
+    contactno: z.string().length(10, "This is not a valid Contact no"),
     alternatecontactno: z.string(),
     address: z.string(),
     emregencycontact: z.string(),
@@ -87,12 +87,15 @@ const Signup = () => {
       </CardHeader>
       <CardContent className="">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:grid grid-cols-2 gap-4 md:space-y-0">
-            <FormField 
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-3 md:grid grid-cols-2 gap-4 md:space-y-0"
+          >
+            <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Username </FormLabel>
                   <FormControl>
                     <Input placeholder="Suraj" type="text" {...field} />
@@ -101,7 +104,7 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={form.control}
               name="dob"
               render={({ field }) => (
@@ -206,7 +209,11 @@ const Signup = () => {
                 <FormItem className="col-span-2">
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="Rajiv Chowk , New Delhi , India" type="text" {...field} />
+                    <Input
+                      placeholder="Rajiv Chowk , New Delhi , India"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -294,7 +301,12 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="col-span-2">Submit</Button>
+            <Button
+              type="submit"
+              className="col-span-2 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>

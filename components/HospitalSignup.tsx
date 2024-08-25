@@ -28,22 +28,22 @@ import { toast } from "sonner";
 export const HospitalSignUpSchema = z
   .object({
     name: z.string().min(2).max(50),
-    licence:z.string(),
-    estyear:z.coerce.number(),
-    website:z.string(),
-    contactNo:z.string(),
-    alternateContactNo:z.string(),
-    email:z.string().email(),
-    address:z.string(),
-    city:z.string(),
-    state:z.string(),
-    zipcode:z.string(),
-    noOfBeds:z.coerce.number(),
-    noOfOpds:z.coerce.number(),
-    noOfIcu:z.coerce.number(),
-    noOfLabs:z.coerce.number(),
-    noOfDoctorsRegistered:z.coerce.number(),
-    idToLogin:z.string(),
+    licence: z.string(),
+    estyear: z.coerce.number(),
+    website: z.string(),
+    contactNo: z.string(),
+    alternateContactNo: z.string(),
+    email: z.string().email(),
+    address: z.string(),
+    city: z.string(),
+    state: z.string(),
+    zipcode: z.string(),
+    noOfBeds: z.coerce.number(),
+    noOfOpds: z.coerce.number(),
+    noOfIcu: z.coerce.number(),
+    noOfLabs: z.coerce.number(),
+    noOfDoctorsRegistered: z.coerce.number(),
+    idToLogin: z.string(),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
   })
@@ -55,12 +55,10 @@ const HospitalSignUp = () => {
   const router = useRouter();
   const form = useForm<z.infer<typeof HospitalSignUpSchema>>({
     resolver: zodResolver(HospitalSignUpSchema),
-    defaultValues: {
-      
-    },
+    defaultValues: {},
   });
   async function onSubmit(values: z.infer<typeof HospitalSignUpSchema>) {
-    console.log(values)
+    console.log(values);
     const res = await hospitalsignup(values);
     if (res.success) {
       toast.success("Hospital registered successfully");
@@ -77,7 +75,10 @@ const HospitalSignUp = () => {
       </CardHeader>
       <CardContent className="">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:grid md:grid-cols-2 md:space-y-0 gap-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-3 md:grid md:grid-cols-2 md:space-y-0 gap-4"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -85,17 +86,21 @@ const HospitalSignUp = () => {
                 <FormItem className="col-span-2">
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="licence"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Licence no</FormLabel>
                   <FormControl>
                     <Input placeholder="NIN2HFIH" type="text" {...field} />
@@ -108,10 +113,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="estyear"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Established year</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="number" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,10 +130,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="website"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Website</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,10 +147,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="contactNo"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Contact No</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -147,10 +164,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="alternateContactNo"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Alternate Contact No</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,10 +181,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="email" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -176,7 +201,11 @@ const HospitalSignUp = () => {
                 <FormItem className="col-span-2">
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -186,10 +215,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="city"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -199,10 +232,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="state"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>State</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -212,24 +249,32 @@ const HospitalSignUp = () => {
               control={form.control}
               name="zipcode"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>Zipcode</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="noOfBeds"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>No of Beds</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="number" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -239,10 +284,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="noOfOpds"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>No of OPDs</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="number" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -252,10 +301,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="noOfIcu"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>No of ICUs</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="number" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -265,10 +318,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="noOfLabs"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>No of Labs</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="number" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -278,10 +335,14 @@ const HospitalSignUp = () => {
               control={form.control}
               name="noOfDoctorsRegistered"
               render={({ field }) => (
-                <FormItem >
+                <FormItem>
                   <FormLabel>No of Doctors Registered</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="number" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="number"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -294,7 +355,11 @@ const HospitalSignUp = () => {
                 <FormItem className="col-span-2">
                   <FormLabel>Unique Id to Login</FormLabel>
                   <FormControl>
-                    <Input placeholder="Manas Hospital" type="text" {...field} />
+                    <Input
+                      placeholder="Manas Hospital"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -326,7 +391,12 @@ const HospitalSignUp = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full col-span-2">Submit</Button>
+            <Button
+              type="submit"
+              className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>

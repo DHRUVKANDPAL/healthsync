@@ -45,7 +45,7 @@ const Hero = (props: Props) => {
       <Image
         src="https://i.imghippo.com/files/12v761724049730.jpg"
         alt="hero"
-        className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px] transition-opacity duration-300"
+        className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[550px] transition-opacity duration-300"
         width={5184}
         height={3456}
         priority
@@ -55,7 +55,7 @@ const Hero = (props: Props) => {
         <p className="text-sm sm:text-base uppercase tracking-wider mb-2 sm:mb-4 text-teal-900 dark:text-teal-300 transition-colors duration-300">
           CARING FOR LIFE
         </p>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-900 dark:text-teal-100 transition-colors duration-300">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-50  dark:text-teal-100 drop-shadow-[0_3px_3px_rgba(1,1,1,1)]  transition-colors duration-300">
           Leading Our Way in Healthy Life
         </h1>
         {isLoggedIn ? (

@@ -121,7 +121,7 @@ export default function Chartstats() {
       <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-900">
         <CardHeader
           className="bg-gradient-to-r 
-        from-teal-500 to-blue-500 dark:from-blue-800 dark:to-slate-800 text-white rounded-t-lg"
+        from-teal-500 to-blue-500 dark:from-blue-950 dark:to-slate-800 text-white rounded-t-lg"
         >
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-6 w-6" />
