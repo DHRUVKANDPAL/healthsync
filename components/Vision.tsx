@@ -3,17 +3,19 @@ import Image from "next/image";
 
 const Vision = () => {
   return (
-    <section className="bg-gradient-to-r from-blue-50 via-white to-teal-50 py-8 sm:py-24  overflow-hidden">
+    <section className="bg-gradient-to-r from-blue-50 via-white to-teal-50 py-8 sm:py-24 overflow-hidden dark:bg-gradient-to-r dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="lg:flex lg:items-center lg:gap-12 xl:gap-20">
           <div className="lg:w-1/2 mb-12 lg:mb-0 relative z-10">
-            <h2 className="text-3xl sm:text-5xl  font-extrabold mb-6 sm:mb-8 leading-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-600">
+            <h2 className="text-3xl sm:text-5xl font-extrabold mb-6 sm:mb-8 leading-tight">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-400 dark:from-teal-300 dark:to-blue-300">
                 Revolutionizing
               </span>
-              <span className="block text-blue-900 mt-2">Healthcare</span>
+              <span className="block text-blue-900 mt-2 dark:text-slate-100">
+                Healthcare
+              </span>
             </h2>
-            <div className="space-y-4 sm:space-y-6 text-md sm:text-lg  text-gray-700">
+            <div className="space-y-4 sm:space-y-6 text-md sm:text-lg text-gray-700 dark:text-slate-300">
               <p>
                 At HealthSync, we envision a future where healthcare is
                 seamlessly integrated, accessible, and patient-centric. Our
@@ -26,7 +28,7 @@ const Vision = () => {
                 processes from appointments to records, we're enhancing the
                 healthcare experience for everyone.
               </p>
-              <p className="">
+              <p>
                 Our commitment goes beyond convenience. We empower individuals
                 to take charge of their health through informed decisions and
                 easy access to medical information, contributing to better
@@ -34,10 +36,9 @@ const Vision = () => {
               </p>
             </div>
             <div className="mt-8 sm:mt-10 lg:mt-12">
-              {/* Added missing <a> tag */}
               <a
                 href="#"
-                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full text-white bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 transition duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full text-white bg-gradient-to-r from-blue-600 to-teal-600 dark:text-slate-900 dark:bg-gradient-to-r dark:from-teal-400 dark:to-blue-400 hover:from-blue-700 hover:to-teal-700 dark:hover:from-teal-500 dark:hover:to-blue-500 transition duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Explore Our Approach
                 <svg
@@ -55,7 +56,7 @@ const Vision = () => {
             </div>
           </div>
           <div className="lg:w-1/2 relative mt-12 lg:mt-0">
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-300 to-teal-300 rounded-3xl transform rotate-3 scale-105 z-0 opacity-70"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-300 to-teal-300 dark:from-slate-600 dark:to-slate-700 rounded-3xl transform rotate-3 scale-105 z-0 opacity-30 dark:opacity-70"></div>
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl">
               <Image
                 src="https://i.imghippo.com/files/GqGSf1724064367.jpg"
@@ -69,7 +70,7 @@ const Vision = () => {
           </div>
         </div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl max-h-3xl">
-          <div className="w-full h-full border-2 border-blue-200 rounded-full animate-pulse opacity-30"></div>
+          <div className="w-full h-full border-2 border-blue-200 rounded-full animate-pulse opacity-30 dark:border-slate-600"></div>
         </div>
       </div>
     </section>
