@@ -118,8 +118,11 @@ export default function Chartstats() {
           Watch HealthSync Thrive with Numbers That Prove It
         </p>
       </div>
-      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <CardHeader className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-t-lg">
+      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-900">
+        <CardHeader
+          className="bg-gradient-to-r 
+        from-teal-500 to-blue-500 dark:from-blue-800 dark:to-slate-800 text-white rounded-t-lg"
+        >
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-6 w-6" />
             Patient Engagement Over the Last 6 Months
@@ -160,15 +163,15 @@ export default function Chartstats() {
             </ResponsiveContainer>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg pt-4">
+        <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg pt-4 dark:bg-slate-800">
           {/* <div className="flex gap-2 font-medium leading-none">
             Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
           </div> */}
-          <div className="flex items-center gap-2 font-medium text-teal-700">
+          <div className="flex items-center gap-2 font-medium text-teal-700 dark:text-teal-300">
             <Users className="h-5 w-5" />
             Total Engagement: {totalEngagement}
           </div>
-          <div className="flex items-center gap-2 font-medium text-blue-700">
+          <div className="flex items-center gap-2 font-medium text-blue-700 dark:text-slate-300">
             <TrendingUp className="h-5 w-5" />
             Showing total visitors for the last 6 months
           </div>

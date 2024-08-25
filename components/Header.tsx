@@ -8,6 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 import Link from "next/link";
 import Logo from "./Logo";
+import DarkModeToggle from "./DarkModeToggle";
 
 type Props = {};
 
@@ -126,35 +127,40 @@ const Header = (props: Props) => {
   return (
     <>
       <header className="sticky sm:-top-[72px] top-0 z-30">
-        <section className="sm:flex hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white">
+        <section className="sm:flex hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white dark:bg-slate-800 transition-colors duration-300">
           <Logo></Logo>
-          <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs ">
+          <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs">
             <li className="flex items-center justify-center gap-1 sm:gap-4">
-              <FiPhoneCall className="text-teal-500 h-4 w-4 sm:h-6 sm:w-6" />
+              <FiPhoneCall className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
-                <p className="text-teal-700">Emergency</p>
-                <p className="text-teal-500">11111-22222</p>
+                <p className="text-teal-700 dark:text-teal-300">Emergency</p>
+                <p className="text-teal-500 dark:text-teal-400">11111-22222</p>
               </div>
             </li>
             <li className="flex items-center justify-center gap-1 sm:gap-4">
-              <FaRegClock className="text-teal-500 h-4 w-4 sm:h-6 sm:w-6" />
+              <FaRegClock className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
-                <p className="text-teal-700">Work Hour</p>
-                <p className="text-teal-500">24x7</p>
+                <p className="text-teal-700 dark:text-teal-300">Work Hour</p>
+                <p className="text-teal-500 dark:text-teal-400">24x7</p>
               </div>
             </li>
-            <li className="sm:flex  hidden items-center justify-center gap-1 sm:gap-4">
-              <GrLocation className="text-teal-500 h-5 w-5 sm:h-7 sm:w-7" />
+            <li className="sm:flex hidden items-center justify-center gap-1 sm:gap-4">
+              <GrLocation className="text-teal-500 dark:text-teal-400 h-5 w-5 sm:h-7 sm:w-7" />
               <div className="text-center sm:text-left">
-                <p className="text-teal-700">Location</p>
-                <p className="text-teal-500">
+                <p className="text-teal-700 dark:text-teal-300">Location</p>
+                <p className="text-teal-500 dark:text-teal-400">
                   {location ? location : "Fetching location..."}
                 </p>
               </div>
             </li>
+            <li>
+              <div className="absolute top-4 right-4 z-20">
+                <DarkModeToggle />
+              </div>
+            </li>
           </ul>
         </section>
-        <nav className=" bg-blue-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 ">
+        <nav className="bg-blue-900 dark:bg-slate-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 transition-colors duration-300">
           <div className="flex justify-between items-center w-full sm:w-auto">
             <button
               onClick={toggleMenu}
@@ -182,7 +188,7 @@ const Header = (props: Props) => {
                   >
                     <input
                       type="search"
-                      className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
+                      className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
                       placeholder="Search..."
                     />
                   </div>
@@ -194,7 +200,7 @@ const Header = (props: Props) => {
                   </label>
                   <input
                     type="search"
-                    className="bg-blue-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
+                    className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
                     placeholder="Search..."
                   />
                 </div>
@@ -203,39 +209,55 @@ const Header = (props: Props) => {
           </div>
           <div
             ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm md:text-lg bg-blue-900 transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm md:text-lg bg-blue-900 dark:bg-slate-900 transform transition-transform duration-300 ease-in-out ${
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
-            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-6 sm:p-0 leading-[1rem] ">
-              <li className="flex absolute top-8 items-center justify-center gap-1 sm:gap-4 sm:hidden">
-                <GrLocation className="text-teal-500 h-7 w-7 sm:h-7 sm:w-7" />
+            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-6 sm:p-0 leading-[1rem]">
+              <li className="flex absolute top-8 items-center justify-between w-5/6 gap-1 sm:gap-4 sm:hidden">
+                <GrLocation className="text-teal-400 h-7 w-7 sm:h-7 sm:w-7" />
                 <div className="text-center sm:text-left">
-                  <p className="text-teal-500 pb-2">Location</p>
+                  <p className="text-teal-400 pb-2">Location</p>
                   <p className="text-teal-300">
                     {location ? location : "Fetching location..."}
                   </p>
                 </div>
+                <div className="">
+                  <DarkModeToggle />
+                </div>
               </li>
-              <Link href="/." className="hover:underline" onClick={closeMenu}>
+
+              <Link
+                href="/."
+                className="hover:text-teal-300"
+                onClick={closeMenu}
+              >
                 Home
               </Link>
               <a
                 href="#"
-                className="hover:underline sm:text-center"
+                className="hover:text-teal-300 sm:text-center"
                 onClick={closeMenu}
               >
                 Contact Us
               </a>
-              <a href="#" className="hover:underline" onClick={closeMenu}>
+              <a href="#" className="hover:text-teal-300" onClick={closeMenu}>
                 Complaints
               </a>
               {isLoggedIn ? (
                 <>
-                  <a href="#" className="hover:underline" onClick={closeMenu}>
+                  <a
+                    href="#"
+                    className="hover:text-teal-300"
+                    onClick={closeMenu}
+                  >
                     Dashboard
                   </a>
-                  <a href="#" className="hover:underline" onClick={closeMenu}>
+                  <a
+                    href="#"
+                    className="hover:text-teal-300"
+                    onClick={closeMenu}
+                  >
                     Logout
                   </a>
                 </>
@@ -250,10 +272,10 @@ const Header = (props: Props) => {
                       onClick={() => toggleLoginDropdown()}
                     >
                       <div
-                        className="hover:underline flex justify-center items-center "
+                        className="hover:text-teal-300 flex justify-center items-center"
                         onClick={() => toggleLoginDropdown()}
                       >
-                        <p className="text-left w-full ">
+                        <p className="text-left w-full">
                           Login
                           <IoIosArrowDown
                             className={`transform inline transition-transform duration-300 ${
@@ -264,14 +286,14 @@ const Header = (props: Props) => {
                       </div>
                       {isLoginDropdownOpen && (
                         <div
-                          className="absolute top-6 left-0 mt-2 bg-blue-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          className="absolute top-6 left-0 mt-2 bg-slate-700 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
                           onMouseLeave={() => {
                             setIsLoginDropdownOpen(false);
                           }}
                         >
                           <Link
                             href="/patient-auth"
-                            className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-slate-600 dark:hover:bg-slate-700"
                             onClick={() => {
                               closeMenu();
                             }}
@@ -280,7 +302,7 @@ const Header = (props: Props) => {
                           </Link>
                           <Link
                             href="/hospital-auth"
-                            className="block px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-slate-600 dark:hover:bg-slate-700"
                             onClick={() => {
                               closeMenu();
                             }}
@@ -301,7 +323,7 @@ const Header = (props: Props) => {
               }}
             >
               <Logo className="flex-grow sm:hidden flex items-end justify-center"></Logo>
-              <p className=" text-teal-100 mb-4 sm:hidden text-sm flex text-center justify-center ">
+              <p className="text-teal-100 mb-4 sm:hidden text-sm flex text-center justify-center">
                 © 2024 HealthSync. All rights reserved.
               </p>
             </div>

@@ -7,7 +7,7 @@ import Vision from "@/components/Vision";
 
 export default function Home() {
   return (
-    <main className="select-none">
+    <main className="select-none bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <Hero></Hero>
       <Vision></Vision>
       <Features></Features>

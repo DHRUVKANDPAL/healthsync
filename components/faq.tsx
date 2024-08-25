@@ -50,14 +50,22 @@ const faqItems = [
 const Faq = () => {
   return (
     <section className="faq-section my-8">
-      <h2 className="text-2xl font-bold text-center mb-6 text-teal-900">
+      <h2 className="text-2xl font-bold text-center mb-6 text-teal-900 dark:text-teal-100 transition-colors duration-300">
         Frequently Asked Questions
       </h2>
       <Accordion type="single" collapsible className="w-full">
         {faqItems.map((item) => (
-          <AccordionItem key={item.id} value={item.id}>
-            <AccordionTrigger>{item.question}</AccordionTrigger>
-            <AccordionContent>{item.answer}</AccordionContent>
+          <AccordionItem
+            key={item.id}
+            value={item.id}
+            className="border-b border-teal-200 dark:border-slate-700"
+          >
+            <AccordionTrigger className="text-teal-800 dark:text-teal-200 hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300">
+              {item.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-slate-700 dark:text-slate-300 transition-colors duration-300">
+              {item.answer}
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

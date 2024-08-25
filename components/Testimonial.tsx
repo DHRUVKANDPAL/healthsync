@@ -50,10 +50,10 @@ const testimonials = [
 const Testimonial = () => {
   return (
     <>
-      <h2 className="text-4xl font-bold text-center text-teal-950 my-4 mt-10">
+      <h2 className="text-4xl font-bold text-center text-teal-950 dark:text-teal-100 my-4 mt-10 transition-colors duration-300">
         What Our Users Say
       </h2>
-      <p className="text-xl text-center text-teal-700 mb-12">
+      <p className="text-xl text-center text-teal-700 dark:text-teal-300 mb-12 transition-colors duration-300">
         Real experiences from our valued community
       </p>
       <Carousel
@@ -66,13 +66,13 @@ const Testimonial = () => {
           {testimonials.map((testimonial, index) => (
             <CarouselItem key={index} className="sm:basis-1/2 lg:basis-1/3">
               <div className="p-1 w-full">
-                <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 dark:bg-slate-800 dark:border-slate-700">
                   <CardContent className="flex aspect-square items-center justify-center px-4 h-84 md:h-80 w-full">
                     <CardHeader>
-                      <CardTitle className="font-semibold text-lg">
+                      <CardTitle className="font-semibold text-lg dark:text-teal-100">
                         {testimonial.name}
                       </CardTitle>
-                      <CardDescription className="font-medium">
+                      <CardDescription className="font-medium dark:text-slate-300">
                         {testimonial.content}
                       </CardDescription>
                     </CardHeader>

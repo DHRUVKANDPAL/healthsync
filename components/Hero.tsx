@@ -45,21 +45,21 @@ const Hero = (props: Props) => {
       <Image
         src="https://i.imghippo.com/files/12v761724049730.jpg"
         alt="hero"
-        className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px]"
+        className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[500px] transition-opacity duration-300"
         width={5184}
         height={3456}
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/80 to-transparent dark:from-slate-900/80 dark:to-transparent transition-colors duration-300"></div>
       <div className="relative z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
-        <p className="text-sm sm:text-base uppercase tracking-wider mb-2 sm:mb-4 text-teal-800">
+        <p className="text-sm sm:text-base uppercase tracking-wider mb-2 sm:mb-4 text-teal-800 dark:text-teal-300 transition-colors duration-300">
           CARING FOR LIFE
         </p>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-900">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-900 dark:text-teal-100 transition-colors duration-300">
           Leading Our Way in Healthy Life
         </h1>
         {isLoggedIn ? (
-          <button className="bg-teal-600 hover:bg-teal-700 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center gap-2 group">
+          <button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center gap-2 group">
             Dashboard
             <IoIosArrowDown className="transform transition-transform duration-300 group-hover:translate-y-1" />
           </button>
@@ -67,7 +67,7 @@ const Hero = (props: Props) => {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={toggleLoginDropdown}
-              className="bg-teal-600 hover:bg-teal-700 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center justify-between gap-2 group w-48"
+              className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-blue-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center justify-between gap-2 group w-48"
             >
               <span>Login/Register</span>
               {isLoginDropdownOpen ? (
@@ -81,16 +81,16 @@ const Hero = (props: Props) => {
               )}
             </button>
             {isLoginDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-teal-600 rounded-md shadow-lg z-50 overflow-hidden">
+              <div className="absolute top-full left-0 mt-2 w-48 bg-teal-600 dark:bg-teal-700 rounded-md shadow-lg z-50 overflow-hidden">
                 <Link
                   href="/patient-auth"
-                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 transition duration-300"
+                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 dark:hover:bg-teal-600 transition duration-300"
                 >
                   Patient Login
                 </Link>
                 <Link
                   href="/hospital-auth"
-                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 transition duration-300"
+                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 dark:hover:bg-teal-600 transition duration-300"
                 >
                   Hospital Login
                 </Link>

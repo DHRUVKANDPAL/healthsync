@@ -121,10 +121,10 @@ export default function Interactive({ data }: InteractiveProps) {
   return (
     <Card
       data-chart={id}
-      className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300"
+      className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-900 dark:text-slate-100"
     >
       <ChartStyle id={id} config={chartConfig} />
-      <CardHeader className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-t-lg pb-4">
+      <CardHeader className="bg-gradient-to-r from-teal-500 to-blue-500 text-white dark:from-blue-800 dark:to-slate-800  rounded-t-lg pb-4">
         <div className="grid gap-1">
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-6 w-6" />
@@ -136,7 +136,7 @@ export default function Interactive({ data }: InteractiveProps) {
         </div>
         <Select value={activeMonth} onValueChange={setActiveMonth}>
           <SelectTrigger
-            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5 text-blue-950"
+            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5 text-blue-950 dark:text-slate-200 dark:bg-slate-700"
             aria-label="Select a value"
           >
             <SelectValue placeholder="Select month" />
@@ -235,15 +235,15 @@ export default function Interactive({ data }: InteractiveProps) {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg pt-4">
+      <CardFooter className="flex-col items-start gap-2 text-sm bg-gray-50 rounded-b-lg pt-4 dark:bg-slate-800">
         {/* <div className="flex gap-2 font-medium leading-none">
             Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
           </div> */}
-        <div className="flex items-center gap-2 font-medium text-teal-700">
+        <div className="flex items-center gap-2 font-medium text-teal-700 dark:text-teal-300">
           <Users className="h-5 w-5" />
           Total Engagement: {totalEngagement}
         </div>
-        <div className="flex items-center gap-2 font-medium text-blue-700">
+        <div className="flex items-center gap-2 font-medium text-blue-700 dark:text-slate-300">
           <TrendingUp className="h-5 w-5" />
           Showing total visitors for the last 6 months
         </div>
