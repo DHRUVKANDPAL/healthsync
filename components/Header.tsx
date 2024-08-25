@@ -286,14 +286,14 @@ const Header = (props: Props) => {
                       </div>
                       {isLoginDropdownOpen && (
                         <div
-                          className="absolute top-6 left-0 mt-2 bg-slate-700 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          className="absolute top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
                           onMouseLeave={() => {
                             setIsLoginDropdownOpen(false);
                           }}
                         >
                           <Link
                             href="/patient-auth"
-                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-slate-600 dark:hover:bg-slate-700"
+                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
                             onClick={() => {
                               closeMenu();
                             }}
@@ -302,7 +302,7 @@ const Header = (props: Props) => {
                           </Link>
                           <Link
                             href="/hospital-auth"
-                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-slate-600 dark:hover:bg-slate-700"
+                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
                             onClick={() => {
                               closeMenu();
                             }}
