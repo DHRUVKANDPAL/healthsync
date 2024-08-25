@@ -69,10 +69,10 @@ const Testimonial = () => {
                 <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 dark:bg-slate-800 dark:border-slate-700">
                   <CardContent className="flex aspect-square items-center justify-center px-4 h-84 md:h-80 w-full">
                     <CardHeader>
-                      <CardTitle className="font-semibold text-lg dark:text-teal-100">
+                      <CardTitle className="font-semibold text-lg dark:text-teal-100 text-center">
                         {testimonial.name}
                       </CardTitle>
-                      <CardDescription className="font-medium dark:text-slate-300">
+                      <CardDescription className="font-medium dark:text-slate-300 text-justify">
                         {testimonial.content}
                       </CardDescription>
                     </CardHeader>

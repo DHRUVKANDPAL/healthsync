@@ -113,8 +113,8 @@ export default function Chartstats() {
           <div className="absolute hidden md:block bg-teal-600 h-10 w-32 top-0 left-20"></div>
           <div className="absolute hidden md:block bg-sky-500 h-6 w-64 bottom-0 right-20"></div>
         </div> */}
-        <p className="bg-[#ffffff10] p-5 rounded-lg shadow-md">
-          <span className="text-blue-800">Empowering Patient Connections </span>{" "}
+        <p className="p-5 rounded-lg shadow-md">
+          <span className="text-blue-600">Empowering Patient Connections </span>{" "}
           Watch HealthSync Thrive with Numbers That Prove It
         </p>
       </div>
