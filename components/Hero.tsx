@@ -50,7 +50,7 @@ const Hero = (props: Props) => {
         height={3456}
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-700/40 via-transparent to-slate-700/40 dark:from-slate-900/80 dark:to-transparent transition-colors duration-300"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-500/40 via-transparent to-slate-700/40 dark:from-slate-900/80 dark:to-transparent transition-colors duration-300"></div>
       <div className="relative z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
         <p className="text-sm sm:text-base uppercase tracking-wider mb-2 sm:mb-4 text-teal-900 dark:text-teal-300 transition-colors duration-300">
           CARING FOR LIFE
