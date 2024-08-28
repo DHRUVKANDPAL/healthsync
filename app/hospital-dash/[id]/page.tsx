@@ -40,9 +40,9 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       toast.error("Error logging out. Try again!");
     }
   };
-  const handleRooms=async()=>{
+  const handleRooms = async () => {
     router.push(`/hospital-dash/${id}/rooms`);
-  }
+  };
   if (userExists === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -53,11 +53,14 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   console.log(userData);
   return (
     <>
-      <div className="font-2xl font-extrabold bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="font-2xl font-extrabold bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-10">
         Hospital Dashboard
       </div>
-      <Button onClick={handleLogout}>Logout</Button>
-      <Button onClick={handleRooms}>Create Rooms </Button>
+      <div className="px-10 space-x-10">
+        <Button onClick={handleLogout}>Logout</Button>
+        <Button onClick={handleRooms}>Create Rooms </Button>
+      </div>
+      <div className="p-10">No of beds availabel = &nbsp; {userData.bedsAvailable} </div>
     </>
   );
 };
