@@ -10,7 +10,6 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const id = params.id;
   const [userData, setUserData] = useState<any>(null);
-
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -27,10 +26,8 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
         router.push("/hospital-auth");
       }
     };
-
     checkUser();
   }, [id, router]);
-
   const handleLogout = async () => {
     try {
       await hospitalLogout();

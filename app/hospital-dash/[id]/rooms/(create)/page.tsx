@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { useParams, useRouter } from "next/navigation";
 const formSchema = z.object({
   roomno: z.string().min(1),
   typeof: z.string(),
@@ -46,16 +47,17 @@ export default function Rooms() {
       isavailabel: false,
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
-
+  const params = useParams();
+  const { id } = params;
   return (
     <div className="min-h-[500px] w-full max-w-screen-2xl flex justify-center py-10 mx-auto bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
         <CardHeader>
           <CardTitle>
-            <span>Create Room</span>{" "}
+            <span>Create Room</span>{` ${id}`}
           </CardTitle>
           <CardDescription>Create room here.</CardDescription>
         </CardHeader>
