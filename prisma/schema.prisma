@@ -86,6 +86,7 @@ model Hospital{
 model Room{
   id              String   @id @default(cuid())
   userId String
+  roomno String
   isAvailabel Boolean @default(false)
   typeof String //opd icu
   Bookedby String?
