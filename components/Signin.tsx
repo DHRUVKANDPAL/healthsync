@@ -18,13 +18,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "@/app/patient-auth/auth.actions";
+import { Loader2 } from "lucide-react";
 export const SigninSchema = z.object({
   aadharno: z.string().length(12, "This is not a valid Aadhar no"),
   password: z.string().min(6),
@@ -38,15 +39,19 @@ const Signin = () => {
       password: "",
     },
   });
+  const [isPending, startTransition] = useTransition();
+
   async function onSubmit(values: z.infer<typeof SigninSchema>) {
-    console.log(values);
-    const res = await signIn(values);
-    if (res.success) {
-      toast.success("Logged in successfully");
-      router.push(`/patient-dash/${res.id}`);
-    } else {
-      toast.error(res.error);
-    }
+    startTransition(async() => {
+      console.log(values);
+      const res = await signIn(values);
+      if (res.success) {
+        toast.success("Logged in successfully");
+        router.push(`/patient-dash/${res.id}`);
+      } else {
+        toast.error(res.error);
+      }
+    });
   }
   return (
     <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
@@ -84,10 +89,11 @@ const Signin = () => {
               )}
             />
             <Button
+              disabled={isPending}
               type="submit"
               className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              Submit
+              {isPending && <Loader2 className="animate-spin px-1 h-8 w-8"></Loader2>}Submit
             </Button>
           </form>
         </Form>
