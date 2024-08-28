@@ -1,7 +1,7 @@
 "use client";
 import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -40,7 +40,9 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       toast.error("Error logging out. Try again!");
     }
   };
-
+  const handleRooms=async()=>{
+    router.push(`/hospital-dash/${id}/rooms`);
+  }
   if (userExists === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -55,6 +57,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
         Hospital Dashboard
       </div>
       <Button onClick={handleLogout}>Logout</Button>
+      <Button onClick={handleRooms}>Create Rooms </Button>
     </>
   );
 };
