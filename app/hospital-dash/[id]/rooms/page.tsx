@@ -30,9 +30,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Checkbox } from "@/components/ui/checkbox";
 const formSchema = z.object({
   roomno: z.string().min(1),
   typeof: z.string(),
+  isavailabel: z.boolean().default(false).optional(),
 });
 
 export default function Rooms() {
@@ -41,6 +43,7 @@ export default function Rooms() {
     defaultValues: {
       roomno: "",
       typeof: "",
+      isavailabel: false,
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -58,7 +61,7 @@ export default function Rooms() {
         </CardHeader>
         <CardContent className="">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
                 name="roomno"
@@ -66,9 +69,9 @@ export default function Rooms() {
                   <FormItem>
                     <FormLabel>Room no</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input placeholder="A-101" {...field} />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="opacity-70">
                       This is your public display room name.
                     </FormDescription>
                     <FormMessage />
@@ -92,18 +95,42 @@ export default function Rooms() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="ICU">ICU</SelectItem>
-                        <SelectItem value="Single Room">Single Room</SelectItem>
+                        <SelectItem value="OPD">OPD</SelectItem>
                         <SelectItem value="General Ward">
                           General Ward
                         </SelectItem>
-                        <SelectItem value="OPD">OPD</SelectItem>
+                        <SelectItem value="Single Room">Single Room</SelectItem>
+                        <SelectItem value="Shared Room">Shared Room</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <FormField
+                control={form.control}
+                name="isavailabel"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="h-5 w-5"
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Is the room currently Availabel ? 
+                      </FormLabel>
+                      <FormDescription>
+                        You can manage your room status while creating it.
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">Submit</Button>
             </form>
           </Form>
         </CardContent>
