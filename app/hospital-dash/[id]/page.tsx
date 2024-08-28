@@ -72,12 +72,12 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
         <Button onClick={handleLogout}>Logout</Button>
         <Button onClick={handleRooms}>Create Rooms </Button>
       </div>
-      <div className="p-10">No of single beds available = &nbsp; {userData.bedsAvailable} </div>
-      <div className="p-10">No of icu available = &nbsp; {userData.icuAvailable} </div>
-      <div className="p-10">No of opd available = &nbsp; {userData.opdsAvailable} </div>
-      <div className="p-10">No of shared beds available = &nbsp; {userData.sharedAvailable} </div>
-      <div className="p-10">No of general ward available = &nbsp; {userData.generalWardAvailable} </div>
-      <div className="p-10">No of labs available = &nbsp; {userData.labsAvailable} </div>
+      <div className="pt-10 pb-2 pl-2">No of single beds available = &nbsp; {userData.bedsAvailable} </div>
+      <div className="p-2">No of icu available = &nbsp; {userData.icuAvailable} </div>
+      <div className="p-2">No of opd available = &nbsp; {userData.opdsAvailable} </div>
+      <div className="p-2">No of shared beds available = &nbsp; {userData.sharedAvailable} </div>
+      <div className="p-2">No of general ward available = &nbsp; {userData.generalWardAvailable} </div>
+      <div className="p-2">No of labs available = &nbsp; {userData.labsAvailable} </div>
     </>
   );
 };
