@@ -17,13 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { hospitalsignup } from "@/app/hospital-auth/authhos.actions";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export const HospitalSignUpSchema = z
   .object({
@@ -57,15 +58,18 @@ const HospitalSignUp = () => {
     resolver: zodResolver(HospitalSignUpSchema),
     defaultValues: {},
   });
+  const [isPending, startTransition] = useTransition();
   async function onSubmit(values: z.infer<typeof HospitalSignUpSchema>) {
-    console.log(values);
-    const res = await hospitalsignup(values);
-    if (res.success) {
-      toast.success("Hospital registered successfully");
-      router.push(`/hospital-dash/${res.id}`);
-    } else {
-      toast.error(res.error);
-    }
+    startTransition(async() => {
+      console.log(values);
+      const res = await hospitalsignup(values);
+      if (res.success) {
+        toast.success("Hospital registered successfully");
+        router.push(`/hospital-dash/${res.id}`);
+      } else {
+        toast.error(res.error);
+      }
+    });
   }
   return (
     <Card className="w-[300px] sm:w-[430px] md:w-[720px] lg:w-[800px]">
@@ -391,11 +395,11 @@ const HospitalSignUp = () => {
                 </FormItem>
               )}
             />
-            <Button
+            <Button disabled={isPending}
               type="submit"
               className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              Submit
+              {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
             </Button>
           </form>
         </Form>

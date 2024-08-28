@@ -93,7 +93,7 @@ const Signin = () => {
               type="submit"
               className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              {isPending && <Loader2 className="animate-spin px-1 h-8 w-8"></Loader2>}Submit
+              {isPending && <Loader2 className="animate-spin px-1 "></Loader2>}Submit
             </Button>
           </form>
         </Form>

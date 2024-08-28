@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Loader2 } from "lucide-react";
 export const SignUpSchema = z
   .object({
     email: z.string().email("This is not a valid email"),
@@ -70,14 +71,18 @@ const Signup = () => {
       confirmPassword: "",
     },
   });
+
+  const [isPending, startTransition] = useTransition();
   async function onSubmit(values: z.infer<typeof SignUpSchema>) {
-    const res = await signup(values);
-    if (res.success) {
-      toast.success("Account created successfully");
-      router.push(`/patient-dash/${res.id}`);
-    } else {
-      toast.error(res.error);
-    }
+    startTransition(async () => {
+      const res = await signup(values);
+      if (res.success) {
+        toast.success("Account created successfully");
+        router.push(`/patient-dash/${res.id}`);
+      } else {
+        toast.error(res.error);
+      }
+    });
   }
   return (
     <Card className="w-[300px] sm:w-[430px] md:w-[720px] lg:w-[800px]">
@@ -301,11 +306,11 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <Button
+            <Button disabled={isPending}
               type="submit"
               className="col-span-2 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              Submit
+              {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
             </Button>
           </form>
         </Form>
