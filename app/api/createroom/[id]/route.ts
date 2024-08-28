@@ -114,7 +114,7 @@ export async function POST(
       pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
-    else if(values.isavailabel && values.typeof==="Lab"){
+    else if(values.isavailabel && values.typeof==="LAB"){
       const update=await prisma.hospital.update({
         where:{
           id:id,
