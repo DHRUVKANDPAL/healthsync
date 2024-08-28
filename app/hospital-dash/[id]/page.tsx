@@ -1,6 +1,7 @@
 "use client";
 import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
 import { Button } from "@/components/ui/button";
+import { pusherClient } from "@/lib/pusher";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -28,6 +29,20 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
     };
     checkUser();
   }, [id, router]);
+
+  useEffect(() => {
+    
+    
+    pusherClient.subscribe("rooms");
+
+    
+    pusherClient.bind("beds-available", (data: { message: any }) => {
+      setUserData(data.message)
+    });
+
+    return () => pusherClient.unsubscribe("rooms");
+  }, []);
+
   const handleLogout = async () => {
     try {
       await hospitalLogout();
@@ -57,7 +72,12 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
         <Button onClick={handleLogout}>Logout</Button>
         <Button onClick={handleRooms}>Create Rooms </Button>
       </div>
-      <div className="p-10">No of beds availabel = &nbsp; {userData.bedsAvailable} </div>
+      <div className="p-10">No of single beds available = &nbsp; {userData.bedsAvailable} </div>
+      <div className="p-10">No of icu available = &nbsp; {userData.icuAvailable} </div>
+      <div className="p-10">No of opd available = &nbsp; {userData.opdsAvailable} </div>
+      <div className="p-10">No of shared beds available = &nbsp; {userData.sharedAvailable} </div>
+      <div className="p-10">No of general ward available = &nbsp; {userData.generalWardAvailable} </div>
+      <div className="p-10">No of labs available = &nbsp; {userData.labsAvailable} </div>
     </>
   );
 };

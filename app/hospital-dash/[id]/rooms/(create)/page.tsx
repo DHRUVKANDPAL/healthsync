@@ -31,7 +31,8 @@ import {
 } from "@/components/ui/select";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 const formSchema = z.object({
   roomno: z.string().min(1),
   typeof: z.string(),
@@ -39,6 +40,7 @@ const formSchema = z.object({
 });
 
 export default function Rooms() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,6 +51,19 @@ export default function Rooms() {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    const res=await fetch(`/api/createroom/${id}`,{method:'POST',body: JSON.stringify(values)})
+    const data=await res.json()
+    console.log(data)
+    if(data.success){
+      toast.success("Room created successfully")
+      router.push(`/hospital-dash/${id}`)
+      
+    }
+    else{
+      
+      toast.error("Unable to create rooms")
+      router.push(`/hospital-dash/${id}`)
+    }
   }
   const params = useParams();
   const { id } = params;
@@ -98,6 +113,7 @@ export default function Rooms() {
                       <SelectContent>
                         <SelectItem value="ICU">ICU</SelectItem>
                         <SelectItem value="OPD">OPD</SelectItem>
+                        <SelectItem value="LAB">LAB</SelectItem>
                         <SelectItem value="General Ward">
                           General Ward
                         </SelectItem>
@@ -123,7 +139,7 @@ export default function Rooms() {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>
-                        Is the room currently Availabel ? 
+                        Is the room currently Available ? 
                       </FormLabel>
                       <FormDescription>
                         You can manage your room status while creating it.

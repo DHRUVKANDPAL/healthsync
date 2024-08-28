@@ -85,6 +85,8 @@ export const getHospital = async () => {
         icuAvailable: true,
         labsAvailable: true,
         doctorsAvailable: true,
+        sharedAvailable:true,
+        generalWardAvailable:true,
         idToLogin: true,
         isVerified: true,
         hospitaldep: true,

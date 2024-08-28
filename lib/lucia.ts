@@ -60,6 +60,7 @@ export const getUser = async () => {
         createdAt:true,
         updatedAt:true,
         imageUrl:true,
+        
       },
     });
     return dbUser;

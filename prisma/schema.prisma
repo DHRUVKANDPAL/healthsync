@@ -70,11 +70,13 @@ model Hospital{
   noofdoctorsregistered Int
   anyotherdetails String?
   hashedPassword  String?
-  bedsAvailable Int? @default(0)
-  opdsAvailable Int? @default(0)
-  icuAvailable Int? @default(0)
-  labsAvailable Int? @default(0)
-  doctorsAvailable Int? @default(0)
+  bedsAvailable Int? @default(0) //single beds
+  opdsAvailable Int? @default(0) // opds
+  icuAvailable Int? @default(0) //icu
+  labsAvailable Int? @default(0) //labs
+  doctorsAvailable Int? @default(0) //doctors 
+  sharedAvailable Int? @default(0) //sharedbeds
+  generalWardAvailable Int? @default(0)
   idToLogin String @unique
   isVerified Boolean @default(false)
   hospitaldep Department[]
