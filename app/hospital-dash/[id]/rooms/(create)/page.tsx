@@ -165,9 +165,6 @@ export default function Rooms() {
                       <FormControl>
                         <Input placeholder="Ravi Prasad" {...field} />
                       </FormControl>
-                      <FormDescription className="opacity-70">
-                        This is your public display room name.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
