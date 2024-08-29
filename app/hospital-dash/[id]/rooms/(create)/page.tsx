@@ -120,8 +120,6 @@ export default function Rooms() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="ICU">ICU</SelectItem>
-                        <SelectItem value="OPD">OPD</SelectItem>
-                        <SelectItem value="LAB">LAB</SelectItem>
                         <SelectItem value="General Ward">
                           General Ward
                         </SelectItem>

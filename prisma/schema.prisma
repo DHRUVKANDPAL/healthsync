@@ -90,7 +90,7 @@ model Room{
   userId String
   roomno String
   isAvailabel Boolean @default(false)
-  typeof String //opd icu
+  typeof String //icu general ward single room shared room 
   Bookedby String?
   hospital Hospital @relation(fields: [userId], references: [id])
 }

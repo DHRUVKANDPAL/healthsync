@@ -397,7 +397,7 @@ const HospitalSignUp = () => {
             />
             <Button disabled={isPending}
               type="submit"
-              className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              className="col-span-2 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
             </Button>

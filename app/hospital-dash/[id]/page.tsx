@@ -5,6 +5,8 @@ import { pusherClient } from "@/lib/pusher";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { columns } from "./rooms/manage/columns";
+import { DataTable } from "./rooms/manage/data-table";
 
 const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   const [userExists, setUserExists] = useState<boolean | null>(null);
@@ -82,6 +84,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       <div className="p-2">No of shared beds available = &nbsp; {userData.sharedAvailable} </div>
       <div className="p-2">No of general ward available = &nbsp; {userData.generalWardAvailable} </div>
       <div className="p-2">No of labs available = &nbsp; {userData.labsAvailable} </div>
+      {/* <DataTable columns={columns} data={userData.room} /> */}
     </>
   );
 };

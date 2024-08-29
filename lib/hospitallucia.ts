@@ -93,6 +93,7 @@ export const getHospital = async () => {
         session: true,
         createdAt: true,
         updatedAt: true,
+        room:true,
       },
     });
     return dbUser;
