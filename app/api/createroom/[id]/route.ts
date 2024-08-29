@@ -36,7 +36,8 @@ export async function POST(
         roomno:values.roomno,
         isAvailabel:values.isavailabel,
         typeof:values.typeof,
-        userId:id
+        userId:id,
+        Bookedby:values.bookedby,
       }
     })
     if(values.isavailabel && values.typeof==="Single Room"){

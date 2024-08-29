@@ -33,10 +33,13 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { redirect, useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useTransition } from "react";
+import { Loader2 } from "lucide-react";
 const formSchema = z.object({
   roomno: z.string().min(1),
   typeof: z.string(),
   isavailabel: z.boolean().default(false).optional(),
+  bookedby: z.string().optional(),
 });
 
 export default function Rooms() {
@@ -47,32 +50,37 @@ export default function Rooms() {
       roomno: "",
       typeof: "",
       isavailabel: false,
+      bookedby: "",
     },
   });
+  const [isPending, startTransition] = useTransition();
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    const res=await fetch(`/api/createroom/${id}`,{method:'POST',body: JSON.stringify(values)})
-    const data=await res.json()
-    console.log(data)
-    if(data.success){
-      toast.success("Room created successfully")
-      router.push(`/hospital-dash/${id}`)
-      
-    }
-    else{
-      
-      toast.error("Unable to create rooms")
-      router.push(`/hospital-dash/${id}`)
-    }
+    startTransition(async () => {
+      console.log(values);
+      const res = await fetch(`/api/createroom/${id}`, {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        toast.success("Room created successfully");
+        router.push(`/hospital-dash/${id}`);
+      } else {
+        toast.error("Unable to create rooms");
+        router.push(`/hospital-dash/${id}`);
+      }
+    });
   }
   const params = useParams();
   const { id } = params;
+  const watchAvailable = form.watch("isavailabel");
   return (
     <div className="min-h-[500px] w-full max-w-screen-2xl flex justify-center py-10 mx-auto bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
         <CardHeader>
           <CardTitle>
-            <span>Create Room</span>{` ${id}`}
+            <span>Create Room</span>
           </CardTitle>
           <CardDescription>Create room here.</CardDescription>
         </CardHeader>
@@ -138,9 +146,7 @@ export default function Rooms() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Is the room currently Available ? 
-                      </FormLabel>
+                      <FormLabel>Is the room currently Available ?</FormLabel>
                       <FormDescription>
                         You can manage your room status while creating it.
                       </FormDescription>
@@ -148,7 +154,28 @@ export default function Rooms() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">Submit</Button>
+              {
+                <FormField
+                  disabled={watchAvailable}
+                  control={form.control}
+                  name="bookedby"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Booked by</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Ravi Prasad" {...field} />
+                      </FormControl>
+                      <FormDescription className="opacity-70">
+                        This is your public display room name.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              }
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
+              </Button>
             </form>
           </Form>
         </CardContent>

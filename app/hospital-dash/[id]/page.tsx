@@ -55,6 +55,9 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   const handleRooms = async () => {
     router.push(`/hospital-dash/${id}/rooms`);
   };
+  const handleShowRooms = async () => {
+    router.push(`/hospital-dash/${id}/rooms/manage`);
+  };
   if (userExists === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -71,6 +74,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       <div className="px-10 space-x-10">
         <Button onClick={handleLogout}>Logout</Button>
         <Button onClick={handleRooms}>Create Rooms </Button>
+        <Button onClick={handleShowRooms}>Manage Rooms </Button>
       </div>
       <div className="pt-10 pb-2 pl-2">No of single beds available = &nbsp; {userData.bedsAvailable} </div>
       <div className="p-2">No of icu available = &nbsp; {userData.icuAvailable} </div>
