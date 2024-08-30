@@ -21,6 +21,7 @@ export type BedRooms = {
   isAvailabel: string;
   typeof: string;
   bookedby: string;
+  updatedAt: Date;
 };
 
 export const columns: ColumnDef<BedRooms>[] = [
@@ -128,6 +129,33 @@ export const columns: ColumnDef<BedRooms>[] = [
         return <div className="font-medium text-green-500 flex gap-1 items-center drop-shadow-sm"><BookUser className="h-5 w-5 "/>Available</div>
       }
       return <div className=" font-medium text-red-500 flex gap-1 items-center drop-shadow-sm"><TriangleAlert className="h-5 w-5 "/>Unavailable</div>
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Updated
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("updatedAt"));
+      const formattedDate = new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true
+      }).format(date);
+      return <span>{formattedDate}</span>;
     },
   },
   {

@@ -90,6 +90,7 @@ export function DataTable<TData, TValue>({
             <DropdownMenuItem onClick={()=>setfilter("roomno")}>Room no</DropdownMenuItem>
             <DropdownMenuItem onClick={()=>setfilter("bookedby")}>Booked by</DropdownMenuItem>
             <DropdownMenuItem onClick={()=>setfilter("typeof")}>Type of Room</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>setfilter("updatedAt")}>Last Updated</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
