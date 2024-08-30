@@ -63,7 +63,11 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
-  const [filter,setfilter]=useState("Bookedby")
+  const [filter,setfilter]=useState("bookedby")
+  var det;
+  if(filter==="bookedby") det="Booked By "
+  else if(filter=="roomno") det="Room no "
+  else if(filter==="typeof") det="Type of "
   return (
     <div>
       <div className="flex items-center py-4">
@@ -73,12 +77,12 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn(filter)?.setFilterValue(event.target.value)
           }
-          className=" w-5/6"
+          className=" w-full"
         />
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-          <Button>{filter}<Filter className="h-4 w-4"></Filter></Button>
+          <Button>{det}&nbsp;<Filter className="h-4 w-4"></Filter></Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Filter by</DropdownMenuLabel>

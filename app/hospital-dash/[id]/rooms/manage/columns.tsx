@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { BookUser, MoreHorizontal, TriangleAlert, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +20,7 @@ export type BedRooms = {
   roomno: number;
   isAvailabel: string;
   typeof: string;
-  bookedby?: string;
+  bookedby: string;
 };
 
 export const columns: ColumnDef<BedRooms>[] = [
@@ -89,7 +89,7 @@ export const columns: ColumnDef<BedRooms>[] = [
     },
   },
   {
-    accessorKey: "Bookedby",
+    accessorKey: "bookedby",
     header: ({ column }) => {
       return (
         <Button
@@ -100,6 +100,13 @@ export const columns: ColumnDef<BedRooms>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const amount = String(row.getValue("bookedby"))
+      if(amount==="Unbooked"){
+        return <div className="font-medium text-teal-600 drop-shadow-sm">Unbooked</div>
+      }
+      return <div className=" font-medium  flex gap-1 items-center drop-shadow-sm"><User></User>{amount}</div>
     },
   },
   {
@@ -114,6 +121,13 @@ export const columns: ColumnDef<BedRooms>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const amount = String(row.getValue("isAvailabel"))
+      if(amount==="true"){
+        return <div className="font-medium text-green-500 flex gap-1 items-center drop-shadow-sm"><BookUser className="h-5 w-5 "/>Available</div>
+      }
+      return <div className=" font-medium text-red-500 flex gap-1 items-center drop-shadow-sm"><TriangleAlert className="h-5 w-5 "/>Unavailable</div>
     },
   },
   {

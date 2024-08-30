@@ -60,6 +60,7 @@ const ManageRooms = () => {
     );
   }
   console.log(userData);
+  
   return (
     <>
       <div className="px-10 space-x-10">

@@ -37,7 +37,7 @@ export async function POST(
         isAvailabel:values.isavailabel,
         typeof:values.typeof,
         userId:id,
-        Bookedby:values.bookedby,
+        bookedby:values.bookedby,
       }
     })
     if(values.isavailabel && values.typeof==="Single Room"){

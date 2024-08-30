@@ -76,6 +76,14 @@ const config = {
         "poppins-font": ["Poppins", "cursive"],
         "ubuntu-font": ["Ubuntu", "cursive"],
       },
+      // dropShadow: {
+      //   '3xl': '0 35px 35px rgba(0, 128, 0, 0.95)', // Updated to green with 25% opacity
+      //   '4xl': [
+      //     '0 35px 35px rgba(0, 128, 0, 0.25)',       // Updated to green with 25% opacity
+      //     '0 45px 65px rgba(0, 128, 0, 0.15)'        // Updated to green with 15% opacity
+      //   ]
+      // }
+      
     },
   },
   plugins: [require("tailwindcss-animate")],
