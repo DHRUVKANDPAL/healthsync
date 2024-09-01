@@ -36,11 +36,14 @@ const ManageRooms = () => {
     pusherClient.subscribe("rooms");
 
     pusherClient.bind("beds-available",(data: { message: any }) => {
-      if (data.message && Array.isArray(data.message.room)) {
-        setUserData(data.message);
-      }  else {
-        console.error("Unexpected data structure from Pusher:", data);
-      }
+      // if (data.message && Array.isArray(data.message.room)) {
+      //   console.log(data.message)
+      //   setUserData(data.message);
+      // }  else {
+      //   console.error("Unexpected data structure from Pusher:", data);
+      // }
+      
+      setUserData(data.message)
     });
 
     return () => pusherClient.unsubscribe("rooms");
@@ -64,14 +67,17 @@ const ManageRooms = () => {
     );
   }
   
-  console.log(userData)
+  const room=userData.room
+  const sortedData = room.sort((a:any, b:any) => 
+    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
   return (
     <>
       <div className="px-10 space-x-10">
         <Button onClick={handleLogout}>Logout</Button>
       </div>
       <div className="container mx-auto py-10">
-        <DataTable columns={columns} data={userData.room || []} />
+        <DataTable columns={columns} data={sortedData} />
       </div>
     </>
   );

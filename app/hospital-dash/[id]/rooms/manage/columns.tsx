@@ -146,7 +146,7 @@ export const columns: ColumnDef<BedRooms>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Availability Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
