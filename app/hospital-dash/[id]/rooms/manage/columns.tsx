@@ -89,27 +89,7 @@ export const columns: ColumnDef<BedRooms>[] = [
       );
     },
   },
-  {
-    accessorKey: "bookedby",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Booked by
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const amount = String(row.getValue("bookedby"))
-      if(amount==="Unbooked"){
-        return <div className="font-medium text-teal-600 drop-shadow-sm">Unbooked</div>
-      }
-      return <div className=" font-medium  flex gap-1 items-center drop-shadow-sm"><User></User>{amount}</div>
-    },
-  },
+  
   {
     accessorKey: "isAvailabel",
     header: ({ column }) => {
@@ -129,6 +109,27 @@ export const columns: ColumnDef<BedRooms>[] = [
         return <div className="font-medium text-green-500 flex gap-1 items-center drop-shadow-sm"><BookUser className="h-5 w-5 "/>Available</div>
       }
       return <div className=" font-medium text-red-500 flex gap-1 items-center drop-shadow-sm"><TriangleAlert className="h-5 w-5 "/>Unavailable</div>
+    },
+  },
+  {
+    accessorKey: "bookedby",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Booked by
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const amount = String(row.getValue("bookedby"))
+      if(amount==="Unbooked"){
+        return <div className="font-medium text-teal-600 drop-shadow-sm">Unbooked</div>
+      }
+      return <div className=" font-medium  flex gap-1 items-center drop-shadow-sm"><User></User>{amount}</div>
     },
   },
   {

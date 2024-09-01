@@ -55,6 +55,27 @@ const chartConfig = {
     color: "hsl(var(--background))",
   },
 } satisfies ChartConfig;
+
+
+const monthColors = {
+  january: "#2dd4bf",
+  february: "#0f766e",
+  march: "#14b8a6",
+  april: "#115e59",
+  may: "#0d9488",
+  june: "#134e4a",
+  july: "#2dd4bf",
+  august: "#0f766e",
+  september: "#14b8a6",
+  october: "#115e59",
+  november: "#0d9488",
+  december: "#134e4a",
+};
+
+
+
+
+
 export default function Chartstats() {
   const [chartData, setChartData] = useState<any>([]);
 
@@ -97,7 +118,7 @@ export default function Chartstats() {
   const desktopData: InteractData[] = chartData.map((item: ChartData) => ({
     month: item.month.toLowerCase(),
     desktop: item.count,
-    fill: "var(--color-january)",
+    fill: monthColors[item.month.toLowerCase() as keyof typeof monthColors],
   }));
   // console.log(chartData[0].month);
 

@@ -27,14 +27,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Activity, TrendingUp, Users } from "lucide-react";
-const desktopData = [
-  { month: "january", desktop: 186, fill: "var(--color-january)" },
-  { month: "february", desktop: 305, fill: "var(--color-february)" },
-  { month: "march", desktop: 237, fill: "var(--color-march)" },
-  { month: "april", desktop: 173, fill: "var(--color-april)" },
-  { month: "may", desktop: 209, fill: "var(--color-may)" },
-  { month: "june", desktop: 209, fill: "var(--color-june)" },
-];
+// const desktopData = [
+//   { month: "january", desktop: 186, fill: "var(--color-january)" },
+//   { month: "february", desktop: 305, fill: "var(--color-february)" },
+//   { month: "march", desktop: 237, fill: "var(--color-march)" },
+//   { month: "april", desktop: 173, fill: "var(--color-april)" },
+//   { month: "may", desktop: 209, fill: "var(--color-may)" },
+//   { month: "june", desktop: 209, fill: "var(--color-june)" },
+// ];
 
 const chartConfig = {
   visitors: {
@@ -105,6 +105,7 @@ interface InteractiveProps {
 
 export default function Interactive({ data }: InteractiveProps) {
   // data = desktopData;
+  console.log(data)
   const id = "pie-interactive";
   const [activeMonth, setActiveMonth] = React.useState(data[5].month);
 
