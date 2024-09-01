@@ -68,6 +68,7 @@ export function DataTable<TData, TValue>({
   if(filter==="bookedby") det="Booked By "
   else if(filter=="roomno") det="Room no "
   else if(filter==="typeof") det="Type of "
+  if(!table) return <></>
   return (
     <div>
       <div className="flex items-center py-4">
@@ -115,8 +116,8 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {table?.getRowModel().rows?.length ? (
+              table?.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}

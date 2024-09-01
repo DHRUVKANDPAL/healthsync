@@ -35,8 +35,12 @@ const ManageRooms = () => {
   useEffect(() => {
     pusherClient.subscribe("rooms");
 
-    pusherClient.bind("beds-available", (data: { message: any }) => {
-      setUserData(data.message);
+    pusherClient.bind("beds-available",(data: { message: any }) => {
+      if (data.message && Array.isArray(data.message.room)) {
+        setUserData(data.message);
+      }  else {
+        console.error("Unexpected data structure from Pusher:", data);
+      }
     });
 
     return () => pusherClient.unsubscribe("rooms");
@@ -59,15 +63,15 @@ const ManageRooms = () => {
       </div>
     );
   }
-  console.log(userData);
   
+  console.log(userData)
   return (
     <>
       <div className="px-10 space-x-10">
         <Button onClick={handleLogout}>Logout</Button>
       </div>
       <div className="container mx-auto py-10">
-        <DataTable columns={columns} data={userData.room} />
+        <DataTable columns={columns} data={userData.room || []} />
       </div>
     </>
   );

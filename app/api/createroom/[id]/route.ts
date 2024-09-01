@@ -17,13 +17,13 @@ export async function POST(
       headers: { "Content-Type": "application/json" },
     });
   }
+  
   try {
     const values = await req.json();
     console.log(values)
     const existingRooms = await prisma.room.findFirst({
       where: {
         roomno: values.roomno,
-        userId: id,
       },
     });
     if (existingRooms) {

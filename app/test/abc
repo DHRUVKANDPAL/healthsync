@@ -89,7 +89,7 @@ model Hospital{
 model Room{
   id              String   @id @default(cuid())
   userId String
-  roomno String   
+  roomno String
   isAvailabel Boolean @default(false)
   typeof String //icu general ward single room shared room 
   bookedby String? @default("Unbooked")
@@ -101,8 +101,6 @@ model Department{
   userId String
   hod String
   name String
-  noOfDoctors String
-  doctorsAvailable String
   doctor Doctor[]
   hospital Hospital @relation(fields: [userId], references: [id])
   createdAt       DateTime? @default(now())

@@ -67,7 +67,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       </div>
     );
   }
-  console.log(userData);
+  // console.log(userData);
   return (
     <>
       <div className="font-2xl font-extrabold bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-10">
