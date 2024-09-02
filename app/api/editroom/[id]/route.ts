@@ -79,7 +79,7 @@ export async function POST(
         },
       });
       console.log("here")
-      pusherServer.trigger("rooms", "beds-available", { message: update });
+      await pusherServer.trigger("rooms", "beds-available", { message: update });
     } else if (values.typeof === "Shared Room") {
       const update = await prisma.hospital.update({
         where: {
@@ -98,7 +98,7 @@ export async function POST(
       });
       
       console.log("Here shared ")
-      pusherServer.trigger("rooms", "beds-available", { message: update });
+      await pusherServer.trigger("rooms", "beds-available", { message: update });
     } else if ( values.typeof === "ICU") {
       const update = await prisma.hospital.update({
         where: {
@@ -115,7 +115,7 @@ export async function POST(
         },
       });
 
-      pusherServer.trigger("rooms", "beds-available", { message: update });
+      await pusherServer.trigger("rooms", "beds-available", { message: update });
     } else if ( values.typeof === "OPD") {
       const update = await prisma.hospital.update({
         where: {
@@ -132,7 +132,7 @@ export async function POST(
         },
       });
 
-      pusherServer.trigger("rooms", "beds-available", { message: update });
+      await pusherServer.trigger("rooms", "beds-available", { message: update });
     } else if ( values.typeof === "General Ward") {
       const update = await prisma.hospital.update({
         where: {
@@ -149,7 +149,7 @@ export async function POST(
         },
       });
 
-      pusherServer.trigger("rooms", "beds-available", { message: update });
+      await pusherServer.trigger("rooms", "beds-available", { message: update });
     } else if ( values.typeof === "LAB") {
       const update = await prisma.hospital.update({
         where: {
@@ -166,7 +166,7 @@ export async function POST(
         },
       });
 
-      pusherServer.trigger("rooms", "beds-available", { message: update });
+      await pusherServer.trigger("rooms", "beds-available", { message: update });
     }
     return new Response(JSON.stringify({ success: true }), {
       headers: { "Content-Type": "application/json" },

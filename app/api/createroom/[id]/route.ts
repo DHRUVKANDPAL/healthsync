@@ -52,7 +52,7 @@ export async function POST(
         }
       })
       
-      pusherServer.trigger("rooms","beds-available",{message:update})
+      await pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
     else if(values.isavailabel && values.typeof==="Shared Room"){
@@ -67,7 +67,7 @@ export async function POST(
         }
       })
       
-      pusherServer.trigger("rooms","beds-available",{message:update})
+      await pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
     else if(values.isavailabel && values.typeof==="ICU"){
@@ -82,7 +82,7 @@ export async function POST(
         }
       })
       
-      pusherServer.trigger("rooms","beds-available",{message:update})
+      await pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
     else if(values.isavailabel && values.typeof==="OPD"){
@@ -97,7 +97,7 @@ export async function POST(
         }
       })
       
-      pusherServer.trigger("rooms","beds-available",{message:update})
+      await pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
     else if(values.isavailabel && values.typeof==="General Ward"){
@@ -112,7 +112,7 @@ export async function POST(
         }
       })
       
-      pusherServer.trigger("rooms","beds-available",{message:update})
+      await pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
     else if(values.isavailabel && values.typeof==="LAB"){
@@ -127,7 +127,7 @@ export async function POST(
         }
       })
       
-      pusherServer.trigger("rooms","beds-available",{message:update})
+      await pusherServer.trigger("rooms","beds-available",{message:update})
       
     }
     return new Response(JSON.stringify({ success: true }), {
