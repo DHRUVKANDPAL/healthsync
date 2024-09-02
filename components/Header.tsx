@@ -154,7 +154,7 @@ const Header = (props: Props) => {
               </div>
             </li>
             <li>
-              <div className="absolute top-5 right-5 z-20">
+              <div className="fixed top-5 right-5 z-20">
                 <DarkModeToggle />
               </div>
             </li>
@@ -209,7 +209,7 @@ const Header = (props: Props) => {
           </div>
           <div
             ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm md:text-lg bg-blue-900 dark:bg-slate-900 transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm lg:text-lg bg-blue-900 dark:bg-slate-900 transform transition-transform duration-300 ease-in-out ${
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >

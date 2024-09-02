@@ -58,9 +58,9 @@ const Faq = () => {
           <AccordionItem
             key={item.id}
             value={item.id}
-            className="border-b border-teal-200 dark:border-slate-700"
+            className="border-b border-slate-300 dark:border-slate-700"
           >
-            <AccordionTrigger className="text-teal-800 dark:text-teal-200 hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300">
+            <AccordionTrigger className="dark:text-teal-200 dark:hover:text-teal-300 transition-colors duration-300">
               {item.question}
             </AccordionTrigger>
             <AccordionContent className="text-slate-700 dark:text-slate-300 transition-colors duration-300">

@@ -85,7 +85,7 @@ const Signup = () => {
     });
   }
   return (
-    <Card className="w-[300px] sm:w-[430px] md:w-[720px] lg:w-[800px]">
+    <Card className="w-[300px] sm:w-[430px] md:w-[720px] lg:w-[800px] dark:bg-[rgba(31,41,55,0.5)] backdrop-blur-3xl ">
       <CardHeader>
         <CardTitle>Sign up as Patient</CardTitle>
         <CardDescription>Sign up here.</CardDescription>
@@ -306,11 +306,13 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={isPending}
+            <Button
+              disabled={isPending}
               type="submit"
-              className="col-span-2 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              className="col-span-2 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
             >
-              {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
+              {isPending && <Loader2 className="animate-spin px-1"></Loader2>}
+              Submit
             </Button>
           </form>
         </Form>

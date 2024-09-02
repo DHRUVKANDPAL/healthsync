@@ -63,15 +63,15 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
-  const [filter,setfilter]=useState("bookedby")
+  const [filter, setfilter] = useState("bookedby");
   var det;
-  if(filter==="bookedby") det="Booked By "
-  else if(filter=="roomno") det="Room no "
-  else if(filter==="typeof") det="Type of "
-  if(!table) return <></>
+  if (filter === "bookedby") det = "Booked By ";
+  else if (filter == "roomno") det = "Room no ";
+  else if (filter === "typeof") det = "Type of ";
+  if (!table) return <></>;
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Search according to filter"
           value={(table.getColumn(filter)?.getFilterValue() as string) ?? ""}
@@ -80,18 +80,28 @@ export function DataTable<TData, TValue>({
           }
           className=" w-full"
         />
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-          <Button>{det}&nbsp;<Filter className="h-4 w-4"></Filter></Button>
+            <Button className="dark:bg-slate-700 dark:hover:bg-slate-800 transition-all ease-in-out duration-300 dark:text-slate-100">
+              {det}&nbsp;<Filter className="h-4 w-4 "></Filter>
+            </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="">
             <DropdownMenuLabel>Filter by</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={()=>setfilter("roomno")}>Room no</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>setfilter("bookedby")}>Booked by</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>setfilter("typeof")}>Type of Room</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>setfilter("updatedAt")}>Last Updated</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setfilter("roomno")}>
+              Room no
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setfilter("bookedby")}>
+              Booked by
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setfilter("typeof")}>
+              Type of Room
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setfilter("updatedAt")}>
+              Last Updated
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

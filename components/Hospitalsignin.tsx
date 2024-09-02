@@ -40,7 +40,7 @@ const Hospitalsignin = () => {
   });
   const [isPending, startTransition] = useTransition();
   async function onSubmit(values: z.infer<typeof HospitalSigninSchema>) {
-    startTransition(async() => {
+    startTransition(async () => {
       console.log(values);
       const res = await hospitalSignIn(values);
       if (res.success) {
@@ -52,7 +52,7 @@ const Hospitalsignin = () => {
     });
   }
   return (
-    <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
+    <Card className="w-[300px] sm:w-[430px] md:w-[540px] dark:bg-[rgba(31,41,55,0.5)] backdrop-blur-3xl">
       <CardHeader>
         <CardTitle>
           <span>Hospital Login</span>{" "}
@@ -89,11 +89,13 @@ const Hospitalsignin = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={isPending}
+            <Button
+              disabled={isPending}
               type="submit"
               className="w-full dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
-              {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
+              {isPending && <Loader2 className="animate-spin px-1"></Loader2>}
+              Submit
             </Button>
           </form>
         </Form>
