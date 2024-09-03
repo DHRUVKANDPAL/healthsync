@@ -49,6 +49,9 @@ export async function POST(
           bedsAvailable:{
             increment:1,
           }
+        },
+        include:{
+          room:true
         }
       })
       
@@ -64,6 +67,9 @@ export async function POST(
           sharedAvailable:{
             increment:1,
           }
+        },
+        include:{
+          room:true
         }
       })
       
@@ -79,6 +85,9 @@ export async function POST(
           icuAvailable:{
             increment:1,
           }
+        },
+        include:{
+          room:true
         }
       })
       
@@ -94,6 +103,9 @@ export async function POST(
           opdsAvailable:{
             increment:1,
           }
+        },
+        include:{
+          room:true
         }
       })
       
@@ -109,6 +121,9 @@ export async function POST(
           generalWardAvailable:{
             increment:1,
           }
+        },
+        include:{
+          room:true
         }
       })
       
@@ -124,6 +139,9 @@ export async function POST(
           labsAvailable:{
             increment:1,
           }
+        },
+        include:{
+          room:true
         }
       })
       
