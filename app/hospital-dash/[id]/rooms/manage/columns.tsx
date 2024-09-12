@@ -4,8 +4,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   BookUser,
   Copy,
+  DoorOpen,
   Edit,
   Loader2,
+  LockOpen,
   MoreHorizontal,
   Trash2,
   TriangleAlert,
@@ -68,7 +70,7 @@ export type BedRooms = {
   updatedAt: Date;
 };
 const formSchema = z.object({
-  id:z.string(),
+  id: z.string(),
   roomno: z.string(),
   typeof: z.string(),
   isavailabel: z.boolean().default(false).optional(),
@@ -154,19 +156,20 @@ export const columns: ColumnDef<BedRooms>[] = [
       );
     },
     cell: ({ row }) => {
-      const amount = String(row.getValue("isAvailabel"));
-      if (amount === "true") {
-        return (
-          <div className="font-medium text-green-500 flex gap-1 items-center drop-shadow-sm">
-            <BookUser className="h-5 w-5 " />
-            Available
-          </div>
-        );
-      }
+      const isAvailable = String(row.getValue("isAvailabel")); 
+      const statusText = isAvailable === "true" ? "Available" : "Unavailable";
+      const statusClass =
+        isAvailable === "true"
+          ? "bg-green-100 text-green-700"
+          : "bg-red-100 text-red-700";
+      const Icon = isAvailable === "true" ? BookUser : TriangleAlert;
+
       return (
-        <div className=" font-medium text-red-500 flex gap-1 items-center drop-shadow-sm">
-          <TriangleAlert className="h-5 w-5 " />
-          Unavailable
+        <div
+          className={`flex items-center gap-2 ${statusClass} px-4  py-1 rounded-full font-semibold`}
+        >
+          <Icon className="h-5 w-5" />
+          {statusText}
         </div>
       );
     },
@@ -188,8 +191,9 @@ export const columns: ColumnDef<BedRooms>[] = [
       const amount = String(row.getValue("bookedby"));
       if (amount === "Unbooked") {
         return (
-          <div className="font-medium text-teal-600 drop-shadow-sm">
-            Unbooked
+          <div className="flex items-center gap-2 font-semibold items-center  text-blue-600 bg-blue-100 px-4  py-1 rounded-full drop-shadow-sm">
+            <LockOpen className="h-5 w-5"></LockOpen>
+            Unbooked 
           </div>
         );
       }
@@ -236,7 +240,7 @@ export const columns: ColumnDef<BedRooms>[] = [
       const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-          id:BedRooms.id,
+          id: BedRooms.id,
           roomno: BedRooms.roomno,
           typeof: BedRooms.typeof,
           isavailabel: BedRooms.isAvailabel,
@@ -245,7 +249,7 @@ export const columns: ColumnDef<BedRooms>[] = [
       });
       const [isPending, startTransition] = useTransition();
       async function onSubmit(values: z.infer<typeof formSchema>) {
-        if(watchAvailable) values.bookedby="Unbooked"
+        if (watchAvailable) values.bookedby = "Unbooked";
         startTransition(async () => {
           console.log(values);
           const res = await fetch(`/api/editroom/${id}`, {
@@ -256,21 +260,21 @@ export const columns: ColumnDef<BedRooms>[] = [
           console.log(data);
           if (data.success) {
             toast.success("Room edited successfully");
-            setIsEditDialogOpen(false)
+            setIsEditDialogOpen(false);
           } else {
             toast.error("Unable to edit room");
             router.push(`/hospital-dash/${id}/rooms/manage`);
           }
         });
       }
-     
+
       const params = useParams();
       const { id } = params;
       const watchAvailable = form.watch("isavailabel");
       const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
       const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
       // const [roomno,setRoomNo]=useState(BedRooms.roomno)
-      
+
       if (isEditDialogOpen) {
         return (
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -367,7 +371,15 @@ export const columns: ColumnDef<BedRooms>[] = [
                         <FormItem>
                           <FormLabel>Booked by</FormLabel>
                           <FormControl>
-                            {!watchAvailable ? <Input placeholder="Ravi Prasad" {...field} /> : <Input placeholder="Ravi Prasad" {...field} value="Unbooked"/>}
+                            {!watchAvailable ? (
+                              <Input placeholder="Ravi Prasad" {...field} />
+                            ) : (
+                              <Input
+                                placeholder="Ravi Prasad"
+                                {...field}
+                                value="Unbooked"
+                              />
+                            )}
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -388,17 +400,27 @@ export const columns: ColumnDef<BedRooms>[] = [
       }
       if (isDeleteDialogOpen) {
         return (
-          <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <Dialog
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          >
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Delete Room</DialogTitle>
                 <DialogDescription>
-                  You are about to delete  Room no {BedRooms.roomno}. Are you Sure ?
+                  You are about to delete Room no {BedRooms.roomno}. Are you
+                  Sure ?
                 </DialogDescription>
               </DialogHeader>
 
               <DialogFooter className="flex gap-1.5">
-                <Button type="submit" variant="outline" onClick={()=>setIsDeleteDialogOpen(false)}>Cancel</Button>
+                <Button
+                  type="submit"
+                  variant="outline"
+                  onClick={() => setIsDeleteDialogOpen(false)}
+                >
+                  Cancel
+                </Button>
                 <Button type="submit">Confirm</Button>
               </DialogFooter>
             </DialogContent>
@@ -424,7 +446,7 @@ export const columns: ColumnDef<BedRooms>[] = [
               <Edit className="h-7 w-7 pr-2"></Edit>Edit Room
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
-              <Trash2 className="h-7 w-7 pr-2"></Trash2>Delete Room 
+              <Trash2 className="h-7 w-7 pr-2"></Trash2>Delete Room
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
