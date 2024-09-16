@@ -83,6 +83,7 @@ model Hospital{
   hospitaldep Department[]
   session HospitalSession[]
   room Room[]
+  roomHistory HospitalRoomHistory[]
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
 }
@@ -93,8 +94,21 @@ model Room{
   isAvailabel Boolean @default(false)
   typeof String //icu general ward single room shared room 
   bookedby String? @default("Unbooked")
+  aadhar String?
   hospital Hospital @relation(fields: [userId], references: [id])
   updatedAt       DateTime? @updatedAt
+}
+model HospitalRoomHistory{
+  id              String   @id @default(cuid())
+  userId String
+  roomId String
+  roomno String   
+  typeof String 
+  bookedBy String? @default("Unbooked")
+  aadhar String?
+  bookedAt DateTime 
+  checkout DateTime?
+  hospital Hospital @relation(fields: [userId], references: [id])
 }
 model Department{
   id              String   @id @default(cuid())

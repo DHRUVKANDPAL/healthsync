@@ -40,6 +40,7 @@ const formSchema = z.object({
   typeof: z.string(),
   isavailabel: z.boolean().default(false).optional(),
   bookedby: z.string().optional(),
+  aadhar: z.string().length(12),
 });
 
 export default function Rooms() {
@@ -51,6 +52,7 @@ export default function Rooms() {
       typeof: "",
       isavailabel: false,
       bookedby: "",
+      aadhar:""
     },
   });
   const [isPending, startTransition] = useTransition();
@@ -168,8 +170,25 @@ export default function Rooms() {
                   )}
                 />
               }
+              {
+                <FormField
+                  disabled={watchAvailable}
+                  control={form.control}
+                  name="aadhar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Aadhar no of Booked Patient</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Aadhar no" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              }
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending && <Loader2 className="animate-spin px-1"></Loader2>}Submit
+                {isPending && <Loader2 className="animate-spin px-1"></Loader2>}
+                Submit
               </Button>
             </form>
           </Form>

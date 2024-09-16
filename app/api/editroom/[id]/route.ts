@@ -20,7 +20,7 @@ export async function POST(
   }
 
   try {
-    const values = await req.json();
+    const {values,roomId} = await req.json();
     console.log(values);
     const existingRooms = await prisma.room.findMany({
       take: 2,
@@ -28,6 +28,9 @@ export async function POST(
         roomno: values.roomno,
       },
     });
+
+
+    
     if (existingRooms.length != 1) {
       return new Response(JSON.stringify({ success: false }), {
         headers: { "Content-Type": "application/json" },
@@ -60,8 +63,70 @@ export async function POST(
         typeof: values.typeof,
         userId: id,
         bookedby: values.bookedby,
+        aadhar:values.aadhar
       },
     });
+
+
+    const latestHistoryToBeUpdated=await prisma.hospitalRoomHistory.findFirst({
+      where:{
+        userId:id,
+        roomId:values.id
+      },
+      orderBy:{
+        bookedAt:'desc'
+      }
+    })
+    if(latestHistoryToBeUpdated && !latestHistoryToBeUpdated.checkout){
+      const update= await prisma.hospitalRoomHistory.update({
+       where:{
+        id:latestHistoryToBeUpdated.id,
+        bookedAt:latestHistoryToBeUpdated.bookedAt
+       },
+       data:{
+        checkout:new Date(Date.now())
+       }
+      })
+      const message=await prisma.hospital.findUnique({
+        where:{
+          id:id,
+        },
+        include:{
+          roomHistory:true,
+        }
+      })
+      await pusherServer.trigger("rooms", "room-history", {
+        message: message,
+      });
+    }
+
+    if(!values.isavailabel){
+      const roomHistory = await prisma.hospitalRoomHistory.create({
+        data: {
+          roomId:room.id,
+          roomno: values.roomno,
+          typeof: values.typeof,
+          
+          bookedBy: values.bookedby,
+          aadhar: values.aadhar,
+          bookedAt:new Date(Date.now()),
+          userId: id,
+        },
+      });
+      const message=await prisma.hospital.findUnique({
+        where:{
+          id:id,
+        },
+        include:{
+          roomHistory:true,
+        }
+      })
+      await pusherServer.trigger("rooms", "room-history", {
+        message: message,
+      });
+    }
+
+
     console.log(values.isavailabel," ",values.typeof)
     if (values.typeof === "Single Room") {
       const update = await prisma.hospital.update({

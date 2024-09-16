@@ -66,7 +66,7 @@ export type BedRooms = {
   roomno: string;
   isAvailabel: boolean;
   typeof: string;
-  aadhar:string;
+  aadhar: string;
   bookedby: string;
   updatedAt: Date;
 };
@@ -76,7 +76,7 @@ const formSchema = z.object({
   typeof: z.string(),
   isavailabel: z.boolean().default(false).optional(),
   bookedby: z.string().optional(),
-  aadhar:z.union([z.string().length(12), z.literal("null")]).optional(),
+  aadhar: z.union([z.string().length(12), z.literal("null")]).optional(),
 });
 export const columns: ColumnDef<BedRooms>[] = [
   {
@@ -101,17 +101,44 @@ export const columns: ColumnDef<BedRooms>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+  // {
+  //   accessorKey: "roomId",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Room id
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "id",
+    accessorKey: "roomno",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Room id
+          Room no
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const roomno = String(row.getValue("roomno"));
+      
+      const statusClass ="bg-blue-100 text-blue-700"
+      return (
+        <div
+          className={`flex items-center gap-2 ${statusClass} px-4  py-1 rounded-full font-semibold`}
+        >
+          <BookUser className="h-5 w-5"></BookUser>
+          {roomno}
+        </div>
       );
     },
   },
@@ -129,42 +156,13 @@ export const columns: ColumnDef<BedRooms>[] = [
       );
     },
   },
-  {
-    accessorKey: "roomno",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Room no
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell:({row})=>{
-      
-      const roomno=String(row.getValue("roomno"));
-      const isAvailable = String(row.getValue("isAvailabel")); 
-      console.log(isAvailable);
-      const statusClass =isAvailable ===  "true"? "bg-green-100 text-green-700": "bg-red-100 text-red-700"; 
-      return (
-        <div
-          className={`flex items-center gap-2 ${statusClass} px-4  py-1 rounded-full font-semibold`}
-        >
-          <BookUser className="h-5 w-5"></BookUser>
-          {roomno}
-          
-        </div>
-      );
-    },
-  },
+  
   {
     accessorKey: "isAvailabel",
   },
-  
+
   {
-    accessorKey: "bookedby",
+    accessorKey: "bookedBy",
     header: ({ column }) => {
       return (
         <Button
@@ -177,12 +175,12 @@ export const columns: ColumnDef<BedRooms>[] = [
       );
     },
     cell: ({ row }) => {
-      const amount = String(row.getValue("bookedby"));
+      const amount = String(row.getValue("bookedBy"));
       if (amount === "Unbooked") {
         return (
           <div className="flex  gap-2 font-semibold items-center  text-blue-600 bg-blue-100 px-4  py-1 rounded-full drop-shadow-sm">
             <LockOpen className="h-5 w-5"></LockOpen>
-            Unbooked 
+            Unbooked
           </div>
         );
       }
@@ -209,8 +207,8 @@ export const columns: ColumnDef<BedRooms>[] = [
     },
     cell: ({ row }) => {
       const amount = String(row.getValue("aadhar"));
-      const isAvailable=String(row.getValue("isAvailabel"))
-      if (isAvailable==="true" || amount==="null") {
+      const isAvailable = String(row.getValue("isAvailabel"));
+      if (isAvailable === "true" || amount === "null") {
         return (
           <div className="flex  gap-2 font-semibold items-center  text-yellow-600 bg-yellow-100 px-4  py-1 rounded-full drop-shadow-sm">
             <TriangleAlert className="h-5 w-5"></TriangleAlert>
@@ -226,20 +224,20 @@ export const columns: ColumnDef<BedRooms>[] = [
     },
   },
   {
-    accessorKey: "updatedAt",
+    accessorKey: "bookedAt",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Last Updated
+          Booking Time
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue("updatedAt"));
+      const date = new Date(row.getValue("bookedAt"));
       const formattedDate = new Intl.DateTimeFormat("en-US", {
         year: "numeric",
         month: "long",
@@ -253,59 +251,113 @@ export const columns: ColumnDef<BedRooms>[] = [
     },
   },
   {
+    accessorKey: "checkout",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Checkout Time
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const checkoutValue = row.getValue("checkout");
+
+      // Explicitly check for null, undefined, or empty string values
+      if (!checkoutValue) {
+        // If the checkout value is null, undefined, or an empty string, render this block
+        return (
+          <div className="flex gap-2 font-semibold items-center text-yellow-600 bg-yellow-100 px-4 py-1 rounded-full drop-shadow-sm">
+            <TriangleAlert className="h-5 w-5" />
+            Yet to checkout
+          </div>
+        );
+      }
+
+      const date = new Date(row.getValue("checkout"));
+
+      // Now check if the date is invalid (i.e., not a valid date)
+      if (isNaN(date.getTime())) {
+        // Handle invalid dates (just in case checkoutValue is something that can’t be parsed as a date)
+        return (
+          <div className="flex gap-2 font-semibold items-center text-yellow-600 bg-yellow-100 px-4 py-1 rounded-full drop-shadow-sm">
+            <TriangleAlert className="h-5 w-5" />
+            Yet to checkout
+          </div>
+        );
+      }
+
+      // If the date is valid, format and display the date
+      const formattedDate = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true,
+      }).format(date);
+
+      return <span>{formattedDate}</span>;
+    },
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const BedRooms = row.original;
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+      const router = useRouter();
+      const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      id: BedRooms.id,
-      roomno: BedRooms.roomno,
-      typeof: BedRooms.typeof,
-      isavailabel: BedRooms.isAvailabel,
-      bookedby: BedRooms.bookedby,
-      aadhar: BedRooms.aadhar || "null",
-    },
-  });
-
-  const { watch, reset } = form;
-  const watchAvailable = watch('isavailabel');
-
-  // Update form values when row.original changes
-  useEffect(() => {
-    reset({
-      id: BedRooms.id,
-      roomno: BedRooms.roomno,
-      typeof: BedRooms.typeof,
-      isavailabel: BedRooms.isAvailabel,
-      bookedby: BedRooms.bookedby,
-      aadhar: BedRooms.aadhar || "",
-    });
-  }, [BedRooms, reset]);
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (watchAvailable) values.bookedby = "Unbooked";
-    startTransition(async () => {
-      const roomId=BedRooms.id
-      console.log(values);
-      const res = await fetch(`/api/editroom/${id}`, {
-        method: "POST",
-        body: JSON.stringify({values,roomId}),
+      const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+          id: BedRooms.id,
+          roomno: BedRooms.roomno,
+          typeof: BedRooms.typeof,
+          isavailabel: BedRooms.isAvailabel,
+          bookedby: BedRooms.bookedby,
+          aadhar: BedRooms.aadhar || "null",
+        },
       });
-      const data = await res.json();
-      console.log(data);
-      if (data.success) {
-        toast.success("Room edited successfully");
-        setIsEditDialogOpen(false);
-      } else {
-        toast.error("Unable to edit room");
-        router.push(`/hospital-dash/${id}/rooms/manage`);
+
+      const { watch, reset } = form;
+      const watchAvailable = watch("isavailabel");
+
+      // Update form values when row.original changes
+      useEffect(() => {
+        reset({
+          id: BedRooms.id,
+          roomno: BedRooms.roomno,
+          typeof: BedRooms.typeof,
+          isavailabel: BedRooms.isAvailabel,
+          bookedby: BedRooms.bookedby,
+          aadhar: BedRooms.aadhar || "",
+        });
+      }, [BedRooms, reset]);
+
+      async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (watchAvailable) values.bookedby = "Unbooked";
+        startTransition(async () => {
+          const roomId = BedRooms.id;
+          console.log(values);
+          const res = await fetch(`/api/editroom/${id}`, {
+            method: "POST",
+            body: JSON.stringify({ values, roomId }),
+          });
+          const data = await res.json();
+          console.log(data);
+          if (data.success) {
+            toast.success("Room edited successfully");
+            setIsEditDialogOpen(false);
+          } else {
+            toast.error("Unable to edit room");
+            router.push(`/hospital-dash/${id}/rooms/manage`);
+          }
+        });
       }
-    });
-  }
 
       const params = useParams();
       const { id } = params;
@@ -435,11 +487,11 @@ export const columns: ColumnDef<BedRooms>[] = [
                           <FormLabel>Patient Aadhar no</FormLabel>
                           <FormControl>
                             {!watchAvailable ? (
-                              <Input placeholder="Aadhar no" {...field}  />
+                              <Input placeholder="Aadhar no" {...field} />
                             ) : (
                               <Input
                                 placeholder="Aadhar no"
-                                {...field} 
+                                {...field}
                                 value="null"
                               />
                             )}

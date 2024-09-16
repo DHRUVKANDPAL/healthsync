@@ -50,6 +50,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  
   const table = useReactTable({
     data,
     columns,
@@ -68,13 +69,15 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
-  const [filter, setfilter] = useState("bookedby");
+  const [filter, setfilter] = useState("bookedBy");
   var det;
-  if (filter === "bookedby") det = "Booked By ";
+  if (filter === "bookedBy") det = "Booked By ";
   else if (filter == "roomno") det = "Room no ";
   else if (filter === "typeof") det = "Type of ";
+  else if (filter === "bookedAt") det = "Booked At ";
+  else if (filter === "checkout") det = "Checkout Time ";
   if (!table) return <></>;
-
+  
   useEffect(() => {
     table.getAllColumns()
       .filter((column) => column.getCanHide())
@@ -89,8 +92,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4 gap-5">
-        <Input
+      <div className="flex items-center py-2 gap-5">
+        {/* <Input
           placeholder="Search according to filter"
           value={(table.getColumn(filter)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
@@ -117,11 +120,14 @@ export function DataTable<TData, TValue>({
             <DropdownMenuItem onClick={() => setfilter("typeof")}>
               Type of Room
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setfilter("updatedAt")}>
-              Last Updated
+            <DropdownMenuItem onClick={() => setfilter("bookedAt")}>
+              Booked At
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setfilter("checkout")}>
+              Checkout Time
             </DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
       <div className="rounded-md border">
         <Table>

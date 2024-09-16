@@ -94,6 +94,7 @@ export const getHospital = async () => {
         createdAt: true,
         updatedAt: true,
         room:true,
+        roomHistory:true
       },
     });
     return dbUser;
