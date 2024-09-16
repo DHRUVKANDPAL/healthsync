@@ -231,7 +231,7 @@ export const columns: ColumnDef<BedRooms>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Booking Time
+          Check-In Time
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -304,268 +304,268 @@ export const columns: ColumnDef<BedRooms>[] = [
       return <span>{formattedDate}</span>;
     },
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const BedRooms = row.original;
-      const router = useRouter();
-      const [isPending, startTransition] = useTransition();
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const BedRooms = row.original;
+  //     const router = useRouter();
+  //     const [isPending, startTransition] = useTransition();
 
-      const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          id: BedRooms.id,
-          roomno: BedRooms.roomno,
-          typeof: BedRooms.typeof,
-          isavailabel: BedRooms.isAvailabel,
-          bookedby: BedRooms.bookedby,
-          aadhar: BedRooms.aadhar || "null",
-        },
-      });
+  //     const form = useForm<z.infer<typeof formSchema>>({
+  //       resolver: zodResolver(formSchema),
+  //       defaultValues: {
+  //         id: BedRooms.id,
+  //         roomno: BedRooms.roomno,
+  //         typeof: BedRooms.typeof,
+  //         isavailabel: BedRooms.isAvailabel,
+  //         bookedby: BedRooms.bookedby,
+  //         aadhar: BedRooms.aadhar || "null",
+  //       },
+  //     });
 
-      const { watch, reset } = form;
-      const watchAvailable = watch("isavailabel");
+  //     const { watch, reset } = form;
+  //     const watchAvailable = watch("isavailabel");
 
-      // Update form values when row.original changes
-      useEffect(() => {
-        reset({
-          id: BedRooms.id,
-          roomno: BedRooms.roomno,
-          typeof: BedRooms.typeof,
-          isavailabel: BedRooms.isAvailabel,
-          bookedby: BedRooms.bookedby,
-          aadhar: BedRooms.aadhar || "",
-        });
-      }, [BedRooms, reset]);
+  //     // Update form values when row.original changes
+  //     useEffect(() => {
+  //       reset({
+  //         id: BedRooms.id,
+  //         roomno: BedRooms.roomno,
+  //         typeof: BedRooms.typeof,
+  //         isavailabel: BedRooms.isAvailabel,
+  //         bookedby: BedRooms.bookedby,
+  //         aadhar: BedRooms.aadhar || "",
+  //       });
+  //     }, [BedRooms, reset]);
 
-      async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (watchAvailable) values.bookedby = "Unbooked";
-        startTransition(async () => {
-          const roomId = BedRooms.id;
-          console.log(values);
-          const res = await fetch(`/api/editroom/${id}`, {
-            method: "POST",
-            body: JSON.stringify({ values, roomId }),
-          });
-          const data = await res.json();
-          console.log(data);
-          if (data.success) {
-            toast.success("Room edited successfully");
-            setIsEditDialogOpen(false);
-          } else {
-            toast.error("Unable to edit room");
-            router.push(`/hospital-dash/${id}/rooms/manage`);
-          }
-        });
-      }
+  //     async function onSubmit(values: z.infer<typeof formSchema>) {
+  //       if (watchAvailable) values.bookedby = "Unbooked";
+  //       startTransition(async () => {
+  //         const roomId = BedRooms.id;
+  //         console.log(values);
+  //         const res = await fetch(`/api/editroom/${id}`, {
+  //           method: "POST",
+  //           body: JSON.stringify({ values, roomId }),
+  //         });
+  //         const data = await res.json();
+  //         console.log(data);
+  //         if (data.success) {
+  //           toast.success("Room edited successfully");
+  //           setIsEditDialogOpen(false);
+  //         } else {
+  //           toast.error("Unable to edit room");
+  //           router.push(`/hospital-dash/${id}/rooms/manage`);
+  //         }
+  //       });
+  //     }
 
-      const params = useParams();
-      const { id } = params;
-      // const watchAvailable = form.watch("isavailabel");
-      const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-      const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-      // const [roomno,setRoomNo]=useState(BedRooms.roomno)
+  //     const params = useParams();
+  //     const { id } = params;
+  //     // const watchAvailable = form.watch("isavailabel");
+  //     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  //     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  //     // const [roomno,setRoomNo]=useState(BedRooms.roomno)
 
-      if (isEditDialogOpen) {
-        return (
-          <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Edit Room</DialogTitle>
-                <DialogDescription>
-                  Make changes to your Room here. Click save when you're done.
-                </DialogDescription>
-              </DialogHeader>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-5"
-                >
-                  <FormField
-                    control={form.control}
-                    name="roomno"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Room no</FormLabel>
-                        <FormControl>
-                          <Input placeholder="A-101" {...field} />
-                        </FormControl>
-                        <FormDescription className="opacity-70">
-                          This is your public display room name.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="typeof"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Type of Room</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          disabled
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a verified type to display" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="ICU">ICU</SelectItem>
-                            <SelectItem value="General Ward">
-                              General Ward
-                            </SelectItem>
-                            <SelectItem value="Single Room">
-                              Single Room
-                            </SelectItem>
-                            <SelectItem value="Shared Room">
-                              Shared Room
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="isavailabel"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            className="h-5 w-5"
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>
-                            Is the room currently Available ?
-                          </FormLabel>
-                          <FormDescription>
-                            You can manage your room status while creating it.
-                          </FormDescription>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  {
-                    <FormField
-                      disabled={watchAvailable}
-                      control={form.control}
-                      name="bookedby"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Booked by</FormLabel>
-                          <FormControl>
-                            {!watchAvailable ? (
-                              <Input placeholder="Ravi Prasad" {...field} />
-                            ) : (
-                              <Input
-                                placeholder="Ravi Prasad"
-                                {...field}
-                                value="Unbooked"
-                              />
-                            )}
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  }
-                  {
-                    <FormField
-                      disabled={watchAvailable}
-                      control={form.control}
-                      name="aadhar"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Patient Aadhar no</FormLabel>
-                          <FormControl>
-                            {!watchAvailable ? (
-                              <Input placeholder="Aadhar no" {...field} />
-                            ) : (
-                              <Input
-                                placeholder="Aadhar no"
-                                {...field}
-                                value="null"
-                              />
-                            )}
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  }
-                  <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending && (
-                      <Loader2 className="animate-spin px-1"></Loader2>
-                    )}
-                    Submit
-                  </Button>
-                </form>
-              </Form>
-            </DialogContent>
-          </Dialog>
-        );
-      }
-      if (isDeleteDialogOpen) {
-        return (
-          <Dialog
-            open={isDeleteDialogOpen}
-            onOpenChange={setIsDeleteDialogOpen}
-          >
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Delete Room</DialogTitle>
-                <DialogDescription>
-                  You are about to delete Room no {BedRooms.roomno}. Are you
-                  Sure ?
-                </DialogDescription>
-              </DialogHeader>
+  //     if (isEditDialogOpen) {
+  //       return (
+  //         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+  //           <DialogContent className="sm:max-w-[425px]">
+  //             <DialogHeader>
+  //               <DialogTitle>Edit Room</DialogTitle>
+  //               <DialogDescription>
+  //                 Make changes to your Room here. Click save when you're done.
+  //               </DialogDescription>
+  //             </DialogHeader>
+  //             <Form {...form}>
+  //               <form
+  //                 onSubmit={form.handleSubmit(onSubmit)}
+  //                 className="space-y-5"
+  //               >
+  //                 <FormField
+  //                   control={form.control}
+  //                   name="roomno"
+  //                   render={({ field }) => (
+  //                     <FormItem>
+  //                       <FormLabel>Room no</FormLabel>
+  //                       <FormControl>
+  //                         <Input placeholder="A-101" {...field} />
+  //                       </FormControl>
+  //                       <FormDescription className="opacity-70">
+  //                         This is your public display room name.
+  //                       </FormDescription>
+  //                       <FormMessage />
+  //                     </FormItem>
+  //                   )}
+  //                 />
+  //                 <FormField
+  //                   control={form.control}
+  //                   name="typeof"
+  //                   render={({ field }) => (
+  //                     <FormItem>
+  //                       <FormLabel>Type of Room</FormLabel>
+  //                       <Select
+  //                         onValueChange={field.onChange}
+  //                         defaultValue={field.value}
+  //                         disabled
+  //                       >
+  //                         <FormControl>
+  //                           <SelectTrigger>
+  //                             <SelectValue placeholder="Select a verified type to display" />
+  //                           </SelectTrigger>
+  //                         </FormControl>
+  //                         <SelectContent>
+  //                           <SelectItem value="ICU">ICU</SelectItem>
+  //                           <SelectItem value="General Ward">
+  //                             General Ward
+  //                           </SelectItem>
+  //                           <SelectItem value="Single Room">
+  //                             Single Room
+  //                           </SelectItem>
+  //                           <SelectItem value="Shared Room">
+  //                             Shared Room
+  //                           </SelectItem>
+  //                         </SelectContent>
+  //                       </Select>
+  //                       <FormMessage />
+  //                     </FormItem>
+  //                   )}
+  //                 />
+  //                 <FormField
+  //                   control={form.control}
+  //                   name="isavailabel"
+  //                   render={({ field }) => (
+  //                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+  //                       <FormControl>
+  //                         <Checkbox
+  //                           checked={field.value}
+  //                           onCheckedChange={field.onChange}
+  //                           className="h-5 w-5"
+  //                         />
+  //                       </FormControl>
+  //                       <div className="space-y-1 leading-none">
+  //                         <FormLabel>
+  //                           Is the room currently Available ?
+  //                         </FormLabel>
+  //                         <FormDescription>
+  //                           You can manage your room status while creating it.
+  //                         </FormDescription>
+  //                       </div>
+  //                     </FormItem>
+  //                   )}
+  //                 />
+  //                 {
+  //                   <FormField
+  //                     disabled={watchAvailable}
+  //                     control={form.control}
+  //                     name="bookedby"
+  //                     render={({ field }) => (
+  //                       <FormItem>
+  //                         <FormLabel>Booked by</FormLabel>
+  //                         <FormControl>
+  //                           {!watchAvailable ? (
+  //                             <Input placeholder="Ravi Prasad" {...field} />
+  //                           ) : (
+  //                             <Input
+  //                               placeholder="Ravi Prasad"
+  //                               {...field}
+  //                               value="Unbooked"
+  //                             />
+  //                           )}
+  //                         </FormControl>
+  //                         <FormMessage />
+  //                       </FormItem>
+  //                     )}
+  //                   />
+  //                 }
+  //                 {
+  //                   <FormField
+  //                     disabled={watchAvailable}
+  //                     control={form.control}
+  //                     name="aadhar"
+  //                     render={({ field }) => (
+  //                       <FormItem>
+  //                         <FormLabel>Patient Aadhar no</FormLabel>
+  //                         <FormControl>
+  //                           {!watchAvailable ? (
+  //                             <Input placeholder="Aadhar no" {...field} />
+  //                           ) : (
+  //                             <Input
+  //                               placeholder="Aadhar no"
+  //                               {...field}
+  //                               value="null"
+  //                             />
+  //                           )}
+  //                         </FormControl>
+  //                         <FormMessage />
+  //                       </FormItem>
+  //                     )}
+  //                   />
+  //                 }
+  //                 <Button type="submit" className="w-full" disabled={isPending}>
+  //                   {isPending && (
+  //                     <Loader2 className="animate-spin px-1"></Loader2>
+  //                   )}
+  //                   Submit
+  //                 </Button>
+  //               </form>
+  //             </Form>
+  //           </DialogContent>
+  //         </Dialog>
+  //       );
+  //     }
+  //     if (isDeleteDialogOpen) {
+  //       return (
+  //         <Dialog
+  //           open={isDeleteDialogOpen}
+  //           onOpenChange={setIsDeleteDialogOpen}
+  //         >
+  //           <DialogContent className="sm:max-w-[425px]">
+  //             <DialogHeader>
+  //               <DialogTitle>Delete Room</DialogTitle>
+  //               <DialogDescription>
+  //                 You are about to delete Room no {BedRooms.roomno}. Are you
+  //                 Sure ?
+  //               </DialogDescription>
+  //             </DialogHeader>
 
-              <DialogFooter className="flex gap-1.5">
-                <Button
-                  type="submit"
-                  variant="outline"
-                  onClick={() => setIsDeleteDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit">Confirm</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        );
-      }
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(BedRooms.id)}
-            >
-              <Copy className="h-7 w-7 pr-2"></Copy>Copy BedRooms ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
-              <Edit className="h-7 w-7 pr-2"></Edit>Edit Room
-            </DropdownMenuItem>
-            {/* <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
-              <Trash2 className="h-7 w-7 pr-2"></Trash2>Delete Room
-            </DropdownMenuItem> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  //             <DialogFooter className="flex gap-1.5">
+  //               <Button
+  //                 type="submit"
+  //                 variant="outline"
+  //                 onClick={() => setIsDeleteDialogOpen(false)}
+  //               >
+  //                 Cancel
+  //               </Button>
+  //               <Button type="submit">Confirm</Button>
+  //             </DialogFooter>
+  //           </DialogContent>
+  //         </Dialog>
+  //       );
+  //     }
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuItem
+  //             onClick={() => navigator.clipboard.writeText(BedRooms.id)}
+  //           >
+  //             <Copy className="h-7 w-7 pr-2"></Copy>Copy BedRooms ID
+  //           </DropdownMenuItem>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
+  //             <Edit className="h-7 w-7 pr-2"></Edit>Edit Room
+  //           </DropdownMenuItem>
+  //           {/* <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
+  //             <Trash2 className="h-7 w-7 pr-2"></Trash2>Delete Room
+  //           </DropdownMenuItem> */}
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
 ];

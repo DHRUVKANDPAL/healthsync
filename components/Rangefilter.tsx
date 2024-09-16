@@ -70,7 +70,7 @@ export default function DatePickerWithRangePresets({
         <Button
           variant={"outline"}
           className={cn(
-            "w-[300px] justify-start text-left font-normal",
+            "w-[300px] justify-start text-left font-normal ",
             !dateRange && "text-muted-foreground"
           )}
         >
