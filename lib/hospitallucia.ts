@@ -14,7 +14,7 @@ export const hospitallucia = new Lucia(adapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  sessionExpiresIn: new TimeSpan(1, "h"),
+  sessionExpiresIn: new TimeSpan(1, "d"),
   getUserAttributes: (attributes) => {
     return {
       id: attributes.id,

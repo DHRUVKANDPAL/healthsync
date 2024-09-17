@@ -6,14 +6,21 @@ import {
   Copy,
   DoorOpen,
   Edit,
+  FileText,
+  Heart,
+  Hotel,
   Loader2,
   LockOpen,
+  Mail,
+  MapPin,
   MoreHorizontal,
+  Phone,
   Trash2,
   TriangleAlert,
   User,
 } from "lucide-react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -50,6 +57,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { Badge } from "@/components/ui/badge";
 import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { ArrowUpDown } from "lucide-react";
@@ -208,19 +222,371 @@ export const columns: ColumnDef<BedRooms>[] = [
       );
     },
     cell: ({ row }) => {
-      const amount = String(row.getValue("aadhar"));
-      const isAvailable=String(row.getValue("isAvailabel"))
-      if (isAvailable==="true" || amount==="null") {
+      const [opendialog, setOpenDialog] = useState(false);
+      const [patientData, setPatientData] = useState<any>(null);
+      const [roomBooked, setRoomBooked] = useState<any>(null);
+      const [isPending, startTransition] = useTransition();
+      const fetchPatient = async (values: {
+        amount: string;
+        id: string | string[];
+      }) => {
+        try {
+          startTransition(async () => {
+            console.log(values.amount);
+
+            console.log(values.id);
+            const res = await fetch(`/api/roomhis/patientdata/${values.id}`, {
+              method: "POST",
+              body: JSON.stringify(values),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            const d = await res.json();
+            if (d.success) {
+              console.log(d);
+              setPatientData(d.data);
+              setRoomBooked(d.data2);
+              toast.success("Patient found");
+
+              setOpenDialog(true);
+            } else {
+              setPatientData(null);
+              toast.error("Patient not found");
+              setOpenDialog(true);
+            }
+          });
+        } catch (error) {
+          setPatientData(null);
+          console.error("Error fetching patient:", error);
+          toast.error("An error occurred");
+        }
+      };
+      const { id } = useParams();
+      const amount: string = String(row.getValue("aadhar"));
+      const isAvailable = String(row.getValue("isAvailabel"));
+
+      function InfoCard({ icon: Icon, label, value, className = "" }: any) {
         return (
-          <div className="flex  gap-2 font-semibold items-center  text-yellow-600 bg-yellow-100 px-4  py-1 rounded-full drop-shadow-sm">
+          <Card className={`overflow-hidden ${className}`}>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-4">
+                <div className="p-2 rounded-full bg-primary/10">
+                  <Icon className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {label}
+                  </p>
+                  <p className="text-sm font-semibold mt-1">{value}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        );
+      }
+      const sortedRooms = roomBooked?.sort((a:any, b:any) => 
+        new Date(b.bookedAt).getTime() - new Date(a.bookedAt).getTime()
+      )
+      if (opendialog) {
+        return patientData ? (
+          <Dialog open={opendialog} onOpenChange={setOpenDialog}>
+            <DialogContent className="sm:max-w-[800px] p-4 overflow-hidden">
+              <DialogHeader className="p-6 pb-4 bg-background">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="w-24 h-24 border-2 border-primary">
+                    <AvatarImage
+                      src={`${patientData.imageUrl}`}
+                    />
+                    {/* <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${patientData.name}`} /> */}
+                    <AvatarFallback>
+                      {patientData.name
+                        .split(" ")
+                        .map((n: any) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <DialogTitle className="text-3xl font-bold">
+                      {patientData.name}
+                    </DialogTitle>
+                    <div className="flex items-center mt-2 space-x-2">
+                      <Badge variant="secondary" className="h-7 text-sm font-normal">{patientData.gender}</Badge>
+                      <Badge variant="secondary" className="h-7 text-sm font-normal">{patientData.dob}</Badge>
+                      <Badge variant="secondary" className="h-7 text-sm font-normal">{patientData.bloodgroup}</Badge>
+                    </div>
+                  </div>
+                </div>
+              </DialogHeader>
+              <div className="px-6 bg-background" >
+                <Tabs defaultValue="details" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="details">Details</TabsTrigger>
+                    <TabsTrigger value="history">History</TabsTrigger>
+                    <TabsTrigger value="appointments">Appointments</TabsTrigger>
+                    <TabsTrigger value="rooms">Rooms</TabsTrigger>
+                  </TabsList>
+                  <ScrollArea className="max-h-[60vh]">
+                    <TabsContent value="details" className="p-6 px-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <InfoCard
+                          icon={User}
+                          label="Aadhar No"
+                          value={patientData.aadharno}
+                        />
+                        <InfoCard
+                          icon={Phone}
+                          label="Contact No"
+                          value={patientData.contactno}
+                        />
+                        <InfoCard
+                          icon={Mail}
+                          label="Email"
+                          value={patientData.email}
+                        />
+                        <InfoCard
+                          icon={Heart}
+                          label="Emergency Contact"
+                          value={patientData.emergencycontact}
+                        />
+                        <InfoCard
+                          icon={MapPin}
+                          label="Address"
+                          value={patientData.address}
+                          className="md:col-span-2"
+                        />
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="history" className="p-6">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Medical History</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p>{patientData.prevHis}</p>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+                    <TabsContent value="appointments" className="p-6">
+                      <div className="space-y-4">
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Recent Visit</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            {/* <p>{patientData.recentVisit}</p> */}
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Upcoming Appointment</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            {/* <p>{patientData.upcomingAppointment}</p> */}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="rooms" className="p-0">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Hotel className="mr-2 h-4 w-4" />
+                      Rooms Booked
+                    </div>
+                    <Badge variant="outline">{sortedRooms.length} Room(s)</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Room No</TableHead>
+                        <TableHead>Type</TableHead>
+                        {/* <TableHead>Booked By</TableHead> */}
+                        <TableHead>Booked At</TableHead>
+                        <TableHead>Checkout</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedRooms.map((room:any) => (
+                        <TableRow key={room.id}>
+                          <TableCell className="font-medium">{room.roomno}</TableCell>
+                          <TableCell>{room.typeof}</TableCell>
+                          {/* <TableCell>{room.bookedBy}</TableCell> */}
+                          <TableCell>{new Date(room.bookedAt).toLocaleString()}</TableCell>
+                          <TableCell>{room.checkout ? new Date(room.checkout).toLocaleString() : 'N/A'}</TableCell>
+                          <TableCell>
+                            <Badge variant={room.checkout ? "secondary" : "default"}>
+                              {room.checkout ? 'Checked Out' : 'Active'}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+                  </ScrollArea>
+                </Tabs>
+              </div>
+              <div className="px-6 bg-background">
+              <DialogFooter className="px-6 py-4 bg-background">
+                <Button variant="outline">
+                  <FileText className="mr-2 h-4 w-4" /> Generate Report
+                </Button>
+              </DialogFooter>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Dialog open={opendialog} onOpenChange={setOpenDialog}>
+            <DialogContent className="sm:max-w-[800px] p-4 overflow-hidden">
+              <DialogHeader className="p-6 pb-4 bg-background">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="w-24 h-24 border-2 border-primary">
+                    <AvatarImage
+                      src={`https://placehold.jp/400x400.png?text=User`}
+                    />
+                    
+                  </Avatar>
+                  <div>
+                    <DialogTitle className="text-3xl font-bold">
+                      Aadhar no : {amount}
+                    </DialogTitle>
+                    <div className="flex items-center mt-2 space-x-2">
+                      <Badge variant="destructive" className="h-7 text-sm font-normal">Details not Available. Please ask user to register on our portal.</Badge>
+                      
+                    </div>
+                  </div>
+                </div>
+              </DialogHeader>
+              <div className="px-6 bg-background" >
+                <Tabs defaultValue="rooms" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="rooms">Rooms</TabsTrigger>
+                    <TabsTrigger value="history">History</TabsTrigger>
+                    <TabsTrigger value="appointments">Appointments</TabsTrigger>
+                    <TabsTrigger value="details">Details</TabsTrigger>
+                  </TabsList>
+                  <ScrollArea className="max-h-[60vh]">
+                    <TabsContent value="details" className="p-6 px-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <InfoCard
+                          icon={User}
+                          label="Message"
+                          value={"Please ask user to register on our portal to get details."}
+                          className="md:col-span-2"
+                        />
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="history" className="p-6">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Medical History</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          {/* <p>{patientData.prevHis}</p> */}
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+                    <TabsContent value="appointments" className="p-6">
+                      <div className="space-y-4">
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Recent Visit</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            {/* <p>{patientData.recentVisit}</p> */}
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Upcoming Appointment</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            {/* <p>{patientData.upcomingAppointment}</p> */}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="rooms" className="p-0">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Hotel className="mr-2 h-4 w-4" />
+                      Rooms Booked
+                    </div>
+                    <Badge variant="outline">{sortedRooms.length} Room(s)</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Room No</TableHead>
+                        <TableHead>Type</TableHead>
+                        {/* <TableHead>Booked By</TableHead> */}
+                        <TableHead>Booked At</TableHead>
+                        <TableHead>Checkout</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedRooms.map((room:any) => (
+                        <TableRow key={room.id}>
+                          <TableCell className="font-medium">{room.roomno}</TableCell>
+                          <TableCell>{room.typeof}</TableCell>
+                          {/* <TableCell>{room.bookedBy}</TableCell> */}
+                          <TableCell>{new Date(room.bookedAt).toLocaleString()}</TableCell>
+                          <TableCell>{room.checkout ? new Date(room.checkout).toLocaleString() : 'N/A'}</TableCell>
+                          <TableCell>
+                            <Badge variant={room.checkout ? "secondary" : "default"}>
+                              {room.checkout ? 'Checked Out' : 'Active'}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </TabsContent>
+                  </ScrollArea>
+                </Tabs>
+              </div>
+              <div className="px-6 bg-background">
+              <DialogFooter className="px-6 py-4 bg-background">
+                <Button variant="outline">
+                  <FileText className="mr-2 h-4 w-4" /> Generate Report
+                </Button>
+              </DialogFooter>
+              </div>
+            </DialogContent>
+          </Dialog>
+        );
+      }
+      if (isAvailable === "true" || amount === "null") {
+        return (
+          <div className="flex  gap-2 font-semibold items-center  text-yellow-600 bg-yellow-100 px-4  py-1 rounded-full drop-shadow-sm cursor-pointer">
             <TriangleAlert className="h-5 w-5"></TriangleAlert>
             Data Unavailable
           </div>
         );
       }
+      const values: { amount: string; id: string | string[] } = { amount, id };
       return (
-        <div className=" font-medium  flex gap-1 items-center drop-shadow-sm">
+        <div
+          className=" font-medium  flex gap-1 items-center drop-shadow-sm cursor-pointer"
+          onClick={() => fetchPatient(values)}
+        >
           {amount}
+          {isPending && <Loader2 className="animate-spin px-1"></Loader2>}
         </div>
       );
     },

@@ -38,6 +38,7 @@ const ManageRooms = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>();
+  const [pdata,setpdata]=useState<any>(null)
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -78,7 +79,8 @@ const ManageRooms = () => {
       toast.error("Error logging out. Try again!");
     }
   };
-
+ 
+  
   const formatDate = (date: Date) => {
     const formatter = new Intl.DateTimeFormat("en-US", {
       year: "numeric",

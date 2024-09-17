@@ -38,7 +38,10 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
-
+interface Patient {
+  aadhar: string;
+  // Add other fields if needed
+}
 export function DataTable<TData, TValue>({
   columns,
   data,
