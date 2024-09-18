@@ -379,7 +379,7 @@ export default function SearchPage() {
                         </TabsTrigger>
                         <TabsTrigger value="rooms">Rooms</TabsTrigger>
                       </TabsList>
-                      <ScrollArea className="h-[520px]  pr-4 pb-2">
+                      <ScrollArea className="h-[320px]  pr-4 pb-2">
                         <TabsContent value="details">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <InfoCard
