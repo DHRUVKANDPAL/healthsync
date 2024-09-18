@@ -1,6 +1,7 @@
 import Chartstats from "@/components/Chartstats";
 import Faq from "@/components/faq";
 import Features from "@/components/Features";
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Testimonial from "@/components/Testimonial";
 import Vision from "@/components/Vision";
@@ -18,6 +19,7 @@ export default function Home() {
       <div className="w-5/6 mx-auto md:w-1/2 py-10">
         <Faq></Faq>
       </div>
+      <Footer></Footer>
     </main>
   );
 }
