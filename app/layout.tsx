@@ -35,7 +35,7 @@ export default function RootLayout({
 
   const isHospitalDash = pathname.startsWith("/hospital-dash");
   const isPatientDash = pathname.startsWith("/patient-dash");
-  if (!isHospitalDash ) {
+  if (isHospitalDash ) {
     return (
       <html lang="en">
         <body className={inter.className}>
@@ -48,7 +48,7 @@ export default function RootLayout({
       </html>
     );
   }
-  if (!isPatientDash ) {
+  if (isPatientDash ) {
     return (
       <html lang="en">
         <body className={inter.className}>
