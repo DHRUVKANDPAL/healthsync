@@ -6,6 +6,8 @@ import { Toaster } from "sonner";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import { usePathname } from "next/navigation";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -23,6 +25,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = headers();
+  const referer = headersList.get("referer");
+
+  let pathname = "";
+  if (referer) {
+    pathname = new URL(referer).pathname;
+  }
+
+  const isHospitalDash = pathname.startsWith("/hospital-dash");
+  const isPatientDash = pathname.startsWith("/patient-dash");
+  if (isHospitalDash || isPatientDash) {
+    return (
+      <html lang="en">
+        <body className={inter.className}>
+          <main className="max-h-screen overflow-hidden">
+            <Header></Header>
+            <EdgeStoreProvider>{children}</EdgeStoreProvider>
+            <Toaster richColors></Toaster>
+          </main>
+        </body>
+      </html>
+    );
+  }
   return (
     <html lang="en">
       <body className={inter.className}>
