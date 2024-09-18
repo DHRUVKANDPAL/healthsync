@@ -186,23 +186,23 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
           </h1>
           </div>
           <div className="flex flex-col items-end space-y-2 text-black text-end">
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500 dark:text-gray-400 font-semibold">
               {userData.address +
                 " / " +
                 userData.City +
                 " / " +
                 userData.State}
             </span>
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500 dark:text-gray-400 font-semibold">
               {"Website : "}
               <a href={`https://${userData.Website}`} target="_blank">
                 {userData.Website}
               </a>
             </span>
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500 dark:text-gray-400 font-semibold">
               {"Contact no : " + userData.contactno}
             </span>
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500  dark:text-gray-400 font-semibold">
               {"Zipcode : " + userData.Zipcode}
             </span>
           </div>
