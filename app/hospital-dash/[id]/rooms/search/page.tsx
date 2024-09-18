@@ -136,7 +136,7 @@ export default function SearchPage() {
   );
   if (!patientData && roomBooked.length === 0) {
     return (
-      <div className="py-10">
+      <div className="py-20">
         <Card className="w-full max-w-5xl mx-auto shadow-lg ">
           <CardHeader className="pb-4 pt-8">
             <CardTitle className="text-3xl font-bold text-center flex justify-center gap-x-2 items-center">
@@ -287,7 +287,7 @@ export default function SearchPage() {
   }
   return (
     <>
-      <div className="py-10 ">
+      <div className="py-20 ">
         <Card className="w-full max-w-5xl mx-auto shadow-lg">
           <CardHeader className="pb-4 pt-8">
             <CardTitle className="text-3xl font-bold text-center flex justify-center gap-x-2 items-center">

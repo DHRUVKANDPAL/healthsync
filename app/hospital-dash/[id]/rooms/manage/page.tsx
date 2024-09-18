@@ -75,7 +75,7 @@ const ManageRooms = () => {
   return (
     <>
       <div className="px-10 space-x-10">
-        <Button onClick={handleLogout}>Logout</Button>
+        {/* <Button onClick={handleLogout}>Logout</Button> */}
       </div>
       <div className="container mx-auto py-10  rounded-lg dark:bg-slate-900">
         <DataTable columns={columns} data={sortedData} />

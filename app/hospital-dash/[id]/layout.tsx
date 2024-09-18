@@ -96,10 +96,10 @@ export default function RootLayout({
             ))}
           </nav>
         </ScrollArea>
-        <div className="sticky bottom-0 p-4 bg-gradient-to-b from-blue-50 to-teal-50">
+        <div className="sticky bottom-0 p-4 bg-transparent">
           <Button
             onClick={handleLogout}
-            className="w-full bg-red-500 hover:bg-red-600 text-white"
+            className="w-full bg-slate-800 hover:bg-slate-700 text-white"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
@@ -111,7 +111,7 @@ export default function RootLayout({
           <Button
             variant="outline"
             size="icon"
-            className=" left-4 top-4 lg:hidden"
+            className=" left-4 top-4 lg:hidden h-full"
           >
             <Menu className="h-6 w-6" />
           </Button>
@@ -151,7 +151,7 @@ export default function RootLayout({
           </div>
         </SheetContent>
       </Sheet>
-      <main className="flex-1 overflow-x-auto bg-white p-8">{children}</main>
+      <main className="flex-1 overflow-x-auto bg-white ">{children}</main>
     </div>
   );
 }

@@ -1,21 +1,81 @@
 "use client";
-import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
-import { Button } from "@/components/ui/button";
-import { pusherClient } from "@/lib/pusher";
-import { redirect, useRouter } from "next/navigation";
+
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { columns } from "./rooms/manage/columns";
-import { DataTable } from "./rooms/manage/data-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  BellIcon,
+  SettingsIcon,
+  BedIcon,
+  ActivityIcon,
+  UsersIcon,
+} from "lucide-react";
+import RadialChart from "./radial-charts";
+import { pusherClient } from "@/lib/pusher";
+import { ChartConfig } from "@/components/ui/chart";
 
-const HospitalDashboard = ({ params }: { params: { id: string } }) => {
+interface HospitalDashboardProps {
+  params?: {
+    id?: string;
+  };
+}
+
+const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
+const chartConfig = {
+  singleRoom: {
+    label: "Single Room",
+    color: COLORS[0],
+  },
+  ICU: {
+    label: "ICU",
+    color: COLORS[1],
+  },
+  GeneralWard: {
+    label: "General Ward",
+    color: COLORS[2],
+  },
+  SharedRoom: {
+    label: "Shared Room",
+    color: COLORS[3],
+  },
+  OPD: {
+    label: "OPD",
+    color: COLORS[4],
+  },
+} satisfies ChartConfig;
+
+export default function HospitalDashboard({ params }: HospitalDashboardProps) {
   const [userExists, setUserExists] = useState<boolean | null>(null);
   const router = useRouter();
-  const id = params.id;
+  const id = params?.id;
   const [userData, setUserData] = useState<any>(null);
-  const[totalroom,setTotalRooms]=useState<any>(null);
+  const [totalRoom, setTotalRooms] = useState<any>(null);
+
   useEffect(() => {
     const checkUser = async () => {
+      if (!id) {
+        toast.error("Hospital ID is missing.");
+        router.push("/hospital-auth");
+        return;
+      }
+
       try {
         const res = await fetch(`/api/hospital/${id}`);
         const data = await res.json();
@@ -33,9 +93,6 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
         } else {
           setTotalRooms(data2.total);
         }
-
-
-
       } catch (error) {
         toast.error("Error checking Hospital.");
         router.push("/hospital-auth");
@@ -44,8 +101,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
     checkUser();
   }, [id, router]);
 
-
-  const totalRooms=async()=>{
+  const totalRoomsget = async () => {
     try {
       const res = await fetch(`/api/totalrooms/${id}`);
       const data = await res.json();
@@ -54,75 +110,229 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       } else {
         setTotalRooms(data.total);
       }
-    } catch (error) {
-      
-    }
-  }
-
+    } catch (error) {}
+  };
 
   useEffect(() => {
-    
-    
     pusherClient.subscribe("rooms");
 
-    
     pusherClient.bind("beds-available", (data: { message: any }) => {
-      setUserData(data.message)
-      totalRooms()
+      setUserData(data.message);
+      totalRoomsget();
     });
 
     return () => pusherClient.unsubscribe("rooms");
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await hospitalLogout();
-      toast.success("Logged out successfully");
-      router.push("/hospital-auth");
-    } catch (error) {
-      toast.error("Error logging out. Try again!");
-    }
-  };
-  const handleRooms = async () => {
-    router.push(`/hospital-dash/${id}/rooms`);
-  };
-  const handleShowRooms = async () => {
-    router.push(`/hospital-dash/${id}/rooms/manage`);
-  };
-  const handleRoomHistory = async () => {
-    router.push(`/hospital-dash/${id}/rooms/bookinghistory`);
-  };
-  if (userExists === null) {
+  if (!id) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-gray-800 dark:text-gray-200 text-2xl">
+          Error: Hospital ID is missing
+        </div>
+      </div>
+    );
+  }
+
+  if (userExists === null || !userData || !totalRoom) {
     return (
       <div className="min-h-full flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
-  // console.log(userData);
+
+  const chartData = [
+    {
+      name: "Single Room",
+      value: totalRoom.singleRoom,
+      available: userData.bedsAvailable,
+      fill: COLORS[0],
+    },
+    {
+      name: "ICU",
+      value: totalRoom.ICU,
+      available: userData.icuAvailable,
+      fill: COLORS[1],
+    },
+    {
+      name: "General Ward",
+      value: totalRoom.GeneralWard,
+      available: userData.generalWardAvailable,
+      fill: COLORS[2],
+    },
+    {
+      name: "Shared Room",
+      value: totalRoom.SharedRoom,
+      available: userData.sharedAvailable,
+      fill: COLORS[3],
+    },
+  ];
+
+  const totalRooms = chartData.reduce((sum, item) => sum + item.value, 0);
+  const availableRooms = chartData.reduce(
+    (sum, item) => sum + item.available,
+    0
+  );
+  const occupancyRate = ((totalRooms - availableRooms) / totalRooms) * 100;
+
   return (
-    <div className="h-full">
-      <div className="font-2xl font-extrabold bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-10">
-        Hospital Dashboard
+    <div className=" bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <div className="max-w-80 md:max-w-xl">
+          <h1 className="text-3xl font-bold">
+            {userData.name + " "} Dashboard
+          </h1>
+          </div>
+          <div className="flex flex-col items-end space-y-2 text-black text-end">
+            <span className="text-gray-500 font-semibold">
+              {userData.address +
+                " / " +
+                userData.City +
+                " / " +
+                userData.State}
+            </span>
+            <span className="text-gray-500 font-semibold">
+              {"Website : "}
+              <a href={`https://${userData.Website}`} target="_blank">
+                {userData.Website}
+              </a>
+            </span>
+            <span className="text-gray-500 font-semibold">
+              {"Contact no : " + userData.contactno}
+            </span>
+            <span className="text-gray-500 font-semibold">
+              {"Zipcode : " + userData.Zipcode}
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Rooms</CardTitle>
+              <BedIcon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalRooms}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Available Rooms
+              </CardTitle>
+              <ActivityIcon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{availableRooms}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Occupancy Rate
+              </CardTitle>
+              <UsersIcon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {occupancyRate.toFixed(1)}%
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Room Distribution</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="bar" className="space-y-4">
+                <TabsList>
+                  <TabsTrigger value="bar">Bar Chart</TabsTrigger>
+                  <TabsTrigger value="pie">Pie Chart</TabsTrigger>
+                </TabsList>
+                <TabsContent value="pie">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) =>
+                          `${name} ${(percent * 100).toFixed(0)}%`
+                        }
+                      >
+                        {chartData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </TabsContent>
+                <TabsContent value="bar">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="value" fill="#06b6d4" name="Total" />
+                      <Bar
+                        dataKey="available"
+                        fill="#9333ea"
+                        name="Available"
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
+            {chartData.map((item) => (
+              <RadialChart
+                key={item.name}
+                title={item.name}
+                value={item.available}
+                total={item.value}
+                trend={0}
+                timeframe="Current Status"
+                color={item.fill}
+              />
+            ))}
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Room Availability Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RadialChart
+                  title="Total Room Availability"
+                  value={availableRooms}
+                  total={totalRooms}
+                  trend={0}
+                  timeframe="Current Status"
+                  color={COLORS[0]}
+                />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
-      {/* <div className="px-10 space-x-10">
-        <Button onClick={handleLogout}>Logout</Button>
-        <Button onClick={handleRooms}>Create Rooms </Button>
-        <Button onClick={handleShowRooms}>Manage Rooms </Button>
-        <Button onClick={handleRoomHistory}>Room History </Button>
-      </div> */}
-      <div className="pt-10 pb-2 pl-2">No of single beds available = &nbsp; {userData.bedsAvailable} </div>
-      <div className="p-2">No of icu available = &nbsp; {userData.icuAvailable} </div>
-      <div className="p-2">No of opd available = &nbsp; {userData.opdsAvailable} </div>
-      <div className="p-2">No of shared beds available = &nbsp; {userData.sharedAvailable} </div>
-      <div className="p-2">No of general ward available = &nbsp; {userData.generalWardAvailable} </div>
-      <div className="p-2">No of labs available = &nbsp; {userData.labsAvailable} </div>
-      {/* <DataTable columns={columns} data={userData.room} /> */}
-      {
-        totalroom ? totalroom.singleRoom:<></>
-      }
     </div>
   );
-};
-
-export default HospitalDashboard;
+}

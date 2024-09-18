@@ -78,7 +78,7 @@ export default function Rooms() {
   const { id } = params;
   const watchAvailable = form.watch("isavailabel");
   return (
-    <div className="min-h-[500px] w-full max-w-screen-2xl flex justify-center py-10 mx-auto bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-[500px] w-full max-w-screen-2xl flex justify-center py-20 mx-auto bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 ">
       <Card className="w-[300px] sm:w-[430px] md:w-[540px]">
         <CardHeader>
           <CardTitle>

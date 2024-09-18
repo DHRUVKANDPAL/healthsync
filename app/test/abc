@@ -133,3 +133,54 @@ model HospitalSession {
   expiresAt DateTime
   hospital Hospital @relation(fields: [userId], references: [id])
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+-name
+-Website
+-City
+-State
+-Address 
+-Zipcode
+-Contact 
+-Alternate contact 
+- Charts --> no of beds available / total no of beds 
+- Charts --> no of opds available / total no of opds 
+- Charts --> no of icus available / total no of icus 
+- Charts --> no of general ward available / total no of general ward 
+- Charts --> no of shared room available / total no of shared room 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p className="mb-2"><span className="font-semibold">Name:</span> {userData.name}</p>
+            <p className="mb-2"><span className="font-semibold">Website:</span> {userData.Website}</p>
+            <p className="mb-2"><span className="font-semibold">City:</span> {userData.City}</p>
+            <p className="mb-2"><span className="font-semibold">State:</span> {userData.State}</p>
+            <p className="mb-2"><span className="font-semibold">Address:</span> {userData.address}</p>
+            <p className="mb-2"><span className="font-semibold">Zipcode:</span> {userData.Zipcode}</p>
+            <p className="mb-2"><span className="font-semibold">Contact:</span> {userData.contactno}</p>
+            <p className="mb-2"><span className="font-semibold">Alternate Contact:</span> {userData.alternatecontactno}</p>
