@@ -205,7 +205,7 @@ const ManageRooms = () => {
         <Button onClick={handleLogout}>Logout</Button>
       </div>
 
-      <div className="container mx-auto py-10 mb-10 rounded-lg dark:bg-slate-900">
+      <div className="container mx-auto py-10  rounded-lg dark:bg-slate-900">
         <div className="flex w-full items-center space-x-2">
           <Input
             type="text"

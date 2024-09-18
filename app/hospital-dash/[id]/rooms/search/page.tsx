@@ -179,7 +179,7 @@ export default function SearchPage() {
                 <TabsTrigger value="appointments">Appointments</TabsTrigger>
                 <TabsTrigger value="rooms">Rooms</TabsTrigger>
               </TabsList>
-              <ScrollArea className="  pr-4">
+              <ScrollArea className=" max-h-[300px] pr-4">
                 <TabsContent value="details">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[
@@ -287,7 +287,7 @@ export default function SearchPage() {
   }
   return (
     <>
-      <div className="py-10 mb-40">
+      <div className="py-10 ">
         <Card className="w-full max-w-5xl mx-auto shadow-lg">
           <CardHeader className="pb-4 pt-8">
             <CardTitle className="text-3xl font-bold text-center flex justify-center gap-x-2 items-center">
@@ -379,7 +379,7 @@ export default function SearchPage() {
                         </TabsTrigger>
                         <TabsTrigger value="rooms">Rooms</TabsTrigger>
                       </TabsList>
-                      <ScrollArea className="max-h-[450px] overflow-y-scroll pr-4 pb-2">
+                      <ScrollArea className="h-[520px]  pr-4 pb-2">
                         <TabsContent value="details">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <InfoCard

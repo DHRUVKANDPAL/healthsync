@@ -94,14 +94,14 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   };
   if (userExists === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="min-h-full flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
   // console.log(userData);
   return (
-    <>
+    <div className="h-full">
       <div className="font-2xl font-extrabold bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-10">
         Hospital Dashboard
       </div>
@@ -121,7 +121,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       {
         totalroom ? totalroom.singleRoom:<></>
       }
-    </>
+    </div>
   );
 };
 

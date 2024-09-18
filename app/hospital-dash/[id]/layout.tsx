@@ -22,7 +22,7 @@ import {
   PlusSquare,
   Settings,
   Home,
-  Search
+  Search,
 } from "lucide-react";
 import Link from "next/link";
 import { title } from "process";
@@ -74,7 +74,7 @@ export default function RootLayout({
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50 ">
+    <div className="flex h-[calc(100vh-136px)] bg-gray-50 ">
       <aside className="hidden w-64 bg-gradient-to-b from-blue-50 to-teal-50 shadow-md lg:flex lg:flex-col">
         <div className="flex items-center justify-center p-6">
           <Building2 className="h-8 w-8 text-blue-600" />
@@ -126,7 +126,7 @@ export default function RootLayout({
               <span className="ml-2 text-xl">Hospital Dashboard</span>
             </SheetTitle>
           </SheetHeader>
-          <ScrollArea className="flex-1 px-3 ">
+          <ScrollArea className="flex-1 px-3  ">
             <nav className="flex flex-col space-y-1">
               {navItems.map((item) => (
                 <Link
@@ -151,7 +151,7 @@ export default function RootLayout({
           </div>
         </SheetContent>
       </Sheet>
-      <main className="flex-1 overflow-y-auto bg-white p-8">{children}</main>
+      <main className="flex-1 overflow-x-auto bg-white p-8">{children}</main>
     </div>
   );
 }
