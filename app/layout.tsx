@@ -25,13 +25,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header></Header>
-        <EdgeStoreProvider>{children}</EdgeStoreProvider>
-        <Toaster richColors></Toaster>
+        <div className="flex flex-col h-screen">
+          <Header></Header>
+          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+          <Toaster richColors></Toaster>
+        </div>
       </body>
     </html>
   );
