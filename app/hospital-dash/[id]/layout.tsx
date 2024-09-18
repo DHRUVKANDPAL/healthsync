@@ -21,7 +21,8 @@ import {
   Menu,
   PlusSquare,
   Settings,
-  Home
+  Home,
+  Search
 } from "lucide-react";
 import Link from "next/link";
 import { title } from "process";
@@ -49,6 +50,11 @@ export default function RootLayout({
       title: "Home",
       href: `/hospital-dash/${id}`,
       icon: Home,
+    },
+    {
+      title: "Search Patient",
+      href: `/hospital-dash/${id}/rooms/search`,
+      icon: Search,
     },
     {
       title: "Create Rooms",

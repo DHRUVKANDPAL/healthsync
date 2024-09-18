@@ -35,7 +35,20 @@ export default function RootLayout({
 
   const isHospitalDash = pathname.startsWith("/hospital-dash");
   const isPatientDash = pathname.startsWith("/patient-dash");
-  if (isHospitalDash || isPatientDash) {
+  if (isHospitalDash ) {
+    return (
+      <html lang="en">
+        <body className={inter.className}>
+          <main className="max-h-screen overflow-hidden">
+            <Header></Header>
+            <EdgeStoreProvider>{children}</EdgeStoreProvider>
+            <Toaster richColors></Toaster>
+          </main>
+        </body>
+      </html>
+    );
+  }
+  if (isPatientDash ) {
     return (
       <html lang="en">
         <body className={inter.className}>
