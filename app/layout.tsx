@@ -25,48 +25,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersList = headers();
-  const referer = headersList.get("referer");
 
-  let pathname = "";
-  if (referer) {
-    pathname = new URL(referer).pathname;
-  }
-
-  const isHospitalDash = pathname.startsWith("/hospital-dash");
-  const isPatientDash = pathname.startsWith("/patient-dash");
-  if (isHospitalDash ) {
-    return (
-      <html lang="en">
-        <body className={inter.className}>
-          <main className="max-h-screen overflow-hidden">
-            <Header></Header>
-            <EdgeStoreProvider>{children}</EdgeStoreProvider>
-            <Toaster richColors></Toaster>
-          </main>
-        </body>
-      </html>
-    );
-  }
-  if (isPatientDash ) {
-    return (
-      <html lang="en">
-        <body className={inter.className}>
-          <main className="max-h-screen overflow-hidden">
-            <Header></Header>
-            <EdgeStoreProvider>{children}</EdgeStoreProvider>
-            <Toaster richColors></Toaster>
-          </main>
-        </body>
-      </html>
-    );
-  }
   return (
     <html lang="en">
       <body className={inter.className}>
         <Header></Header>
         <EdgeStoreProvider>{children}</EdgeStoreProvider>
-        <Footer></Footer>
         <Toaster richColors></Toaster>
       </body>
     </html>
