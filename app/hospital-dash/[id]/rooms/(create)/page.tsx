@@ -40,7 +40,7 @@ const formSchema = z.object({
   typeof: z.string(),
   isavailabel: z.boolean().default(false).optional(),
   bookedby: z.string().optional(),
-  aadhar: z.string().length(12),
+  aadhar: z.string().length(12).optional(),
 });
 
 export default function Rooms() {

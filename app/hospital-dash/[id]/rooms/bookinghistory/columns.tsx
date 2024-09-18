@@ -14,7 +14,14 @@ import {
   TriangleAlert,
   User,
 } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -80,7 +87,34 @@ import {
   FileText,
   Activity,
 } from "lucide-react";
+import { pusherClient } from "@/lib/pusher";
+interface PusherCallbacks {
+  onBedsAvailable: (data: any) => void;
+  onPatientData: (data: any) => void;
+}
 
+export function setupPusher(callbacks: PusherCallbacks) {
+  const channel = pusherClient.subscribe("rooms");
+
+  channel.bind("beds-available", (data: { message: any }) => {
+    console.log("Received beds-available event:", data);
+    callbacks.onBedsAvailable(data.message);
+  });
+
+  channel.bind(
+    "patient-data",
+    (data: { message: { data: any; data2: any } }) => {
+      console.log("Received patient-data event:", data);
+      callbacks.onPatientData(data.message);
+    }
+  );
+
+  return () => {
+    channel.unbind("beds-available");
+    channel.unbind("patient-data");
+    pusherClient.unsubscribe("rooms");
+  };
+}
 export type BedRooms = {
   id: string;
   roomno: string;
@@ -90,6 +124,7 @@ export type BedRooms = {
   bookedby: string;
   updatedAt: Date;
 };
+
 const formSchema = z.object({
   id: z.string(),
   roomno: z.string(),
@@ -218,10 +253,12 @@ export const columns: ColumnDef<BedRooms>[] = [
       const [patientData, setPatientData] = useState<any>(null);
       const [roomBooked, setRoomBooked] = useState<any>(null);
       const [isPending, startTransition] = useTransition();
+      const [userData, setUserData] = useState<any>(null);
       const fetchPatient = async (values: {
         amount: string;
         id: string | string[];
       }) => {
+        console.log("Fetching Patient");
         try {
           startTransition(async () => {
             console.log(values.amount);
@@ -255,10 +292,23 @@ export const columns: ColumnDef<BedRooms>[] = [
           toast.error("An error occurred");
         }
       };
+
       const { id } = useParams();
       const amount: string = String(row.getValue("aadhar"));
       const isAvailable = String(row.getValue("isAvailabel"));
+      // useEffect(() => {
+      //   // Setup Pusher and handle bed availability and patient data
+      //   const channel = pusherClient.subscribe("rooms");
 
+      //   channel.bind("room-history", async(data: { message: any }) => {
+      //     console.log("Received room-history event:", data);
+      //     if(opendialog)await fetchPatient({amount,id})
+      //   });
+      //   return () => {
+      //     channel.unbind("room-history");
+      //     pusherClient.unsubscribe("rooms");
+      //   };
+      // }, []);
       function InfoCard({ icon: Icon, label, value, className = "" }: any) {
         return (
           <Card className={`overflow-hidden ${className}`}>
@@ -278,9 +328,10 @@ export const columns: ColumnDef<BedRooms>[] = [
           </Card>
         );
       }
-      const sortedRooms = roomBooked?.sort((a:any, b:any) => 
-        new Date(b.bookedAt).getTime() - new Date(a.bookedAt).getTime()
-      )
+      const sortedRooms = roomBooked?.sort(
+        (a: any, b: any) =>
+          new Date(b.bookedAt).getTime() - new Date(a.bookedAt).getTime()
+      );
       if (opendialog) {
         return patientData ? (
           <Dialog open={opendialog} onOpenChange={setOpenDialog}>
@@ -288,9 +339,7 @@ export const columns: ColumnDef<BedRooms>[] = [
               <DialogHeader className="p-6 pb-4 bg-background">
                 <div className="flex items-center space-x-4">
                   <Avatar className="w-24 h-24 border-2 border-primary">
-                    <AvatarImage
-                      src={`${patientData.imageUrl}`}
-                    />
+                    <AvatarImage src={`${patientData.imageUrl}`} />
                     {/* <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${patientData.name}`} /> */}
                     <AvatarFallback>
                       {patientData.name
@@ -304,14 +353,29 @@ export const columns: ColumnDef<BedRooms>[] = [
                       {patientData.name}
                     </DialogTitle>
                     <div className="flex items-center mt-2 space-x-2">
-                      <Badge variant="secondary" className="h-7 text-sm font-normal">{patientData.gender}</Badge>
-                      <Badge variant="secondary" className="h-7 text-sm font-normal">{patientData.dob}</Badge>
-                      <Badge variant="secondary" className="h-7 text-sm font-normal">{patientData.bloodgroup}</Badge>
+                      <Badge
+                        variant="secondary"
+                        className="h-7 text-sm font-normal"
+                      >
+                        {patientData.gender}
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="h-7 text-sm font-normal"
+                      >
+                        {patientData.dob}
+                      </Badge>
+                      <Badge
+                        variant="secondary"
+                        className="h-7 text-sm font-normal"
+                      >
+                        {patientData.bloodgroup}
+                      </Badge>
                     </div>
                   </div>
                 </div>
               </DialogHeader>
-              <div className="px-6 bg-background" >
+              <div className="px-6 bg-background">
                 <Tabs defaultValue="details" className="w-full">
                   <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="details">Details</TabsTrigger>
@@ -381,57 +445,71 @@ export const columns: ColumnDef<BedRooms>[] = [
                       </div>
                     </TabsContent>
                     <TabsContent value="rooms" className="p-0">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Hotel className="mr-2 h-4 w-4" />
-                      Rooms Booked
-                    </div>
-                    <Badge variant="outline">{sortedRooms.length} Room(s)</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Room No</TableHead>
-                        <TableHead>Type</TableHead>
-                        {/* <TableHead>Booked By</TableHead> */}
-                        <TableHead>Booked At</TableHead>
-                        <TableHead>Checkout</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sortedRooms.map((room:any) => (
-                        <TableRow key={room.id}>
-                          <TableCell className="font-medium">{room.roomno}</TableCell>
-                          <TableCell>{room.typeof}</TableCell>
-                          {/* <TableCell>{room.bookedBy}</TableCell> */}
-                          <TableCell>{new Date(room.bookedAt).toLocaleString()}</TableCell>
-                          <TableCell>{room.checkout ? new Date(room.checkout).toLocaleString() : 'N/A'}</TableCell>
-                          <TableCell>
-                            <Badge variant={room.checkout ? "secondary" : "default"}>
-                              {room.checkout ? 'Checked Out' : 'Active'}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <Hotel className="mr-2 h-4 w-4" />
+                              Rooms Booked
+                            </div>
+                            <Badge variant="outline">
+                              {sortedRooms.length} Room(s)
                             </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Room No</TableHead>
+                                <TableHead>Type</TableHead>
+                                {/* <TableHead>Booked By</TableHead> */}
+                                <TableHead>Booked At</TableHead>
+                                <TableHead>Checkout</TableHead>
+                                <TableHead>Status</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {sortedRooms.map((room: any) => (
+                                <TableRow key={room.id}>
+                                  <TableCell className="font-medium">
+                                    {room.roomno}
+                                  </TableCell>
+                                  <TableCell>{room.typeof}</TableCell>
+                                  {/* <TableCell>{room.bookedBy}</TableCell> */}
+                                  <TableCell>
+                                    {new Date(room.bookedAt).toLocaleString()}
+                                  </TableCell>
+                                  <TableCell>
+                                    {room.checkout
+                                      ? new Date(room.checkout).toLocaleString()
+                                      : "N/A"}
+                                  </TableCell>
+                                  <TableCell>
+                                    <Badge
+                                      variant={
+                                        room.checkout ? "secondary" : "default"
+                                      }
+                                    >
+                                      {room.checkout ? "Checked Out" : "Active"}
+                                    </Badge>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
                   </ScrollArea>
                 </Tabs>
               </div>
               <div className="px-6 bg-background">
-              <DialogFooter className="px-6 py-4 bg-background">
-                <Button variant="outline">
-                  <FileText className="mr-2 h-4 w-4" /> Generate Report
-                </Button>
-              </DialogFooter>
+                <DialogFooter className="px-6 py-4 bg-background">
+                  <Button variant="outline">
+                    <FileText className="mr-2 h-4 w-4" /> Generate Report
+                  </Button>
+                </DialogFooter>
               </div>
             </DialogContent>
           </Dialog>
@@ -444,20 +522,24 @@ export const columns: ColumnDef<BedRooms>[] = [
                     <AvatarImage
                       src={`https://placehold.jp/400x400.png?text=User`}
                     />
-                    
                   </Avatar>
                   <div>
                     <DialogTitle className="text-3xl font-bold">
                       Aadhar no : {amount}
                     </DialogTitle>
                     <div className="flex items-center mt-2 space-x-2">
-                      <Badge variant="destructive" className="h-7 text-sm font-normal">Details not Available. Please ask user to register on our portal.</Badge>
-                      
+                      <Badge
+                        variant="destructive"
+                        className="h-7 text-sm font-normal"
+                      >
+                        Details not Available. Please ask user to register on
+                        our portal.
+                      </Badge>
                     </div>
                   </div>
                 </div>
               </DialogHeader>
-              <div className="px-6 bg-background" >
+              <div className="px-6 bg-background">
                 <Tabs defaultValue="rooms" className="w-full">
                   <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="rooms">Rooms</TabsTrigger>
@@ -471,7 +553,9 @@ export const columns: ColumnDef<BedRooms>[] = [
                         <InfoCard
                           icon={User}
                           label="Message"
-                          value={"Please ask user to register on our portal to get details."}
+                          value={
+                            "Please ask user to register on our portal to get details."
+                          }
                           className="md:col-span-2"
                         />
                       </div>
@@ -507,57 +591,71 @@ export const columns: ColumnDef<BedRooms>[] = [
                       </div>
                     </TabsContent>
                     <TabsContent value="rooms" className="p-0">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Hotel className="mr-2 h-4 w-4" />
-                      Rooms Booked
-                    </div>
-                    <Badge variant="outline">{sortedRooms.length} Room(s)</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Room No</TableHead>
-                        <TableHead>Type</TableHead>
-                        {/* <TableHead>Booked By</TableHead> */}
-                        <TableHead>Booked At</TableHead>
-                        <TableHead>Checkout</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sortedRooms.map((room:any) => (
-                        <TableRow key={room.id}>
-                          <TableCell className="font-medium">{room.roomno}</TableCell>
-                          <TableCell>{room.typeof}</TableCell>
-                          {/* <TableCell>{room.bookedBy}</TableCell> */}
-                          <TableCell>{new Date(room.bookedAt).toLocaleString()}</TableCell>
-                          <TableCell>{room.checkout ? new Date(room.checkout).toLocaleString() : 'N/A'}</TableCell>
-                          <TableCell>
-                            <Badge variant={room.checkout ? "secondary" : "default"}>
-                              {room.checkout ? 'Checked Out' : 'Active'}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <Hotel className="mr-2 h-4 w-4" />
+                              Rooms Booked
+                            </div>
+                            <Badge variant="outline">
+                              {sortedRooms.length} Room(s)
                             </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Room No</TableHead>
+                                <TableHead>Type</TableHead>
+                                {/* <TableHead>Booked By</TableHead> */}
+                                <TableHead>Booked At</TableHead>
+                                <TableHead>Checkout</TableHead>
+                                <TableHead>Status</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {sortedRooms.map((room: any) => (
+                                <TableRow key={room.id}>
+                                  <TableCell className="font-medium">
+                                    {room.roomno}
+                                  </TableCell>
+                                  <TableCell>{room.typeof}</TableCell>
+                                  {/* <TableCell>{room.bookedBy}</TableCell> */}
+                                  <TableCell>
+                                    {new Date(room.bookedAt).toLocaleString()}
+                                  </TableCell>
+                                  <TableCell>
+                                    {room.checkout
+                                      ? new Date(room.checkout).toLocaleString()
+                                      : "N/A"}
+                                  </TableCell>
+                                  <TableCell>
+                                    <Badge
+                                      variant={
+                                        room.checkout ? "secondary" : "default"
+                                      }
+                                    >
+                                      {room.checkout ? "Checked Out" : "Active"}
+                                    </Badge>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
                   </ScrollArea>
                 </Tabs>
               </div>
               <div className="px-6 bg-background">
-              <DialogFooter className="px-6 py-4 bg-background">
-                <Button variant="outline">
-                  <FileText className="mr-2 h-4 w-4" /> Generate Report
-                </Button>
-              </DialogFooter>
+                <DialogFooter className="px-6 py-4 bg-background">
+                  <Button variant="outline">
+                    <FileText className="mr-2 h-4 w-4" /> Generate Report
+                  </Button>
+                </DialogFooter>
               </div>
             </DialogContent>
           </Dialog>

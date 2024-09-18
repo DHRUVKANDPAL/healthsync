@@ -13,6 +13,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const id = params.id;
   const [userData, setUserData] = useState<any>(null);
+  const[totalroom,setTotalRooms]=useState<any>(null);
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -24,6 +25,17 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
           setUserExists(true);
           setUserData(data.user);
         }
+
+        const res2 = await fetch(`/api/totalrooms/${id}`);
+        const data2 = await res2.json();
+        if (!data2.success) {
+          router.push("/hospital-auth");
+        } else {
+          setTotalRooms(data2.total);
+        }
+
+
+
       } catch (error) {
         toast.error("Error checking Hospital.");
         router.push("/hospital-auth");
@@ -31,6 +43,22 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
     };
     checkUser();
   }, [id, router]);
+
+
+  const totalRooms=async()=>{
+    try {
+      const res = await fetch(`/api/totalrooms/${id}`);
+      const data = await res.json();
+      if (!data.success) {
+        router.push("/hospital-auth");
+      } else {
+        setTotalRooms(data.total);
+      }
+    } catch (error) {
+      
+    }
+  }
+
 
   useEffect(() => {
     
@@ -40,6 +68,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
     
     pusherClient.bind("beds-available", (data: { message: any }) => {
       setUserData(data.message)
+      totalRooms()
     });
 
     return () => pusherClient.unsubscribe("rooms");
@@ -60,6 +89,9 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
   const handleShowRooms = async () => {
     router.push(`/hospital-dash/${id}/rooms/manage`);
   };
+  const handleRoomHistory = async () => {
+    router.push(`/hospital-dash/${id}/rooms/bookinghistory`);
+  };
   if (userExists === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
@@ -77,6 +109,7 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
         <Button onClick={handleLogout}>Logout</Button>
         <Button onClick={handleRooms}>Create Rooms </Button>
         <Button onClick={handleShowRooms}>Manage Rooms </Button>
+        <Button onClick={handleRoomHistory}>Room History </Button>
       </div>
       <div className="pt-10 pb-2 pl-2">No of single beds available = &nbsp; {userData.bedsAvailable} </div>
       <div className="p-2">No of icu available = &nbsp; {userData.icuAvailable} </div>
@@ -85,6 +118,9 @@ const HospitalDashboard = ({ params }: { params: { id: string } }) => {
       <div className="p-2">No of general ward available = &nbsp; {userData.generalWardAvailable} </div>
       <div className="p-2">No of labs available = &nbsp; {userData.labsAvailable} </div>
       {/* <DataTable columns={columns} data={userData.room} /> */}
+      {
+        totalroom ? totalroom.singleRoom:<></>
+      }
     </>
   );
 };

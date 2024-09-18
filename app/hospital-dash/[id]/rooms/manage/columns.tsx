@@ -74,7 +74,31 @@ import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { pusherClient } from "@/lib/pusher";
+interface PusherCallbacks {
+  onBedsAvailable: (data: any) => void;
+  onPatientData: (data: any) => void;
+}
 
+export function setupPusher(callbacks: PusherCallbacks) {
+  const channel = pusherClient.subscribe("rooms");
+
+  channel.bind("beds-available", (data: { message: any }) => {
+    console.log("Received beds-available event:", data);
+    callbacks.onBedsAvailable(data.message);
+  });
+
+  channel.bind("patient-data", (data: { message: { data: any; data2: any } }) => {
+    console.log("Received patient-data event:", data);
+    callbacks.onPatientData(data.message);
+  });
+
+  return () => {
+    channel.unbind("beds-available");
+    channel.unbind("patient-data");
+    pusherClient.unsubscribe("rooms");
+  };
+}
 export type BedRooms = {
   id: string;
   roomno: string;
@@ -225,11 +249,13 @@ export const columns: ColumnDef<BedRooms>[] = [
       const [opendialog, setOpenDialog] = useState(false);
       const [patientData, setPatientData] = useState<any>(null);
       const [roomBooked, setRoomBooked] = useState<any>(null);
+      const [userData, setUserData] = useState<any>(null);
       const [isPending, startTransition] = useTransition();
       const fetchPatient = async (values: {
         amount: string;
         id: string | string[];
       }) => {
+        console.log("Fetching Patient");
         try {
           startTransition(async () => {
             console.log(values.amount);
@@ -263,10 +289,27 @@ export const columns: ColumnDef<BedRooms>[] = [
           toast.error("An error occurred");
         }
       };
+      
+      
       const { id } = useParams();
       const amount: string = String(row.getValue("aadhar"));
       const isAvailable = String(row.getValue("isAvailabel"));
+      // useEffect(() => {
+      //   // Setup Pusher and handle bed availability and patient data
+      //   const channel = pusherClient.subscribe("rooms");
 
+      //   channel.bind("room-history", async(data: { message: any }) => {
+      //     console.log("Received room-history event:", data);
+      //     if(opendialog)await fetchPatient({amount,id})
+      //   });
+
+        
+
+      //   return () => {
+      //     channel.unbind("room-history");
+      //     pusherClient.unsubscribe("rooms");
+      //   };
+      // }, []);
       function InfoCard({ icon: Icon, label, value, className = "" }: any) {
         return (
           <Card className={`overflow-hidden ${className}`}>
