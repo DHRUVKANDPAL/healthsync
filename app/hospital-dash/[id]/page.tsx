@@ -76,22 +76,37 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
       }
 
       try {
-        const res = await fetch(`/api/essentialHospitalDetails/${id}`);
-        const data = await res.json();
-        if (!data.success) {
+        try {
+          // Run both fetch requests in parallel using Promise.all
+          const [res1, res2] = await Promise.all([
+            fetch(`/api/essentialHospitalDetails/${id}`),
+            fetch(`/api/totalrooms/${id}`),
+          ]);
+        
+          // Parse both responses
+          const data1 = await res1.json();
+          const data2 = await res2.json();
+        
+          // Handle first API response
+          if (!data1.success) {
+            router.push("/hospital-auth");
+          } else {
+            setUserExists(true);
+            setUserData(data1.user);
+          }
+        
+          // Handle second API response
+          if (!data2.success) {
+            router.push("/hospital-auth");
+          } else {
+            setTotalRooms(data2.total);
+          }
+        
+        } catch (error) {
+          toast.error("Error checking Hospital.");
           router.push("/hospital-auth");
-        } else {
-          setUserExists(true);
-          setUserData(data.user);
         }
-
-        const res2 = await fetch(`/api/totalrooms/${id}`);
-        const data2 = await res2.json();
-        if (!data2.success) {
-          router.push("/hospital-auth");
-        } else {
-          setTotalRooms(data2.total);
-        }
+        
       } catch (error) {
         toast.error("Error checking Hospital.");
         router.push("/hospital-auth");
