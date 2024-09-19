@@ -75,10 +75,10 @@ export default function RootLayout({
 
   return (
     <div className="flex h-[calc(100vh-136px)] bg-gray-50 ">
-      <aside className="hidden w-64 bg-gradient-to-b from-blue-50 to-teal-50 shadow-md dark:bg-gradient-to-b dark:from-slate-950 dark:to-blue-950 lg:flex lg:flex-col">
+      <aside className="hidden w-64  shadow-md bg-gradient-to-b from-slate-950 to-blue-950 lg:flex lg:flex-col">
         <div className="flex items-center justify-center p-6">
           <Building2 className="h-8 w-8 text-blue-600 dark:text-white" />
-          <h1 className="ml-2 text-2xl font-bold text-gray-800 dark:text-white">
+          <h1 className="ml-2 text-2xl font-bold  text-white">
             Hospital Dashboard
           </h1>
         </div>
@@ -88,7 +88,7 @@ export default function RootLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center rounded-lg px-3 py-2 text-gray-700 dark:text-white hover:dark:text-blue-800 transition-all hover:bg-blue-100 hover:text-blue-800"
+                className="flex items-center rounded-lg px-3 py-2  text-white hover:text-blue-800 transition-all hover:bg-blue-100 "
               >
                 <item.icon className="h-5 w-5" />
                 <span className="ml-3">{item.title}</span>
@@ -99,7 +99,7 @@ export default function RootLayout({
         <div className="sticky bottom-0 p-4 bg-transparent">
           <Button
             onClick={handleLogout}
-            className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+            className="w-full bg-slate-200 hover:bg-slate-100 text-black"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
