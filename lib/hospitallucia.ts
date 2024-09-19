@@ -100,3 +100,60 @@ export const getHospital = async () => {
     return dbUser;
 
 };
+
+
+
+export const getEssentialHospitalDetails = async () => {
+  const sessionId = cookies().get(hospitallucia.sessionCookieName)?.value || null;
+  if (!sessionId) {
+    return null;
+  }
+  const { session, user } = await hospitallucia.validateSession(sessionId);
+  try {
+    if (session && session.fresh) {
+      const sessionCookie = await hospitallucia.createSessionCookie(session.id);
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
+    }
+    if (!session) {
+      const sessionCookie = await hospitallucia.createBlankSessionCookie();
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
+    }
+  } catch (error) {}
+
+    const dbUser = await prisma?.hospital?.findUnique({
+      where: {
+        id: user?.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        Website: true,
+        contactno: true,
+        alternatecontactno: true,
+        email: true,
+        address: true,
+        City: true,
+        State: true,
+        Zipcode: true,
+        bedsAvailable: true,
+        opdsAvailable: true,
+        icuAvailable: true,
+        labsAvailable: true,
+        doctorsAvailable: true,
+        sharedAvailable:true,
+        generalWardAvailable:true,
+        idToLogin: true,
+        isVerified: true,
+      },
+    });
+    return dbUser;
+
+};

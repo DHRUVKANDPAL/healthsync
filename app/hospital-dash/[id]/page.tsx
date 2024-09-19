@@ -77,7 +77,7 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
       }
 
       try {
-        const res = await fetch(`/api/hospital/${id}`);
+        const res = await fetch(`/api/essentialHospitalDetails/${id}`);
         const data = await res.json();
         if (!data.success) {
           router.push("/hospital-auth");
