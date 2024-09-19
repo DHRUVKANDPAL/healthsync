@@ -19,7 +19,6 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   BellIcon,
   SettingsIcon,
