@@ -90,14 +90,13 @@ interface Document {
     date: string;
   };
 }
-
 const ProfileHeader = ({ patient }: { patient: Patient }) => (
-  <div className="bg-gradient-to-r from-blue-500 to-teal-600 text-white p-8 rounded-lg shadow-lg mb-8">
+  <div className="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white p-8 rounded-lg shadow-lg mb-8 transition-all duration-300 hover:shadow-xl">
     <div className="flex items-center">
       <img
         src={patient.imageUrl}
         alt={patient.name}
-        className="w-24 h-24 rounded-full border-4 border-white mr-6"
+        className="w-24 h-24 rounded-full border-4 border-white mr-6 hover:scale-105 transition-transform"
       />
       <div>
         <h1 className="text-3xl font-bold">{patient.name}</h1>
@@ -106,11 +105,14 @@ const ProfileHeader = ({ patient }: { patient: Patient }) => (
         </p>
       </div>
     </div>
+    <span className="absolute right-4 top-4 px-3 py-1 bg-white text-teal-600 rounded-lg text-sm font-semibold">
+      Verified
+    </span>
   </div>
 );
 
 const HealthSummary = ({ patient }: { patient: Patient }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     {[
       {
         icon: User,
@@ -139,12 +141,12 @@ const HealthSummary = ({ patient }: { patient: Patient }) => (
     ].map((item, index) => (
       <div
         key={index}
-        className="bg-white rounded-lg shadow-md p-4 flex items-center"
+        className="bg-white rounded-lg shadow-md p-6 flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:scale-105"
       >
-        <item.icon className={`mr-3 ${item.color}`} size={24} />
+        <item.icon className={`mr-4 ${item.color}`} size={32} />
         <div>
-          <p className="text-sm text-gray-500">{item.label}</p>
-          <p className="text-lg font-semibold">{item.value}</p>
+          <p className="text-sm text-gray-600">{item.label}</p>
+          <p className="text-xl font-semibold">{item.value}</p>
         </div>
       </div>
     ))}
@@ -158,9 +160,9 @@ const HealthProgress = ({ patient }: { patient: Patient }) => (
       {patient.healthMetrics.progressData.map((data, index) => (
         <div key={index} className="flex items-center justify-between">
           <span>{data.date}</span>
-          <div className="flex items-center space-x-4">
-            <span>Weight: {data.weight} kg</span>
-            <span>BP: {data.bloodPressure}</span>
+          <div className="flex items-center space-x-6">
+            <span className="text-sm">Weight: {data.weight} kg</span>
+            <span className="text-sm">BP: {data.bloodPressure}</span>
           </div>
         </div>
       ))}
@@ -193,7 +195,7 @@ const UpcomingAppointments = ({ patient }: { patient: Patient }) => (
       {patient.appointments.map((app, index) => (
         <li
           key={index}
-          className="flex items-center justify-between bg-gray-50 p-4 rounded-lg"
+          className="flex items-center justify-between bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors"
         >
           <div>
             <p className="font-semibold">{app.appointment.doctorName}</p>
@@ -216,7 +218,7 @@ const RecentDocuments = ({ patient }: { patient: Patient }) => (
       {patient.documents.map((doc) => (
         <li
           key={doc.document.id}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
+          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-all duration-300"
         >
           <div className="flex items-center">
             <FileText className="text-gray-400 mr-2" size={20} />
@@ -237,7 +239,10 @@ const Notifications = ({ patient }: { patient: Patient }) => (
     <h2 className="text-2xl font-bold mb-4">Recent Notifications</h2>
     <ul className="space-y-4">
       {patient.notifications.map((notification, index) => (
-        <li key={index} className="flex items-start p-3 bg-gray-50 rounded-lg">
+        <li
+          key={index}
+          className="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+        >
           <Bell className="text-blue-500 mr-3 mt-1 flex-shrink-0" size={20} />
           <div>
             <p className="font-semibold">{notification.title}</p>
