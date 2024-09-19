@@ -92,7 +92,7 @@ export default function RootLayout({
         userData={userData}
       />
       <main className="flex-1">
-        <div className="h-full overflow-auto p-8">{children}</div>
+        <div className="h-full overflow-auto p-8"><EdgeStoreProvider>{children}</EdgeStoreProvider></div>
       </main>
     </div>
   );

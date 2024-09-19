@@ -150,9 +150,32 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
 
   if (userExists === null || !userData || !totalRoom) {
     return (
-      <div className="min-h-full flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="w-64 h-64 relative">
+        <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+          <circle
+            className="text-gray-300 stroke-current"
+            strokeWidth="4"
+            cx="50"
+            cy="50"
+            r="34"
+            fill="transparent"
+          />
+          <circle
+            className="text-blue-500 stroke-current animate-progress-circle"
+            strokeWidth="4"
+            strokeLinecap="round"
+            cx="50"
+            cy="50"
+            r="34"
+            fill="transparent"
+          />
+        </svg>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-xl font-semibold">
+          <span className="animate-count-up">Loading ...</span>
+        </div>
       </div>
+    </div>
     );
   }
 
@@ -269,7 +292,7 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
                   <TabsTrigger value="bar">Bar Chart</TabsTrigger>
                   <TabsTrigger value="pie">Pie Chart</TabsTrigger>
                 </TabsList>
-                <TabsContent value="pie">
+                <TabsContent value="pie" className="pt-7">
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <Pie
@@ -296,9 +319,10 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
                     </PieChart>
                   </ResponsiveContainer>
                 </TabsContent>
-                <TabsContent value="bar">
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={chartData}>
+                <TabsContent value="bar" className="pt-7">
+                  <ResponsiveContainer width="100%" height={350} >
+                    
+                    <BarChart data={chartData} >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
@@ -311,10 +335,12 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
                         name="Available"
                       />
                     </BarChart>
+
                   </ResponsiveContainer>
                 </TabsContent>
               </Tabs>
             </CardContent>
+
           </Card>
 
           <div className="grid grid-cols-1 md:grid-cols-2  gap-6">

@@ -74,7 +74,7 @@ export default function RootLayout({
   ];
 
   return (
-    <div className="flex h-[calc(100vh-136px)] bg-gray-50 ">
+    <div className="flex h-[calc(100vh-136px)]  ">
       <aside className="hidden w-64  shadow-md bg-gradient-to-b from-slate-950 to-blue-950 lg:flex lg:flex-col">
         <div className="flex items-center justify-center p-6">
           <Building2 className="h-8 w-8 text-blue-600 dark:text-white" />

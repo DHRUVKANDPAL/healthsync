@@ -20,7 +20,7 @@ const RadialChart: React.FC<RadialChartProps> = ({ title, value, total, trend, t
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold text-gray-700 dark:text-gray-200">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="pb-2">
+      <CardContent className="pb-8">
         <div className="flex justify-between items-baseline mb-2">
           <span className="text-3xl font-bold" style={{ color }}>{value.toLocaleString()}</span>
           <span className="text-sm text-gray-500 dark:text-gray-400">of {total.toLocaleString()}</span>

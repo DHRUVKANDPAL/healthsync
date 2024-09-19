@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col h-screen">
           <Header></Header>
-          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+          {children}
           <Toaster richColors></Toaster>
         </div>
       </body>
