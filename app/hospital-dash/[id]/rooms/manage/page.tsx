@@ -1,5 +1,5 @@
 "use client";
-import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
+import { hospitalLogout } from "@/app/(main)/hospital-auth/authhos.actions";
 import { Button } from "@/components/ui/button";
 import { pusherClient } from "@/lib/pusher";
 import { redirect, useParams, useRouter } from "next/navigation";

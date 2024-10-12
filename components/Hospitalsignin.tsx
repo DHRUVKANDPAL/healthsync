@@ -24,7 +24,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2, PlusCircleIcon } from "lucide-react";
-import { hospitalSignIn } from "@/app/hospital-auth/authhos.actions";
+import { hospitalSignIn } from "@/app/(main)/hospital-auth/authhos.actions";
 export const HospitalSigninSchema = z.object({
   uniqueIdToLogin: z.string(),
   password: z.string().min(6),

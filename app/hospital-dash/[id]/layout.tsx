@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
+import { hospitalLogout } from "@/app/(main)/hospital-auth/authhos.actions";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -74,7 +74,7 @@ export default function RootLayout({
   ];
 
   return (
-    <div className="flex h-[calc(100vh-136px)]  ">
+    <div className="flex h-[calc(100vh)]  ">
       <aside className="hidden w-64  shadow-md bg-gradient-to-b from-slate-950 to-blue-950 lg:flex lg:flex-col">
         <div className="flex items-center justify-center p-6">
           <Building2 className="h-8 w-8 text-blue-600 dark:text-white" />
@@ -151,7 +151,7 @@ export default function RootLayout({
           </div>
         </SheetContent>
       </Sheet>
-      <main className="flex-1 overflow-x-auto bg-white ">{children}</main>
+      <main className="flex-1 overflow-x-auto bg-white min-h-screen">{children}</main>
     </div>
   );
 }

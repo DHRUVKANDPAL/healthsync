@@ -675,7 +675,7 @@ export const columns: ColumnDef<BedRooms>[] = [
           className=" font-medium  flex gap-1 items-center drop-shadow-sm cursor-pointer"
           onClick={() => fetchPatient(values)}
         >
-          {amount}
+          <Badge variant={"outline"}>{amount}</Badge>
           {isPending && <Loader2 className="animate-spin px-1"></Loader2>}
         </div>
       );

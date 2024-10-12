@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { signIn } from "@/app/patient-auth/auth.actions";
+import { signIn } from "@/app/(main)/patient-auth/auth.actions";
 import { Loader2 } from "lucide-react";
 export const SigninSchema = z.object({
   aadharno: z.string().length(12, "This is not a valid Aadhar no"),

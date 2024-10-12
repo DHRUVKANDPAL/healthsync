@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { toast, Toaster } from "sonner";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import Sidebar from "@/components/SideBar";
-import { logout } from "@/app/patient-auth/auth.actions";
+import { logout } from "@/app/(main)/patient-auth/auth.actions";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -92,7 +92,9 @@ export default function RootLayout({
         userData={userData}
       />
       <main className="flex-1">
-        <div className="h-full overflow-auto p-8"><EdgeStoreProvider>{children}</EdgeStoreProvider></div>
+        <div className="h-full overflow-auto p-8">
+          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+        </div>
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { hospitalLogout } from "@/app/hospital-auth/authhos.actions";
+import { hospitalLogout } from "@/app/(main)/hospital-auth/authhos.actions";
 import { Button } from "@/components/ui/button";
 import { pusherClient } from "@/lib/pusher";
 import { useParams, useRouter } from "next/navigation";
@@ -38,7 +38,7 @@ const ManageRooms = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>();
-  const [pdata,setpdata]=useState<any>(null)
+  const [pdata, setpdata] = useState<any>(null);
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -79,8 +79,7 @@ const ManageRooms = () => {
       toast.error("Error logging out. Try again!");
     }
   };
- 
-  
+
   const formatDate = (date: Date) => {
     const formatter = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -155,12 +154,12 @@ const ManageRooms = () => {
 
       if (dateRange?.from) {
         fromDate = new Date(dateRange.from);
-        fromDate.setHours(0, 0, 0, 0); 
+        fromDate.setHours(0, 0, 0, 0);
       }
 
       if (dateRange?.to) {
         toDate = new Date(dateRange.to);
-        toDate.setHours(23, 59, 59, 999); 
+        toDate.setHours(23, 59, 59, 999);
       }
       const withinDateRange =
         !fromDate ||
@@ -200,9 +199,10 @@ const ManageRooms = () => {
     );
   }
   return (
-    <>
-      <div className="px-10 space-x-10">
+    <div className="min-h-screen">
+      <div className=" px-10 space-x-10 pt-10">
         {/* <Button onClick={handleLogout}>Logout</Button> */}
+        <h1 className="text-5xl font-extrabold underline ">Manage Rooms</h1>
       </div>
 
       <div className="container mx-auto py-10  rounded-lg dark:bg-slate-900">
@@ -276,7 +276,7 @@ const ManageRooms = () => {
         </div>
         <DataTable columns={columns} data={sortedData} />
       </div>
-    </>
+    </div>
   );
 };
 

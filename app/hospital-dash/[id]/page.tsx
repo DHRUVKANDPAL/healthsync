@@ -214,7 +214,7 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
   const occupancyRate = ((totalRooms - availableRooms) / totalRooms) * 100;
 
   return (
-    <div className=" bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="max-w-80 md:max-w-xl">
@@ -222,7 +222,7 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
             {userData.name + " "} Dashboard
           </h1>
           </div>
-          <div className="flex flex-col items-end space-y-2 text-black text-end">
+          {/* <div className="flex flex-col items-end space-y-2 text-black text-end">
             <span className="text-gray-500 dark:text-gray-400 font-semibold">
               {userData.address +
                 " / " +
@@ -242,7 +242,7 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
             <span className="text-gray-500  dark:text-gray-400 font-semibold">
               {"Zipcode : " + userData.Zipcode}
             </span>
-          </div>
+          </div> */}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

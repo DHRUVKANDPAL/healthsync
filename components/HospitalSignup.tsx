@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { hospitalsignup } from "@/app/hospital-auth/authhos.actions";
+import { hospitalsignup } from "@/app/(main)/hospital-auth/authhos.actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 

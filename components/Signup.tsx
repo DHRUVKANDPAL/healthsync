@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { signup } from "@/app/patient-auth/auth.actions";
+import { signup } from "@/app/(main)/patient-auth/auth.actions";
 import {
   Select,
   SelectContent,

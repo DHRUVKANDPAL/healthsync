@@ -1,5 +1,5 @@
 "use client";
-import { logout } from "@/app/patient-auth/auth.actions";
+import { logout } from "@/app/(main)/patient-auth/auth.actions";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";

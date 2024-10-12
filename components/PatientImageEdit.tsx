@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
-import { imageEditPatient } from "@/app/patient-auth/auth.actions";
+import { imageEditPatient } from "@/app/(main)/patient-auth/auth.actions";
 import { Edit3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
