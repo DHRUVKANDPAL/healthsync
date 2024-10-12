@@ -44,34 +44,34 @@ export async function POST(
     if (!values.isavailabel) {
       const roomHistory = await prisma.hospitalRoomHistory.create({
         data: {
-          roomId:room.id,
+          roomId: room.id,
           roomno: values.roomno,
           typeof: values.typeof,
-          
+
           bookedBy: values.bookedby,
           aadhar: values.aadhar,
-          bookedAt:new Date(Date.now()),
+          bookedAt: new Date(Date.now()),
           userId: id,
         },
       });
       // console.log(roomHistory)
-      const message=await prisma.hospital.findUnique({
-        where:{
-          id:id,
+      const message = await prisma.hospital.findUnique({
+        where: {
+          id: id,
         },
-        include:{
-          roomHistory:true,
-        }
-      })
-      const message2=await prisma.hospital.findUnique({
-        where:{
-          id:id,
+        include: {
+          roomHistory: true,
         },
-        include:{
-          room:true,
-        }
-      })
-      console.log(message)
+      });
+      const message2 = await prisma.hospital.findUnique({
+        where: {
+          id: id,
+        },
+        include: {
+          room: true,
+        },
+      });
+      console.log(message);
       // console.log(message2)
       await pusherServer.trigger("rooms", "room-history", {
         message: message,

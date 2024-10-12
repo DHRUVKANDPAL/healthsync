@@ -10,7 +10,9 @@ import { HospitalSigninSchema } from "@/components/Hospitalsignin";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-export const hospitalsignup = async (values: z.infer<typeof HospitalSignUpSchema>) => {
+export const hospitalsignup = async (
+  values: z.infer<typeof HospitalSignUpSchema>
+) => {
   try {
     const existinghospital = await prisma.hospital.findUnique({
       where: {
@@ -53,17 +55,18 @@ export const hospitalsignup = async (values: z.infer<typeof HospitalSignUpSchema
     );
     return { success: true, id: hospital.id };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return { error: "Something went wrong", success: false };
   }
 };
 
-
-export const hospitalSignIn = async (values: z.infer<typeof HospitalSigninSchema>) => {
+export const hospitalSignIn = async (
+  values: z.infer<typeof HospitalSigninSchema>
+) => {
   try {
     const hospital = await prisma.hospital.findUnique({
       where: {
-        idToLogin:values.uniqueIdToLogin
+        idToLogin: values.uniqueIdToLogin,
       },
     });
     if (!hospital || !hospital.hashedPassword) {
@@ -76,7 +79,7 @@ export const hospitalSignIn = async (values: z.infer<typeof HospitalSigninSchema
     if (!passwordMatch) {
       return { success: false, error: "Invalid Credentials!" };
     }
-  
+
     const session = await hospitallucia.createSession(hospital.id, {});
     const sessionCookie = await hospitallucia.createSessionCookie(session.id);
     cookies().set(
@@ -86,19 +89,23 @@ export const hospitalSignIn = async (values: z.infer<typeof HospitalSigninSchema
     );
     return { success: true, id: hospital.id };
   } catch (error) {
-    console.log("Error in auth.actions.ts",error)
+    console.log("Error in auth.actions.ts", error);
     return { success: false };
   }
 };
 
-export const hospitalLogout=async()=>{
+export const hospitalLogout = async () => {
   try {
-     const sessionCookie = await hospitallucia.createBlankSessionCookie()
-     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-     redirect("/hospital-dash")
+    const sessionCookie = await hospitallucia.createBlankSessionCookie();
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+    redirect("/hospital-dash");
   } catch (error) {
-   console.log("Error")
+    console.log("Error");
   }
- //  location.reload();
-  revalidatePath("/patient-dash")
-}
+  //  location.reload();
+  revalidatePath("/patient-dash");
+};

@@ -3,12 +3,15 @@ import { getHospital } from "@/lib/hospitallucia";
 import { pusherServer } from "@/lib/pusher";
 import { NextRequest } from "next/server";
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const id = params.id;
 
   // Fetch the current hospital/user
   let user = await getHospital();
-  
+
   if (user && id !== user.id) {
     return new Response(JSON.stringify({ success: false }), {
       headers: { "Content-Type": "application/json" },
@@ -38,8 +41,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   // console.log("Hospital Room History data:", data2);
 
   // Trigger the pusher event if data is found
-  if (data!=null || data2.length!=0) {
-
+  if (data != null || data2.length != 0) {
     return new Response(JSON.stringify({ data2, data, success: true }), {
       headers: { "Content-Type": "application/json" },
     });
