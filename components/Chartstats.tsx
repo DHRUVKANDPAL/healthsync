@@ -56,7 +56,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-
 const monthColors = {
   january: "#2dd4bf",
   february: "#0f766e",
@@ -71,10 +70,6 @@ const monthColors = {
   november: "#0d9488",
   december: "#134e4a",
 };
-
-
-
-
 
 export default function Chartstats() {
   const [chartData, setChartData] = useState<any>([]);

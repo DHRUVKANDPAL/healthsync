@@ -37,7 +37,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col">
           <Header></Header>
           {children}
           <Toaster richColors></Toaster>
