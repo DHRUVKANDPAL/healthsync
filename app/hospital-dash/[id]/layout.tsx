@@ -75,7 +75,7 @@ export default function RootLayout({
 
   return (
     <div className="flex h-[calc(100vh)]  ">
-      <aside className="hidden w-64  shadow-md bg-gradient-to-b from-teal-900 via-slate-700 to-blue-900 lg:flex lg:flex-col">
+      <aside className="hidden w-64  shadow-md bg-gradient-to-b from-slate-950 to-blue-950 lg:flex lg:flex-col">
         <div className="flex items-center justify-center p-6 border-b mx-5 mb-4">
           <Building2 className="h-8 w-8 text-teal-300 dark:text-white" />
           <h1 className="ml-2 text-2xl font-bold  text-white">
