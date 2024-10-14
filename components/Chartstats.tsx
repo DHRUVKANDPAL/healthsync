@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 import Interactive from "./Interactive";
 
 import { Skeleton } from "./ui/skeleton";
-import ECG from "./ecg";
+import ECG from "./ECG";
 type ChartData = {
   month: string;
   count: number;
