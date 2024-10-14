@@ -75,9 +75,9 @@ export default function RootLayout({
 
   return (
     <div className="flex h-[calc(100vh)]  ">
-      <aside className="hidden w-64  shadow-md bg-gradient-to-b from-slate-950 to-blue-950 lg:flex lg:flex-col">
-        <div className="flex items-center justify-center p-6">
-          <Building2 className="h-8 w-8 text-blue-600 dark:text-white" />
+      <aside className="hidden w-64  shadow-md bg-gradient-to-b from-teal-900 via-slate-700 to-blue-900 lg:flex lg:flex-col">
+        <div className="flex items-center justify-center p-6 border-b mx-5 mb-4">
+          <Building2 className="h-8 w-8 text-teal-300 dark:text-white" />
           <h1 className="ml-2 text-2xl font-bold  text-white">
             Hospital Dashboard
           </h1>
@@ -88,7 +88,7 @@ export default function RootLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center rounded-lg px-3 py-2  text-white hover:text-blue-800 transition-all hover:bg-blue-100 "
+                className="flex items-center rounded-lg px-3 py-2  text-white hover:text-blue-950 transition-all hover:bg-teal-100 "
               >
                 <item.icon className="h-5 w-5" />
                 <span className="ml-3">{item.title}</span>
@@ -99,7 +99,7 @@ export default function RootLayout({
         <div className="sticky bottom-0 p-4 bg-transparent">
           <Button
             onClick={handleLogout}
-            className="w-full bg-slate-200 hover:bg-slate-100 text-black"
+            className="w-full bg-teal-100 hover:bg-rose-300 text-black"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
@@ -151,7 +151,9 @@ export default function RootLayout({
           </div>
         </SheetContent>
       </Sheet>
-      <main className="flex-1 overflow-x-auto bg-white min-h-screen">{children}</main>
+      <main className="flex-1 overflow-x-auto bg-white min-h-screen">
+        {children}
+      </main>
     </div>
   );
 }

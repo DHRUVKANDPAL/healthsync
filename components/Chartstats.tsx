@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 import Interactive from "./Interactive";
 
 import { Skeleton } from "./ui/skeleton";
+import ECG from "./ecg";
 type ChartData = {
   month: string;
   count: number;
@@ -134,7 +135,7 @@ export default function Chartstats() {
           Watch HealthSync Thrive with Numbers That Prove It
         </p>
       </div>
-      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-900">
+      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-slate-900 flex flex-col">
         <CardHeader
           className="bg-gradient-to-r 
         from-teal-500 to-blue-500 dark:from-blue-950 dark:to-slate-800 text-white rounded-t-lg"
@@ -148,9 +149,9 @@ export default function Chartstats() {
             {new Date().getFullYear()}
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-6">
-          <ChartContainer config={chartConfig}>
-            <ResponsiveContainer width="100%" height={300}>
+        <CardContent className="pt-6 flex-grow">
+          <ChartContainer config={chartConfig} className="h-full w-full">
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}

@@ -5,7 +5,7 @@ import { PatientData } from "@/components/SamplePatientData";
 const appointments = PatientData.appointments;
 const AppointmentList = () => {
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-4 min-h-[calc(100vh-200px)]">
       {appointments.map(({ appointment, index }: any) => (
         <li
           key={index}

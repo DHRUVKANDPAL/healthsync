@@ -2,7 +2,7 @@ import React from "react";
 
 const Settings = () => {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 h-[calc(100vh-200px)]">
       <h2 className="text-2xl font-semibold mb-4 text-slate-800 dark:text-white">
         Settings
       </h2>

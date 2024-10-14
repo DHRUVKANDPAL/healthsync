@@ -6,6 +6,7 @@ import Sidebar from "@/components/SideBar";
 import { logout } from "@/app/(main)/patient-auth/auth.actions";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import BeatLoader from "@/components/BeatLoader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -78,13 +79,13 @@ export default function RootLayout({
   if (userExists === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        <BeatLoader></BeatLoader>
       </div>
     );
   }
 
   return (
-    <div className="flex h-full bg-slate-100 dark:bg-slate-900 overflow-auto">
+    <div className="flex h-screen bg-slate-100 dark:bg-slate-900 overflow-auto">
       <Sidebar
         activeSection={activeSection}
         setActiveSection={handleSectionChange}
@@ -92,7 +93,7 @@ export default function RootLayout({
         userData={userData}
       />
       <main className="flex-1">
-        <div className="h-full overflow-auto p-8">
+        <div className="h-screen overflow-auto p-8">
           <EdgeStoreProvider>{children}</EdgeStoreProvider>
         </div>
       </main>

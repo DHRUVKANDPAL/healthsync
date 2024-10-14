@@ -91,7 +91,7 @@ interface Document {
   };
 }
 const ProfileHeader = ({ patient }: { patient: Patient }) => (
-  <div className="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white p-8 rounded-lg shadow-lg mb-8 transition-all duration-300 hover:shadow-xl">
+  <div className="relative bg-gradient-to-r from-blue-600 to-teal-600 dark:from-blue-900 dark:to-slate-800 text-white p-8 rounded-lg shadow-lg mb-8 transition-all duration-300 hover:shadow-xl">
     <div className="flex items-center">
       <img
         src={patient.imageUrl}
@@ -105,7 +105,7 @@ const ProfileHeader = ({ patient }: { patient: Patient }) => (
         </p>
       </div>
     </div>
-    <span className="absolute right-4 top-4 px-3 py-1 bg-white text-teal-600 rounded-lg text-sm font-semibold">
+    <span className="absolute right-4 top-4 px-3 py-1 bg-white dark:bg-teal-500 text-teal-600 dark:text-blue-950 rounded-lg text-sm font-semibold">
       Verified
     </span>
   </div>
@@ -141,11 +141,13 @@ const HealthSummary = ({ patient }: { patient: Patient }) => (
     ].map((item, index) => (
       <div
         key={index}
-        className="bg-white rounded-lg shadow-md p-6 flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:scale-105"
+        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:scale-105"
       >
         <item.icon className={`mr-4 ${item.color}`} size={32} />
         <div>
-          <p className="text-sm text-gray-600">{item.label}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            {item.label}
+          </p>
           <p className="text-xl font-semibold">{item.value}</p>
         </div>
       </div>
@@ -154,7 +156,7 @@ const HealthSummary = ({ patient }: { patient: Patient }) => (
 );
 
 const HealthProgress = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
     <h2 className="text-2xl font-bold mb-4">Health Progress</h2>
     <div className="space-y-4">
       {patient.healthMetrics.progressData.map((data, index) => (
@@ -171,7 +173,7 @@ const HealthProgress = ({ patient }: { patient: Patient }) => (
 );
 
 const HealthGoals = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
     <h2 className="text-2xl font-bold mb-4">Health Goals</h2>
     <ul className="space-y-2">
       {patient.healthMetrics.healthGoals.map((goal, index) => (
@@ -189,21 +191,25 @@ const HealthGoals = ({ patient }: { patient: Patient }) => (
 );
 
 const UpcomingAppointments = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
     <h2 className="text-2xl font-bold mb-4">Upcoming Appointments</h2>
     <ul className="space-y-4">
       {patient.appointments.map((app, index) => (
         <li
           key={index}
-          className="flex items-center justify-between bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors"
+          className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
         >
           <div>
             <p className="font-semibold">{app.appointment.doctorName}</p>
-            <p className="text-sm text-gray-500">{app.appointment.specialty}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-300">
+              {app.appointment.specialty}
+            </p>
           </div>
           <div className="text-right">
             <p>{app.appointment.date}</p>
-            <p className="text-sm text-gray-500">{app.appointment.time}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-300">
+              {app.appointment.time}
+            </p>
           </div>
         </li>
       ))}
@@ -212,19 +218,22 @@ const UpcomingAppointments = ({ patient }: { patient: Patient }) => (
 );
 
 const RecentDocuments = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
     <h2 className="text-2xl font-bold mb-4">Recent Documents</h2>
     <ul className="space-y-2">
       {patient.documents.map((doc) => (
         <li
           key={doc.document.id}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-all duration-300"
+          className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded transition-all duration-300"
         >
           <div className="flex items-center">
-            <FileText className="text-gray-400 mr-2" size={20} />
+            <FileText
+              className="text-gray-400 dark:text-gray-500 mr-2"
+              size={20}
+            />
             <span>{doc.document.name}</span>
           </div>
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
             <span>{doc.document.date}</span>
             <ChevronRight size={16} />
           </div>
@@ -235,19 +244,23 @@ const RecentDocuments = ({ patient }: { patient: Patient }) => (
 );
 
 const Notifications = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white rounded-lg shadow-md p-6">
+  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6">
     <h2 className="text-2xl font-bold mb-4">Recent Notifications</h2>
     <ul className="space-y-4">
       {patient.notifications.map((notification, index) => (
         <li
           key={index}
-          className="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+          className="flex items-start p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
         >
           <Bell className="text-blue-500 mr-3 mt-1 flex-shrink-0" size={20} />
           <div>
             <p className="font-semibold">{notification.title}</p>
-            <p className="text-sm text-gray-600">{notification.message}</p>
-            <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {notification.message}
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              {notification.time}
+            </p>
           </div>
         </li>
       ))}

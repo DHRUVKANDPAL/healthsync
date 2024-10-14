@@ -1,0 +1,54 @@
+/* components/IntroBlock.module.css */
+.introBlock {
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+  padding-top: 20px;
+  background-color: transparent;
+}
+
+.monitor {
+  padding: 0;
+  width: 100%;
+  border-radius: 5px;
+  background-color: transparent;
+  margin: 0 auto;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  position: relative;
+  transition: all 0.5s ease-in-out;
+}
+
+.ekg {
+  fill: none;
+  stroke: #1e40af; /* Blue 800 stroke color */
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+  opacity: 0;
+  stroke-dashoffset: 1000;
+  stroke-dasharray: 1000;
+  animation: ekg 1.5s linear forwards infinite;
+}
+
+@keyframes ekg {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    stroke-dashoffset: 2000;
+  }
+  99% {
+    opacity: 0;
+    stroke-dashoffset: 3000;
+  }
+  100% {
+    stroke-dashoffset: 1000;
+  }
+}
