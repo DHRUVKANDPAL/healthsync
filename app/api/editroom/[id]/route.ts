@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { getHospital } from "@/lib/hospitallucia";
+import { getHospital, verifyHospitalDetails } from "@/lib/hospitallucia";
 import { pusherServer } from "@/lib/pusher";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
@@ -12,7 +12,12 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   const id = params.id;
-  let user = await getHospital();
+  let user = await verifyHospitalDetails();
+  if(!user || user.id===undefined){
+    return new Response(JSON.stringify({ success: false }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   if (user && id !== user.id) {
     return new Response(JSON.stringify({ success: false }), {
       headers: { "Content-Type": "application/json" },

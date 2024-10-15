@@ -6,6 +6,11 @@ export async function GET(
 ) {
   const id = params.id;
   let user = await getUser();
+  if(!user || user.id===undefined){
+    return new Response(JSON.stringify({ success: false }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   if (user && id !== user.id) {
     return new Response(JSON.stringify({ success: false }), {
       headers: { "Content-Type": "application/json" },
