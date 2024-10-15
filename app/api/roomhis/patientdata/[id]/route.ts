@@ -11,13 +11,18 @@ export async function POST(
 
   // Fetch the current hospital/user
   let user = await verifyHospitalDetails();
-
+  console.log(user?.id)
+  if(!user || user.id===undefined){
+    return new Response(JSON.stringify({ success: false }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   if (user && id !== user.id) {
     return new Response(JSON.stringify({ success: false }), {
       headers: { "Content-Type": "application/json" },
     });
   }
-
+  console.log(user?.id)
   // Get the data from the request
   const values = await req.json();
   // console.log("Received values:", values);

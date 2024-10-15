@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import { usePathname } from "next/navigation";
 import { headers } from "next/headers";
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default function RootLayout({
           {/* <Header></Header> */}
           {children}
           <Toaster richColors></Toaster>
+          <Analytics></Analytics>
         </div>
       </body>
     </html>

@@ -66,3 +66,34 @@ export const getUser = async () => {
     return dbUser;
 
 };
+
+
+export const verifyUser = async () => {
+  const sessionId = cookies().get(lucia.sessionCookieName)?.value || null;
+  if (!sessionId) {
+    return null;
+  }
+  const { session, user } = await lucia.validateSession(sessionId);
+  try {
+    if (session && session.fresh) {
+      const sessionCookie = await lucia.createSessionCookie(session.id);
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
+    }
+    if (!session) {
+      const sessionCookie = await lucia.createBlankSessionCookie();
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
+    }
+  } catch (error) {}
+
+    
+    return {id:user?.id};
+
+};
