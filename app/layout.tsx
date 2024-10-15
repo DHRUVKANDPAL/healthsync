@@ -9,6 +9,8 @@ import { EdgeStoreProvider } from "@/lib/edgestore";
 import { usePathname } from "next/navigation";
 import { headers } from "next/headers";
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -43,6 +45,7 @@ export default function RootLayout({
           {children}
           <Toaster richColors></Toaster>
           <Analytics></Analytics>
+          <SpeedInsights></SpeedInsights>
         </div>
       </body>
     </html>
