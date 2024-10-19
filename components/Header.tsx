@@ -265,7 +265,7 @@ const Header = (props: Props) => {
                         className="hover:text-teal-300 flex justify-center items-center"
                         onClick={() => toggleLoginDropdown()}
                       >
-                        <div className="flex justify-between w-full">
+                        <div className="flex justify-between items-center w-full">
                           Login
                           <IoIosArrowDown
                             className={`transform inline transition-transform duration-300 ${

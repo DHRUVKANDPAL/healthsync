@@ -1,14 +1,20 @@
-"use client"
-
-import React from "react"
-import Link from "next/link"
-import { ArrowLeft, Mail, Phone, MapPin, Clock, Send, Loader2 } from "lucide-react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  ExternalLink,
+} from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -16,206 +22,334 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { toast } from "@/components/ui/use-toast"
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { toast } from "@/components/ui/use-toast";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  subject: z.string().min(5, {
-    message: "Subject must be at least 5 characters.",
-  }),
-  message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }),
-})
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  subject: z
+    .string()
+    .min(5, { message: "Subject must be at least 5 characters." }),
+  message: z
+    .string()
+    .min(10, { message: "Message must be at least 10 characters." }),
+});
+
+const ContactCard = ({ icon: Icon, title, content }: any) => (
+  <Card className="bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-300 shadow-lg">
+    <CardContent className="flex items-center p-6">
+      <Icon className="w-10 h-10 text-indigo-500 dark:text-indigo-400 mr-4" />
+      <div>
+        <h2 className="font-semibold text-gray-800 dark:text-slate-100 mb-1">
+          {title}
+        </h2>
+        <p className="text-gray-600 dark:text-slate-300">{content}</p>
+      </div>
+    </CardContent>
+  </Card>
+);
 
 export default function ContactUs() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
-  })
+    defaultValues: { name: "", email: "", subject: "", message: "" },
+  });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Message Sent",
-      description: "We've received your message and will get back to you soon.",
-    })
-    console.log(values)
+  function onSubmit(values: any) {
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast({
+        title: "Message Sent",
+        description:
+          "We&apos;ve received your message and will get back to you soon.",
+      });
+      console.log(values);
+      form.reset();
+    }, 2000);
   }
 
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-        <div className="container mx-auto px-4 py-16">
+      <main className="min-h-screen bg-gray-100 dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-800 flex justify-center items-center py-12">
+        <div className="container mx-auto px-4">
           <Link
             href="/"
-            className="inline-flex items-center text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors mb-8"
+            className="inline-flex items-center text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-center text-slate-900 dark:text-white mb-4">
-            Get in Touch
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 text-center leading-relaxed mb-12 max-w-2xl mx-auto">
-            We're here to help and answer any question you might have. We look forward to hearing from you.
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            <Card className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
-              <CardContent className="flex items-center p-6">
-                <Mail className="w-10 h-10 text-blue-500 mr-4" />
-                <div>
-                  <h2 className="font-semibold text-slate-900 dark:text-white mb-1">Email Us</h2>
-                  <p className="text-slate-600 dark:text-slate-400">support@healthsync.com</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
-              <CardContent className="flex items-center p-6">
-                <Phone className="w-10 h-10 text-green-500 mr-4" />
-                <div>
-                  <h2 className="font-semibold text-slate-900 dark:text-white mb-1">Call Us</h2>
-                  <p className="text-slate-600 dark:text-slate-400">+91 12345 67890</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
-              <CardContent className="flex items-center p-6">
-                <MapPin className="w-10 h-10 text-red-500 mr-4" />
-                <div>
-                  <h2 className="font-semibold text-slate-900 dark:text-white mb-1">Visit Us</h2>
-                  <p className="text-slate-600 dark:text-slate-400">123 Healthcare Blvd, New Delhi</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-
-          <Card className="bg-white dark:bg-slate-800 shadow-lg">
-            <CardContent className="p-0">
-              <Tabs defaultValue="contact" className="w-full">
-                <TabsList className="w-full grid grid-cols-2 h-auto">
-                  <TabsTrigger value="contact" className="text-lg  data-[state=active]:bg-background">Contact Form</TabsTrigger>
-                  <TabsTrigger value="faq" className="text-lg  data-[state=active]:bg-background">FAQ</TabsTrigger>
-                </TabsList>
-                <TabsContent value="contact" className="p-6 bg-background">
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Your Name" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input type="email" placeholder="Your Email" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <FormField
-                        control={form.control}
-                        name="subject"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Subject</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Message Subject" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="message"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Message</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="Write your message here" 
-                                className="min-h-[120px]" 
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <Button type="submit" className="w-full">
-                        <Send className="mr-2 h-4 w-4" />
-                        Send Message
-                      </Button>
-                    </form>
-                  </Form>
-                </TabsContent>
-                <TabsContent value="faq" className="p-6 bg-background">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">What services does HealthSync offer?</h3>
-                      <p className="text-slate-600 dark:text-slate-400">HealthSync offers a comprehensive suite of digital health solutions, including telemedicine, electronic health records, and health monitoring tools.</p>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">How can I schedule an appointment?</h3>
-                      <p className="text-slate-600 dark:text-slate-400">You can schedule an appointment through our mobile app, website, or by calling our customer support line.</p>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Is my health data secure with HealthSync?</h3>
-                      <p className="text-slate-600 dark:text-slate-400">Yes, we use state-of-the-art encryption and security measures to ensure your health data is always protected and compliant with international standards.</p>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
+          <Card className="bg-white dark:bg-slate-800 mb-12 overflow-hidden shadow-xl">
+            <CardContent className="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between relative">
+              <div className="absolute inset-0 bg-gradient-to-r dark:from-slate-950/50 dark:to-slate-900" />
+              <div className="relative z-10 text-center sm:text-left mb-4 sm:mb-0">
+                <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-slate-100">
+                  Get in Touch
+                </h1>
+                <p className="text-gray-600 dark:text-slate-300 mt-2 max-w-md">
+                  We&apos;re here to help with any questions you might have.
+                </p>
+              </div>
+              <Button
+                asChild
+                variant="secondary"
+                className="relative z-10 bg-indigo-500 text-indigo-50 hover:bg-indigo-700 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-50"
+              >
+                <Link
+                  href="#contact-form"
+                  className="inline-flex items-center "
+                >
+                  Contact Us
+                  <Send className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
             </CardContent>
           </Card>
 
-          <div className="mt-16 text-center">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Our Office Hours</h2>
-            <div className="flex items-center justify-center text-slate-600 dark:text-slate-400">
-              <Clock className="w-5 h-5 mr-2" />
-              <p>Monday to Friday, 9 AM - 6 PM IST</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <ContactCard
+              icon={Mail}
+              title="Email Us"
+              content="support@healthsync.com"
+            />
+            <ContactCard
+              icon={Phone}
+              title="Call Us"
+              content="+91 12345 67890"
+            />
+            <ContactCard
+              icon={MapPin}
+              title="Visit Us"
+              content="123 Healthcare Blvd, New Delhi"
+            />
           </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <Card
+              className="bg-white dark:bg-slate-900 shadow-lg"
+              id="contact-form"
+            >
+              <CardContent className="p-8">
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-slate-100 mb-6">
+                  Send us a Message
+                </h2>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
+                  >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 dark:text-slate-200">
+                              Name
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Your Name"
+                                {...field}
+                                className="bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-100 border-gray-300 dark:border-slate-600"
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-500 dark:text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 dark:text-slate-200">
+                              Email
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder="Your Email"
+                                {...field}
+                                className="bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-100 border-gray-300 dark:border-slate-600"
+                              />
+                            </FormControl>
+                            <FormMessage className="text-red-500 dark:text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="subject"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-slate-200">
+                            Subject
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Message Subject"
+                              {...field}
+                              className="bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-100 border-gray-300 dark:border-slate-600"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500 dark:text-red-400" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-slate-200">
+                            Message
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Write your message here"
+                              className="min-h-[120px] bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-100 border-gray-300 dark:border-slate-600"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500 dark:text-red-400" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="mr-2 h-4 w-4" />
+                          Send Message
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+            <div className="space-y-8">
+              <Card className="bg-white dark:bg-slate-900 shadow-lg">
+                <CardContent className="p-8">
+                  <h2 className="text-2xl font-semibold text-gray-800 dark:text-slate-100 mb-6">
+                    Frequently Asked Questions
+                  </h2>
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem
+                      value="item-1"
+                      className="border-gray-200 dark:border-slate-700"
+                    >
+                      <AccordionTrigger className="text-gray-700 dark:text-slate-200">
+                        What services does HealthSync offer?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-600 dark:text-slate-300">
+                        HealthSync offers a comprehensive suite of digital
+                        health solutions, including telemedicine, electronic
+                        health records, and health monitoring tools.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem
+                      value="item-2"
+                      className="border-gray-200 dark:border-slate-700"
+                    >
+                      <AccordionTrigger className="text-gray-700 dark:text-slate-200">
+                        How can I schedule an appointment?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-600 dark:text-slate-300">
+                        You can schedule an appointment through our mobile app,
+                        website, or by calling our customer support line.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem
+                      value="item-3"
+                      className="border-gray-200 dark:border-slate-700"
+                    >
+                      <AccordionTrigger className="text-gray-700 dark:text-slate-200">
+                        Is my health data secure with HealthSync?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-600 dark:text-slate-300">
+                        Yes, we use state-of-the-art encryption and security
+                        measures to ensure your health data is always protected
+                        and compliant with international standards.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+              <Card className="bg-white dark:bg-slate-900 shadow-lg">
+                <CardContent className="p-8 text-center">
+                  <h2 className="text-2xl font-semibold text-gray-800 dark:text-slate-100 mb-4">
+                    Our Office Hours
+                  </h2>
+                  <div className="flex items-center justify-center text-gray-600 dark:text-slate-300 mb-4">
+                    <Clock className="w-5 h-5 mr-2 text-indigo-500 dark:text-indigo-400" />
+                    <p>Monday to Friday, 9 AM - 6 PM IST</p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    asChild
+                    className="bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-600 border-indigo-300 dark:border-slate-500"
+                  >
+                    <Link
+                      href="/book-appointment"
+                      className="inline-flex items-center dark:text-slate-100"
+                    >
+                      Book an Appointment
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
     </>
-  )
+  );
 }
