@@ -12,6 +12,25 @@ const Hero = (props: Props) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const HeroImg = [
+    {
+      id: 1,
+      src: "https://i.imghippo.com/files/12v761724049730.jpg",
+      alt: "hero1",
+    },
+    {
+      id: 2,
+      src: "https://i.imghippo.com/files/uKlNc1729324077.jpg",
+      alt: "hero2",
+    },
+    {
+      id: 3,
+      src: "https://i.imghippo.com/files/Rz1xY1729325434.jpg",
+      alt: "hero3",
+    },
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,32 +50,71 @@ const Hero = (props: Props) => {
     window.addEventListener("resize", handleResize);
     document.addEventListener("mousedown", handleClickOutside);
 
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % HeroImg.length);
+    }, 7000);
+
     return () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("mousedown", handleClickOutside);
+      clearInterval(slideInterval);
     };
   }, []);
 
   const toggleLoginDropdown = () =>
     setIsLoginDropdownOpen(!isLoginDropdownOpen);
 
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % HeroImg.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + HeroImg.length) % HeroImg.length
+    );
+  };
+
   return (
     <div className="relative h-[550px] flex items-center overflow-hidden">
-      <Image
-        src="https://i.imghippo.com/files/12v761724049730.jpg"
-        alt="hero"
-        className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[550px] transition-opacity duration-300"
-        width={5184}
-        height={3456}
-        priority
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-500/40 via-transparent to-slate-700/40 dark:from-slate-900/80 dark:to-transparent transition-colors duration-300"></div>
-      <div className="relative z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
-        <p className="text-sm sm:text-base uppercase tracking-wider mb-2 sm:mb-4 text-teal-900 dark:text-teal-300 transition-colors duration-300">
+      {HeroImg.map((heroImg, index) => (
+        <div
+          key={heroImg.id}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentSlide ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image
+            src={heroImg.src}
+            alt={heroImg.alt}
+            className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[550px]"
+            width={3456}
+            height={3456}
+            priority
+          />
+        </div>
+      ))}
+
+      <button
+        onClick={prevSlide}
+        className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black bg-opacity-50 text-white p-2 rounded-full"
+      >
+        &lt;
+      </button>
+      <button
+        onClick={nextSlide}
+        className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black bg-opacity-50 text-white p-2 rounded-full"
+      >
+        &gt;
+      </button>
+
+      <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent dark:from-slate-900/80 dark:to-transparent transition-colors duration-300"></div>
+      <div className="absolute z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
+        <p className="text-sm sm:text-xl font-bold uppercase tracking-wider mb-2 sm:mb-4 text-teal-900 dark:text-teal-300 transition-colors duration-300">
           CARING FOR LIFE
         </p>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-50  dark:text-teal-100 drop-shadow-[0_3px_3px_rgba(1,1,1,1)]  transition-colors duration-300">
-          Leading Our Way in Healthy Life
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-50 dark:text-teal-100 drop-shadow-[0_1px_1px_rgba(1,1,1,1)] transition-colors duration-300">
+          Leading Our Way in <span className="text-amber-600">Healthy</span>{" "}
+          Life
         </h1>
         {isLoggedIn ? (
           <button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center gap-2 group">
