@@ -107,6 +107,112 @@ export default function ContactUs() {
               </CardContent>
             </Card>
           </div>
+
+
+          <Card className="bg-white dark:bg-slate-800 shadow-lg">
+            <CardContent className="p-0">
+              <Tabs defaultValue="contact" className="w-full">
+                <TabsList className="w-full grid grid-cols-2 h-auto">
+                  <TabsTrigger value="contact" className="text-lg  data-[state=active]:bg-background">Contact Form</TabsTrigger>
+                  <TabsTrigger value="faq" className="text-lg  data-[state=active]:bg-background">FAQ</TabsTrigger>
+                </TabsList>
+                <TabsContent value="contact" className="p-6 bg-background">
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Your Name" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input type="email" placeholder="Your Email" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="subject"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Subject</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Message Subject" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Message</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Write your message here" 
+                                className="min-h-[120px]" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <Button type="submit" className="w-full">
+                        <Send className="mr-2 h-4 w-4" />
+                        Send Message
+                      </Button>
+                    </form>
+                  </Form>
+                </TabsContent>
+                <TabsContent value="faq" className="p-6 bg-background">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">What services does HealthSync offer?</h3>
+                      <p className="text-slate-600 dark:text-slate-400">HealthSync offers a comprehensive suite of digital health solutions, including telemedicine, electronic health records, and health monitoring tools.</p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">How can I schedule an appointment?</h3>
+                      <p className="text-slate-600 dark:text-slate-400">You can schedule an appointment through our mobile app, website, or by calling our customer support line.</p>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Is my health data secure with HealthSync?</h3>
+                      <p className="text-slate-600 dark:text-slate-400">Yes, we use state-of-the-art encryption and security measures to ensure your health data is always protected and compliant with international standards.</p>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+
+          <div className="mt-16 text-center">
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Our Office Hours</h2>
+            <div className="flex items-center justify-center text-slate-600 dark:text-slate-400">
+              <Clock className="w-5 h-5 mr-2" />
+              <p>Monday to Friday, 9 AM - 6 PM IST</p>
+            </div>
+          </div>
+
         </div>
       </main>
       <Footer />
