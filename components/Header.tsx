@@ -213,12 +213,14 @@ const Header = (props: Props) => {
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
-            <ul className="nav-links flex flex-col sm:flex-row justify-center sm:justify-between gap-4 sm:gap-8 w-full sm:w-auto mt-16 sm:mt-0 p-6 sm:p-0 leading-[1rem]">
-              <li className="flex absolute top-8 items-center justify-between w-5/6 gap-1 sm:gap-4 sm:hidden">
-                <GrLocation className="text-teal-400 h-7 w-7 sm:h-7 sm:w-7" />
-                <div className="text-center sm:text-left">
-                  <p className="text-teal-400 pb-2">Location</p>
-                  <p className="text-teal-300">
+            <ul className="nav-links flex flex-col sm:flex-row justify-start sm:justify-between gap-6 sm:gap-8 w-full sm:w-auto mt-20 sm:mt-0 p-6  sm:p-0">
+              <li className="flex absolute top-8 left-6 items-center justify-between w-5/6 gap-4  sm:hidden">
+                <GrLocation className="text-teal-300 h-6 w-6" />
+                <div className="text-left flex-grow">
+                  <p className="text-teal-300  text-md">
+                    Location
+                  </p>
+                  <p className="text-teal-100 font-light text-sm mt-1">
                     {location ? location : "Fetching location..."}
                   </p>
                 </div>
@@ -226,6 +228,7 @@ const Header = (props: Props) => {
                   <DarkModeToggle />
                 </div>
               </li>
+              <div className="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent mb-2 sm:hidden"></div>
 
               <Link
                 href="/."
@@ -275,18 +278,18 @@ const Header = (props: Props) => {
                         className="hover:text-teal-300 flex justify-center items-center"
                         onClick={() => toggleLoginDropdown()}
                       >
-                        <p className="text-left w-full">
-                          Login
+                        <div className=" flex justify-between w-full">
+                          <div>Login</div>
                           <IoIosArrowDown
                             className={`transform inline transition-transform duration-300 ${
                               isLoginDropdownOpen ? "rotate-180" : ""
                             }`}
                           />
-                        </p>
+                        </div>
                       </div>
                       {isLoginDropdownOpen && (
                         <div
-                          className="absolute top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          className="absolute w-full sm:w-36 top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
                           onMouseLeave={() => {
                             setIsLoginDropdownOpen(false);
                           }}
@@ -317,7 +320,7 @@ const Header = (props: Props) => {
               )}
             </ul>
             <div
-              className="h-full flex items-center flex-col justify-end pb-60 sm:hidden"
+              className="h-full flex items-center flex-col justify-end pb-96 sm:hidden"
               onClick={() => {
                 closeMenu();
               }}
