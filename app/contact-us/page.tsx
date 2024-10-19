@@ -91,33 +91,6 @@ const ContactUs: React.FC = () => {
               </Button>
             </form>
           </div>
-
-          {/* Contact Details */}
-          <div className="bg-white dark:bg-slate-950 rounded-lg shadow-xl p-8">
-            <h2 className="text-2xl font-semibold text-indigo-600 dark:text-indigo-200 mb-6">
-              Contact Details
-            </h2>
-            <p className="text-slate-700 dark:text-slate-300 mb-4">
-              You can also reach us via the following channels:
-            </p>
-            <ul className="space-y-4">
-              <li className="text-lg text-slate-700 dark:text-slate-300">
-                <span className="font-semibold">Email:</span>{" "}
-                support@healthsync.com
-              </li>
-              <li className="text-lg text-slate-700 dark:text-slate-300">
-                <span className="font-semibold">Phone:</span> +91 12345 67890
-              </li>
-              <li className="text-lg text-slate-700 dark:text-slate-300">
-                <span className="font-semibold">Address:</span> HealthSync, 123
-                Healthcare Blvd, New Delhi, India
-              </li>
-            </ul>
-
-            <p className="text-slate-700 dark:text-slate-300 mt-6">
-              We are available Monday to Friday, 9 AM - 6 PM IST.
-            </p>
-          </div>
         </div>
       </div>
     </div>

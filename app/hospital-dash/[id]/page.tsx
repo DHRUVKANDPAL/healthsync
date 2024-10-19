@@ -29,6 +29,7 @@ import {
 import RadialChart from "./radial-charts";
 import { pusherClient } from "@/lib/pusher";
 import { ChartConfig } from "@/components/ui/chart";
+import BeatLoader from "@/components/BeatLoader";
 
 interface HospitalDashboardProps {
   params?: {
@@ -82,11 +83,11 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
             fetch(`/api/essentialHospitalDetails/${id}`),
             fetch(`/api/totalrooms/${id}`),
           ]);
-        
+
           // Parse both responses
           const data1 = await res1.json();
           const data2 = await res2.json();
-        
+
           // Handle first API response
           if (!data1.success) {
             router.push("/hospital-auth");
@@ -94,19 +95,17 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
             setUserExists(true);
             setUserData(data1.user);
           }
-        
+
           // Handle second API response
           if (!data2.success) {
             router.push("/hospital-auth");
           } else {
             setTotalRooms(data2.total);
           }
-        
         } catch (error) {
           toast.error("Error checking Hospital.");
           router.push("/hospital-auth");
         }
-        
       } catch (error) {
         toast.error("Error checking Hospital.");
         router.push("/hospital-auth");
@@ -151,31 +150,8 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
   if (userExists === null || !userData || !totalRoom) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="w-64 h-64 relative">
-        <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-          <circle
-            className="text-gray-300 stroke-current"
-            strokeWidth="4"
-            cx="50"
-            cy="50"
-            r="34"
-            fill="transparent"
-          />
-          <circle
-            className="text-blue-500 stroke-current animate-progress-circle"
-            strokeWidth="4"
-            strokeLinecap="round"
-            cx="50"
-            cy="50"
-            r="34"
-            fill="transparent"
-          />
-        </svg>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-xl font-semibold">
-          <span className="animate-count-up">Loading ...</span>
-        </div>
+        <BeatLoader className="w-[200px] h-[80px]"></BeatLoader>
       </div>
-    </div>
     );
   }
 
@@ -218,9 +194,9 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="max-w-80 md:max-w-xl">
-          <h1 className="text-3xl font-bold">
-            {userData.name + " "} Dashboard
-          </h1>
+            <h1 className="text-3xl font-bold">
+              {userData.name + " "} Dashboard
+            </h1>
           </div>
           {/* <div className="flex flex-col items-end space-y-2 text-black text-end">
             <span className="text-gray-500 dark:text-gray-400 font-semibold">
@@ -320,9 +296,8 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
                   </ResponsiveContainer>
                 </TabsContent>
                 <TabsContent value="bar" className="pt-7">
-                  <ResponsiveContainer width="100%" height={350} >
-                    
-                    <BarChart data={chartData} >
+                  <ResponsiveContainer width="100%" height={350}>
+                    <BarChart data={chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
@@ -335,12 +310,10 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
                         name="Available"
                       />
                     </BarChart>
-
                   </ResponsiveContainer>
                 </TabsContent>
               </Tabs>
             </CardContent>
-
           </Card>
 
           <div className="grid grid-cols-1 md:grid-cols-2  gap-6">

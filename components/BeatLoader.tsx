@@ -1,8 +1,10 @@
 import React from "react";
-
-const BeatLoader = () => {
+import { cn } from "@/lib/utils";
+const BeatLoader = ({ className }: { className?: string }) => {
   return (
-    <div className="absolute inset-0 m-auto w-[200px] h-[80px]">
+    <div
+      className={cn("absolute inset-0 m-auto w-[200px] h-[80px]", className)}
+    >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 80">
         <path
           className="stroke-green-600 stroke-[3] fill-none animate-draw"
@@ -32,9 +34,9 @@ const styles = `
   }
 `;
 
-export default () => (
+export default ({ className }: { className?: string }) => (
   <>
     <style>{styles}</style>
-    <BeatLoader />
+    <BeatLoader className={className} />
   </>
 );
