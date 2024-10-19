@@ -83,33 +83,7 @@ const Header = (props: Props) => {
     };
   }, [isLoginDropdownOpen, closeMenu]);
   useEffect(() => {
-    const fetchLocation = async ({
-      latitude,
-      longitude,
-    }: {
-      latitude: any;
-      longitude: any;
-    }) => {
-      try {
-        const response = await fetch(
-          `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=35479a4fe2f641d9a9f24251f17c2bb8`
-        );
-        const data = await response.json();
-        if (data.results.length > 0) {
-          const city =
-            data.results[0].components.city ||
-            data.results[0].components.town ||
-            data.results[0].components.village;
-          setLocation(city || "Location not found");
-        } else {
-          setLocation("Location not found");
-        }
-      } catch (error) {
-        setLocation("Error fetching location");
-      }
-    };
-
-    if (navigator.geolocation) {
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -124,6 +98,17 @@ const Header = (props: Props) => {
     }
   }, []);
 
+  const fetchLocation = async ({ latitude, longitude }: any) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await response.json();
+      setLocation(data.display_name.split(",")[0]);
+    } catch (error) {
+      setLocation("Error fetching location");
+    }
+  };
   return (
     <>
       <header className="sticky sm:-top-[72px] top-0 z-30">
@@ -213,13 +198,14 @@ const Header = (props: Props) => {
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
+            <div className="absolute right-4 top-4 sm:hidden">
+              <DarkModeToggle />
+            </div>
             <ul className="nav-links flex flex-col sm:flex-row justify-start sm:justify-between gap-6 sm:gap-8 w-full sm:w-auto mt-20 sm:mt-0 p-6  sm:p-0">
               <li className="flex absolute top-8 left-6 items-center justify-between w-5/6 gap-4  sm:hidden">
                 <GrLocation className="text-teal-300 h-6 w-6" />
                 <div className="text-left flex-grow">
-                  <p className="text-teal-300  text-md">
-                    Location
-                  </p>
+                  <p className="text-teal-300  text-md">Location</p>
                   <p className="text-teal-100 font-light text-sm mt-1">
                     {location ? location : "Fetching location..."}
                   </p>
@@ -232,37 +218,41 @@ const Header = (props: Props) => {
 
               <Link
                 href="/."
-                className="hover:text-teal-300"
+                className="hover:text-teal-300 mt-16 sm:m-0"
                 onClick={closeMenu}
               >
                 Home
               </Link>
-              <a
-                href="#"
+              <Link
+                href="/contact-us"
                 className="hover:text-teal-300 sm:text-center"
                 onClick={closeMenu}
               >
                 Contact Us
-              </a>
-              <a href="#" className="hover:text-teal-300" onClick={closeMenu}>
-                Complaints
-              </a>
+              </Link>
+              <Link
+                href="/about-us"
+                className="hover:text-teal-300"
+                onClick={closeMenu}
+              >
+                About Us
+              </Link>
               {isLoggedIn ? (
                 <>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-teal-300"
                     onClick={closeMenu}
                   >
                     Dashboard
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="#"
                     className="hover:text-teal-300"
                     onClick={closeMenu}
                   >
                     Logout
-                  </a>
+                  </Link>
                 </>
               ) : (
                 <>
@@ -278,18 +268,18 @@ const Header = (props: Props) => {
                         className="hover:text-teal-300 flex justify-center items-center"
                         onClick={() => toggleLoginDropdown()}
                       >
-                        <div className=" flex justify-between w-full">
-                          <div>Login</div>
+                        <p className="text-left w-full">
+                          Login
                           <IoIosArrowDown
                             className={`transform inline transition-transform duration-300 ${
                               isLoginDropdownOpen ? "rotate-180" : ""
                             }`}
                           />
-                        </div>
+                        </p>
                       </div>
                       {isLoginDropdownOpen && (
                         <div
-                          className="absolute w-full sm:w-36 top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          className="absolute top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
                           onMouseLeave={() => {
                             setIsLoginDropdownOpen(false);
                           }}
@@ -320,13 +310,13 @@ const Header = (props: Props) => {
               )}
             </ul>
             <div
-              className="h-full flex items-center flex-col justify-end pb-96 sm:hidden"
+              className="h-full flex items-center flex-col justify-end pb-96 sm:hidden "
               onClick={() => {
                 closeMenu();
               }}
             >
               <Logo className="flex-grow sm:hidden flex items-end justify-center"></Logo>
-              <p className="text-teal-100 mb-4 sm:hidden text-sm flex text-center justify-center">
+              <p className="text-teal-100 sm:hidden text-sm flex text-center justify-center mb-24">
                 © 2024 HealthSync. All rights reserved.
               </p>
             </div>
