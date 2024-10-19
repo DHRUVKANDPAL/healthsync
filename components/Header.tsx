@@ -194,14 +194,14 @@ const Header = (props: Props) => {
           </div>
           <div
             ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm lg:text-lg bg-blue-900 dark:bg-slate-900 transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm lg:text-lg bg-blue-950 dark:bg-slate-900 transform transition-transform duration-300 ease-in-out ${
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
           >
             <div className="absolute right-4 top-4 sm:hidden">
               <DarkModeToggle />
             </div>
-            <ul className="nav-links flex flex-col sm:flex-row justify-start sm:justify-between gap-6 sm:gap-8 w-full sm:w-auto mt-20 sm:mt-0 p-6  sm:p-0">
+            <ul className="nav-links flex flex-col sm:flex-row justify-start sm:justify-between gap-3 sm:gap-8 w-full sm:w-auto mt-20 sm:mt-0 p-6  sm:p-0">
               <li className="flex absolute top-8 left-6 items-center justify-between w-5/6 gap-4  sm:hidden">
                 <GrLocation className="text-teal-300 h-6 w-6" />
                 <div className="text-left flex-grow">
@@ -210,15 +210,12 @@ const Header = (props: Props) => {
                     {location ? location : "Fetching location..."}
                   </p>
                 </div>
-                <div className="">
-                  <DarkModeToggle />
-                </div>
               </li>
-              <div className="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent mb-2 sm:hidden"></div>
+              <div className="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent my-2 sm:hidden"></div>
 
               <Link
                 href="/."
-                className="hover:text-teal-300 mt-16 sm:m-0"
+                className="hover:text-teal-300 "
                 onClick={closeMenu}
               >
                 Home
@@ -268,18 +265,18 @@ const Header = (props: Props) => {
                         className="hover:text-teal-300 flex justify-center items-center"
                         onClick={() => toggleLoginDropdown()}
                       >
-                        <p className="text-left w-full">
+                        <div className="flex justify-between w-full">
                           Login
                           <IoIosArrowDown
                             className={`transform inline transition-transform duration-300 ${
                               isLoginDropdownOpen ? "rotate-180" : ""
                             }`}
                           />
-                        </p>
+                        </div>
                       </div>
                       {isLoginDropdownOpen && (
                         <div
-                          className="absolute top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          className="absolute w-full sm:w-40 top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
                           onMouseLeave={() => {
                             setIsLoginDropdownOpen(false);
                           }}
@@ -310,13 +307,13 @@ const Header = (props: Props) => {
               )}
             </ul>
             <div
-              className="h-full flex items-center flex-col justify-end pb-96 sm:hidden "
+              className="h-full flex items-center flex-col justify-end pb-[21rem] sm:hidden "
               onClick={() => {
                 closeMenu();
               }}
             >
               <Logo className="flex-grow sm:hidden flex items-end justify-center"></Logo>
-              <p className="text-teal-100 sm:hidden text-sm flex text-center justify-center mb-24">
+              <p className="text-teal-100 sm:hidden text-sm flex text-center justify-center">
                 © 2024 HealthSync. All rights reserved.
               </p>
             </div>
