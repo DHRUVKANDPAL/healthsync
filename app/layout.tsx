@@ -72,11 +72,9 @@ export default function RootLayout({
             "@type": "Organization",
             "name": "HealthSync"
           },
-          "offers": {
-            "@type": "Offer",
-            "priceCurrency": "INR",
-            "price": "Free Trial"
-          }
+          "url": "https://healthsync-alpha.vercel.app/",
+          "image": "https://i.imghippo.com/files/4OFtW1729338402.jpg",
+          "screenshot": "https://i.imghippo.com/files/4OFtW1729338402.jpg",
         })}} />
         <link rel="canonical" href="https://healthsync-alpha.vercel.app/" />
       </head>
