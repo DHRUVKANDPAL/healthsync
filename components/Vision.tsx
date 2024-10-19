@@ -3,8 +3,8 @@ import Image from "next/image";
 
 const Vision = () => {
   return (
-    <div className="flex justify-center items-center pb-10">
-      <section className="bg-gradient-to-r from-blue-50 via-white to-teal-50 pt-10 sm:pt-16 sm:pb-0 lg:pb-10 overflow-hidden dark:bg-gradient-to-r dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-3xl max-w-screen-2xl w-[86%]  ">
+    <div className="flex justify-center items-center pb-10 ">
+      <section className="bg-gradient-to-r from-blue-50 via-white to-teal-50 pt-10 sm:pt-16  lg:pb-10 overflow-hidden dark:bg-gradient-to-r dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-3xl max-w-screen-2xl w-[86%] mb-10  ">
       <div className="max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="lg:flex lg:items-center lg:gap-12 xl:gap-20">
           <div className="lg:w-1/2 mb-12 lg:mb-0 relative z-10">
@@ -16,20 +16,20 @@ const Vision = () => {
                 Healthcare
               </span>
             </h2>
-            <div className="space-y-4 sm:space-y-6 text-md sm:text-lg text-gray-700 dark:text-slate-300">
-              <p>
+            <div className="line-clamp-[15] sm:line-clamp-[18] space-y-4 sm:space-y-6 text-md sm:text-lg text-gray-700 dark:text-slate-300">
+              <p >
                 At HealthSync, we envision a future where healthcare is
                 seamlessly integrated, accessible, and patient-centric. Our
                 mission is to leverage cutting-edge technology to bridge gaps in
                 healthcare delivery, ensuring quality medical services for all.
               </p>
-              <p>
+              <p >
                 We're creating a connected ecosystem where patients, doctors,
                 and providers collaborate effortlessly. By streamlining
                 processes from appointments to records, we're enhancing the
                 healthcare experience for everyone.
               </p>
-              <p>
+              <p >
                 Our commitment goes beyond convenience. We empower individuals
                 to take charge of their health through informed decisions and
                 easy access to medical information, contributing to better

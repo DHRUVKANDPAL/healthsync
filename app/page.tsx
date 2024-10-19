@@ -9,7 +9,7 @@ import Vision from "@/components/Vision";
 
 export default function Home() {
   return (
-    <main className="select-none bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <main className="  select-none bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <Header></Header>
       <div className="relative">
         <div className="relative">
@@ -17,18 +17,19 @@ export default function Home() {
         </div>
         <div className="absolute rounded-lg top-[80%] w-full ">
           <Vision></Vision>
-          <Features></Features>
-          <Chartstats></Chartstats>
-          <div className="w-5/6 mx-auto ">
-            <Testimonial></Testimonial>
-          </div>
-          <div className="w-5/6 mx-auto md:w-1/2 py-10">
-            <Faq></Faq>
-          </div>
-          <Footer></Footer>
         </div>
       </div>
-      {/* <div className="h-[750px]"></div> */}
+      <div className="h-[600px] sm:h-[650px] lg:h-[800px] xl:h-[700px] "></div>
+      <Features></Features>
+      <Chartstats></Chartstats>
+      <div className="w-5/6 mx-auto ">
+        <Testimonial></Testimonial>
+      </div>
+      <div className="w-5/6 mx-auto md:w-1/2 py-10">
+        <Faq></Faq>
+      </div>
+      <Footer></Footer>
+      
     </main>
   );
 }
