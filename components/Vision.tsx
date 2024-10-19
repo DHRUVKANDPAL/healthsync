@@ -64,7 +64,6 @@ const Vision = () => {
                 alt="Our Vision for Healthcare"
                 width={1024}
                 height={768}
-                layout="responsive"
                 className="w-full h-auto object-cover"
               />
             </div>
