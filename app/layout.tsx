@@ -108,7 +108,7 @@ export default function RootLayout({
             }),
           }}
         />
-        <link rel="canonical" href="https://healthsync-alpha.vercel.app/" />
+        <link rel="canonical" href="https://healthsync-alpha.vercel.app" />
         <meta name="google-site-verification" content="2tZd09eJ5U0jzjc3J802qGxywHG4Pkn_ckfWozi7SHA" />
       </head>
       <body className={inter.className}>
