@@ -26,6 +26,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { title } from "process";
+import Logo from "@/components/Logo";
+import DarkModeToggle from "@/components/DarkModeToggle";
+import { useState } from "react";
 
 export default function RootLayout({
   children,
@@ -34,7 +37,7 @@ export default function RootLayout({
 }>) {
   const router = useRouter();
   const { id } = useParams();
-
+  const [activeSection, setActiveSection] = useState("home");
   const handleLogout = async () => {
     try {
       await hospitalLogout();
@@ -44,53 +47,67 @@ export default function RootLayout({
       toast.error("Error logging out. Try again!");
     }
   };
-
   const navItems = [
     {
       title: "Home",
       href: `/hospital-dash/${id}`,
       icon: Home,
+      section: "home",
     },
     {
       title: "Search Patient",
       href: `/hospital-dash/${id}/rooms/search`,
       icon: Search,
+      section: "search",
     },
     {
       title: "Create Rooms",
       href: `/hospital-dash/${id}/rooms`,
       icon: PlusSquare,
+      section: "rooms",
     },
     {
       title: "Manage Rooms",
       href: `/hospital-dash/${id}/rooms/manage`,
       icon: Settings,
+      section: "manage",
     },
     {
       title: "Room History",
       href: `/hospital-dash/${id}/rooms/bookinghistory`,
       icon: History,
+      section: "history",
     },
   ];
 
   return (
     <div className="flex h-[calc(100vh)]  ">
-      <aside className="hidden w-64  shadow-md bg-gradient-to-b from-[#172034]  to-blue-950 lg:flex lg:flex-col">
-        <div className="flex items-center justify-center p-6 border-b mx-5 mb-4">
+      <aside className="hidden w-64  shadow-md bg-white dark:bg-slate-800 lg:flex lg:flex-col ">
+        {/* <div className="flex items-center justify-center p-6 border-b mx-5 mb-4">
           <Building2 className="h-8 w-8 text-teal-300 dark:text-white" />
           <h1 className="ml-2 text-2xl font-bold  text-white">
             Hospital Dashboard
           </h1>
+        </div> */}
+        <div className="flex items-center justify-between p-2 pt-6   mx-5 mb-4">
+          <Logo className="sm:text-2xl"></Logo>
+          <DarkModeToggle></DarkModeToggle>
         </div>
+        <p className="border-b border-gray-200 dark:border-gray-700 w-full"></p>
         <ScrollArea className="flex-1 px-3">
-          <nav className="flex flex-col space-y-1">
+          <nav className="flex flex-col space-y-1 pt-5">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center rounded-lg px-3 py-2  text-white hover:text-blue-950 transition-all hover:bg-sky-100 "
+                onClick={() => setActiveSection(item.section)}
+                className={`flex items-center w-full p-2 rounded-md transition-colors ${
+                  activeSection === item.section
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
               >
-                <item.icon className="h-5 w-5" />
+                <item.icon size={20} className="mr-3" />
                 <span className="ml-3">{item.title}</span>
               </Link>
             ))}
@@ -99,9 +116,9 @@ export default function RootLayout({
         <div className="sticky bottom-0 p-4 bg-transparent">
           <Button
             onClick={handleLogout}
-            className="w-full bg-sky-100 hover:bg-rose-300 text-black"
+            className="flex items-center justify-center pr-4 w-full p-2 rounded-md bg-rose-500 text-teal-50 dark:text-gray-200 hover:bg-rose-600 dark:hover:bg-rose-600 transition-colors"
           >
-            <LogOut className="mr-2 h-4 w-4" />
+            <LogOut size={20} className="mr-3" />
             Logout
           </Button>
         </div>
