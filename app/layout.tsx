@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     images: ["https://i.imghippo.com/files/4OFtW1729338402.jpg"],
   },
   keywords:
-    "HealthSync, healthcare platform, real-time healthcare solution, hospital management software, patient care system, pharmacy inventory management, doctor-patient communication, OPD tracking software, bed availability tracker, healthcare technology, health dashboard, modern healthcare ecosystem,OPD queuing, patient history management, patient care optimization",
+    "HealthSync, healthcare platform, real-time healthcare solution, hospital management software, patient care system, pharmacy inventory management, doctor-patient communication, OPD tracking software, bed availability tracker, healthcare technology, health dashboard, modern healthcare ecosystem,OPD queuing, patient history management, patient care optimization, healthsync vercel, vercel healthsync, healthsync, vercel, vercel.app",
   robots: "index, follow",
 };
 
@@ -108,7 +108,7 @@ export default function RootLayout({
             }),
           }}
         />
-        <link rel="canonical" href="https://healthsync-alpha.vercel.app/" />
+        <link rel="canonical" href="https://healthsync-alpha.vercel.app" />
         <meta name="google-site-verification" content="2tZd09eJ5U0jzjc3J802qGxywHG4Pkn_ckfWozi7SHA" />
       </head>
       <body className={inter.className}>
