@@ -215,21 +215,21 @@ const Header = (props: Props) => {
 
               <Link
                 href="/."
-                className="hover:text-teal-300 "
+                className="hover:text-teal-300 md:p-2"
                 onClick={closeMenu}
               >
                 Home
               </Link>
               <Link
                 href="/contact-us"
-                className="hover:text-teal-300 sm:text-center"
+                className="hover:text-teal-300 md:p-2"
                 onClick={closeMenu}
               >
                 Contact Us
               </Link>
               <Link
                 href="/about-us"
-                className="hover:text-teal-300"
+                className="hover:text-teal-300 md:p-2"
                 onClick={closeMenu}
               >
                 About Us
@@ -262,13 +262,16 @@ const Header = (props: Props) => {
                       onMouseEnter={() => {
                         if (!isSmallScreen) setIsLoginDropdownOpen(true);
                       }}
+                      onMouseLeave={() => {
+                        setIsLoginDropdownOpen(false);
+                      }}
                       onClick={() => toggleLoginDropdown()}
                     >
                       <div
                         className="hover:text-teal-300 flex justify-center items-center"
                         onClick={() => toggleLoginDropdown()}
                       >
-                        <div className="flex justify-between items-center w-full">
+                        <div className="flex justify-between items-center md:p-2 w-full">
                           Login
                           <IoIosArrowDown
                             className={`transform inline transition-transform duration-300 ${
@@ -279,10 +282,10 @@ const Header = (props: Props) => {
                       </div>
                       {isLoginDropdownOpen && (
                         <div
-                          className="absolute w-full sm:w-40 top-6 left-0 mt-2 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
-                          onMouseLeave={() => {
-                            setIsLoginDropdownOpen(false);
-                          }}
+                          className="absolute w-full sm:w-40 top-6 left-0 mt-4 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
+                          // onMouseLeave={() => {
+                          //   setIsLoginDropdownOpen(false);
+                          // }}
                         >
                           <Link
                             href="/patient-auth"
