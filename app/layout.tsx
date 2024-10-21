@@ -110,6 +110,7 @@ export default function RootLayout({
         />
         <link rel="canonical" href="https://healthsync-alpha.vercel.app" />
         <meta name="google-site-verification" content="2tZd09eJ5U0jzjc3J802qGxywHG4Pkn_ckfWozi7SHA" />
+        <meta name="msvalidate.01" content="F58EC3AEFB2BF4428D99AB71DCC624D4" />
       </head>
       <body className={inter.className}>
         <div className="flex flex-col">
