@@ -28,7 +28,12 @@ import {
 } from "lucide-react";
 import RadialChart from "./radial-charts";
 import { pusherClient } from "@/lib/pusher";
-import { ChartConfig } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import BeatLoader from "@/components/BeatLoader";
 
 interface HospitalDashboardProps {
@@ -296,21 +301,35 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
                   </ResponsiveContainer>
                 </TabsContent>
                 <TabsContent value="bar" className="pt-7">
-                  <ResponsiveContainer width="100%" height={350}>
-                    <BarChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="value" fill="#06b6d4" name="Total" />
-                      <Bar
-                        dataKey="available"
-                        fill="#9333ea"
-                        name="Available"
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <ChartContainer
+                    config={chartConfig}
+                    className="h-full w-full"
+                  >
+                    <ResponsiveContainer width="100%" height={350}>
+                      <BarChart
+                        data={chartData}
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar
+                          dataKey="value"
+                          fill="#06b6d4"
+                          name="Total"
+                          radius={[8, 8, 0, 0]}
+                        />
+                        <Bar
+                          dataKey="available"
+                          fill="#9333ea"
+                          name="Available"
+                          radius={[8, 8, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
                 </TabsContent>
               </Tabs>
             </CardContent>

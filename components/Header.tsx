@@ -253,7 +253,10 @@ const Header = (props: Props) => {
                 </>
               ) : (
                 <>
-                  <div className="relative">
+                  <div
+                    className="relative"
+                    onMouseLeave={() => setIsLoginDropdownOpen(false)}
+                  >
                     <div
                       className="relative login-dropdown"
                       onMouseEnter={() => {
