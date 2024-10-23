@@ -110,12 +110,12 @@ export default function RootLayout({
               </div>
               <div className="flex items-center">
                 <button className="focus:outline-none sm:mr-2">
-                  <Search className="text-teal-50 h-4 w-4 sm:h-6 sm:w-6" />
+                  <Search className="dark:text-teal-50 h-4 w-4 sm:h-6 sm:w-6" />
                 </button>
                 <div className="transition-all duration-300 ease-in-out overflow-hidden ">
                   <input
                     type="search"
-                    className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
+                    className="bg-slate-100 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none border-2  border-slate-900 focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
                     placeholder="Search..."
                   />
                 </div>
