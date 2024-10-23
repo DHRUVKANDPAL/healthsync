@@ -9,6 +9,7 @@ import {
   Home,
   LifeBuoy,
   Map,
+  History,
   PieChart,
   PlusSquare,
   Search,
@@ -107,6 +108,11 @@ export function HospitalSidebar({ ...props }: any) {
         title: "Manage Rooms",
         url: `/hospital-dash/${id}/rooms/manage`,
         icon: Settings2,
+      },
+      {
+        title: "Room History",
+        url: `/hospital-dash/${id}/rooms/bookinghistory`,
+        icon: History,
       },
       {
         title: "Settings",
