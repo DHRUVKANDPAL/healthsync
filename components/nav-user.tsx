@@ -31,13 +31,13 @@ import {
 } from "@/components/ui/sidebar"
 
 export function NavUser({
-  user,
+  user,handlelogout
 }: {
   user: {
     name: string
     email: string
     avatar: string
-  }
+  },handlelogout:any
 }) {
   const { isMobile } = useSidebar()
 
@@ -48,7 +48,7 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-slate-800 hover:bg-slate-800 data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
@@ -80,7 +80,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
@@ -101,8 +101,8 @@ export function NavUser({
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuSeparator /> */}
+            <DropdownMenuItem onClick={handlelogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

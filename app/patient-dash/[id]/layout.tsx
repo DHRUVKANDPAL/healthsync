@@ -7,6 +7,14 @@ import { logout } from "@/app/(main)/patient-auth/auth.actions";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import BeatLoader from "@/components/BeatLoader";
+import DarkModeToggle from "@/components/DarkModeToggle";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { PatientSidebar } from "@/components/PatientSidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -85,18 +93,30 @@ export default function RootLayout({
   }
 
   return (
-    <div className="flex h-screen bg-slate-100 dark:bg-slate-900 overflow-auto">
-      <Sidebar
-        activeSection={activeSection}
-        setActiveSection={handleSectionChange}
-        handleLogout={handleLogout}
-        userData={userData}
-      />
-      <main className="flex-1">
-        <div className="h-screen overflow-auto p-8">
-          <EdgeStoreProvider>{children}</EdgeStoreProvider>
-        </div>
-      </main>
-    </div>
+    <>
+      <SidebarProvider className="dark:bg-slate-950 h-screen p-0">
+        <PatientSidebar
+          id={id}
+          handleLogout={handleLogout}
+          userData={userData}
+        />
+        <SidebarInset className="dark:bg-slate-950 relative overflow-hidden">
+          <header className="flex h-16 shrink-0 items-center gap-2 pb-2">
+            <div className="flex items-center justify-between w-full gap-2 px-4">
+              <div className="flex items-center gap-2">
+                <SidebarTrigger className="-ml-1" />
+                <Separator orientation="vertical" className="mr-2 h-4" />
+              </div>
+              <DarkModeToggle />
+            </div>
+          </header>
+          <main className="flex-1 overflow-x-auto bg-gray-50 dark:bg-gray-900 min-h-screen">
+            <div className="lg:p-8 p-4">
+              <EdgeStoreProvider>{children}</EdgeStoreProvider>
+            </div>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
+    </>
   );
 }
