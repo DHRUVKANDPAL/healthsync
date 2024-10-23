@@ -120,7 +120,7 @@ const CollapsibleSidebar = ({
               href={item.href}
               onClick={() => setActiveSection(item.section)}
               className={cn(
-                "flex items-center justify-center p-2 rounded-md transition-colors group relative",
+                "flex items-center justify-start p-2 rounded-md transition-colors group relative",
                 activeSection === item.section
                   ? "bg-blue-600 text-white"
                   : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
