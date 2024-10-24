@@ -16,6 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { PatientSidebar } from "@/components/PatientSidebar";
 import { Search } from "lucide-react";
+import SearchBar from "@/components/SearchBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -108,18 +109,7 @@ export default function RootLayout({
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 h-4" />
               </div>
-              <div className="flex items-center">
-                <button className="focus:outline-none sm:mr-2">
-                  <Search className="dark:text-teal-50 h-4 w-4 sm:h-6 sm:w-6" />
-                </button>
-                <div className="transition-all duration-300 ease-in-out overflow-hidden ">
-                  <input
-                    type="search"
-                    className="bg-slate-100 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none border-2  focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
-                    placeholder="Search..."
-                  />
-                </div>
-              </div>
+              <SearchBar />
               <DarkModeToggle />
             </div>
           </header>

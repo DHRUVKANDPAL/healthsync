@@ -5,7 +5,7 @@ import BeatLoader from "@/components/BeatLoader";
 
 const PatientProfilePage: React.FC = () => {
   return (
-    <div className="h-[calc(100vh)]">
+    <div className="pb-10">
       <ProfilePage patient={PatientData} />
     </div>
   );

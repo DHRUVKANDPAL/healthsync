@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   User,
   Heart,
@@ -10,8 +10,14 @@ import {
   CheckCircle,
   Clock,
   ChevronRight,
+  Menu,
+  X,
+  ArrowRight,
+  Target,
+  File,
 } from "lucide-react";
-
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 interface Patient {
   id: string;
   email?: string;
@@ -91,199 +97,291 @@ interface Document {
   };
 }
 const ProfileHeader = ({ patient }: { patient: Patient }) => (
-  <div className="relative bg-gradient-to-r from-blue-600 to-teal-600 dark:from-blue-900 dark:to-slate-800 text-white p-8 rounded-lg shadow-lg mb-8 transition-all duration-300 hover:shadow-xl">
-    <div className="flex items-center">
-      <img
-        src={patient.imageUrl}
-        alt={patient.name}
-        className="w-24 h-24 rounded-full border-4 border-white mr-6 hover:scale-105 transition-transform"
-      />
-      <div>
-        <h1 className="text-3xl font-bold">{patient.name}</h1>
-        <p className="text-xl opacity-80">
-          {patient.age} years • {patient.gender}
+  <div className="relative bg-gradient-to-r from-blue-600 to-teal-600 dark:from-blue-900 dark:to-slate-800 text-white rounded-lg shadow-lg mb-6">
+    <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path d="M0 0 L100 100 L100 0 Z" fill="currentColor" />
+      </svg>
+    </div>
+    <div className="relative p-4 sm:px-6 flex flex-col items-center sm:items-center sm:flex-row  gap-4">
+      <div className="relative shrink-0">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white/30 overflow-hidden">
+          <img
+            src={patient.imageUrl || "/api/placeholder/96/96"}
+            alt={patient.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        {patient.isVerified && (
+          <CheckCircle
+            className="absolute -bottom-1 -right-1 text-white bg-teal-500 rounded-full p-0.5"
+            size={20}
+          />
+        )}
+      </div>
+      <div className="text-center flex flex-col  sm:text-left flex-1 min-w-0">
+        <h1 className="text-xl sm:text-2xl font-bold mb-2 truncate">
+          {patient.name}
+        </h1>
+        <div className="flex flex-nowrap justify-center sm:justify-start gap-2 w-full">
+          <span className="bg-black/20 backdrop-blur px-3 py-1 rounded-full text-xs">
+            {patient.age} yrs
+          </span>
+          <span className="bg-black/20 backdrop-blur px-3 py-1 rounded-full text-xs">
+            {patient.gender}
+          </span>
+          <span className="bg-black/20 backdrop-blur px-3 py-1 rounded-full text-xs">
+            Blood: {patient.bloodgroup}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+const MetricCard = ({ icon: Icon, label, value, trend, color }: any) => (
+  <Card className="hover:shadow-md transition-all duration-300">
+    <CardContent className="p-4">
+      <div className="space-y-3">
+        {/* Icon and trend row */}
+        <div className="flex items-center justify-between">
+          <div className={`${color} p-2 rounded-lg bg-opacity-10`}>
+            <Icon className={color} size={20} />
+          </div>
+          {trend && (
+            <span
+              className={`text-xs font-medium ${
+                trend > 0 ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {trend > 0 ? "+" : ""}
+              {trend}%
+            </span>
+          )}
+        </div>
+
+        {/* Label and value stack */}
+        <div className="space-y-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
+          <p className="text-lg font-semibold truncate">{value}</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const AppointmentCard = ({ appointment }: { appointment: any }) => (
+  <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+    <div className="bg-blue-500/10 p-2 rounded-lg shrink-0">
+      <Calendar className="text-blue-500" size={20} />
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="font-medium text-sm truncate">{appointment.doctorName}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        {appointment.specialty}
+      </p>
+      <div className="flex items-center gap-2 mt-1">
+        <p className="text-xs font-medium">{appointment.time}</p>
+        <span className="text-gray-300">•</span>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          {appointment.date}
         </p>
       </div>
     </div>
-    <span className="absolute right-4 top-4 px-3 py-1 bg-white dark:bg-teal-500 text-teal-600 dark:text-blue-950 rounded-lg text-sm font-semibold">
-      Verified
-    </span>
   </div>
 );
 
-const HealthSummary = ({ patient }: { patient: Patient }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    {[
-      {
-        icon: User,
-        label: "Blood Type",
-        value: patient.bloodgroup,
-        color: "text-blue-500",
-      },
-      {
-        icon: Activity,
-        label: "Health Status",
-        value: patient.healthStatus,
-        color: "text-green-500",
-      },
-      {
-        icon: Heart,
-        label: "Blood Pressure",
-        value: patient.healthMetrics.bloodPressure,
-        color: "text-red-500",
-      },
-      {
-        icon: Clock,
-        label: "Heart Rate",
-        value: `${patient.healthMetrics.heartRate} BPM`,
-        color: "text-yellow-500",
-      },
-    ].map((item, index) => (
-      <div
-        key={index}
-        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:scale-105"
-      >
-        <item.icon className={`mr-4 ${item.color}`} size={32} />
-        <div>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            {item.label}
-          </p>
-          <p className="text-xl font-semibold">{item.value}</p>
-        </div>
-      </div>
-    ))}
-  </div>
-);
-
-const HealthProgress = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
-    <h2 className="text-2xl font-bold mb-4">Health Progress</h2>
-    <div className="space-y-4">
-      {patient.healthMetrics.progressData.map((data, index) => (
-        <div key={index} className="flex items-center justify-between">
-          <span>{data.date}</span>
-          <div className="flex items-center space-x-6">
-            <span className="text-sm">Weight: {data.weight} kg</span>
-            <span className="text-sm">BP: {data.bloodPressure}</span>
-          </div>
-        </div>
-      ))}
+const NotificationCard = ({ notification }: { notification: any }) => (
+  <div className="flex gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+    <div className="bg-indigo-500/10 p-2 rounded-lg shrink-0 h-min">
+      <Bell className="text-indigo-500" size={20} />
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="font-medium text-sm truncate">{notification.title}</p>
+      <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
+        {notification.message}
+      </p>
+      <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
     </div>
   </div>
 );
 
-const HealthGoals = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
-    <h2 className="text-2xl font-bold mb-4">Health Goals</h2>
-    <ul className="space-y-2">
-      {patient.healthMetrics.healthGoals.map((goal, index) => (
-        <li key={index} className="flex items-center">
-          {goal.achieved ? (
-            <CheckCircle className="text-green-500 mr-2" />
-          ) : (
-            <Clock className="text-yellow-500 mr-2" />
-          )}
-          <span>{goal.description}</span>
-        </li>
-      ))}
-    </ul>
+const GoalCard = ({ goal, index }: { goal: HealthGoal; index: number }) => (
+  <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+    <div
+      className={`${
+        goal.achieved ? "bg-green-500/10" : "bg-yellow-500/10"
+      } p-2 rounded-lg shrink-0`}
+    >
+      <Target
+        className={goal.achieved ? "text-green-500" : "text-yellow-500"}
+        size={20}
+      />
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-sm font-medium truncate">{goal.description}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        {goal.achieved ? "Achieved" : "In Progress"}
+      </p>
+    </div>
+    {goal.achieved && (
+      <CheckCircle className="text-green-500 shrink-0" size={16} />
+    )}
   </div>
 );
 
-const UpcomingAppointments = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
-    <h2 className="text-2xl font-bold mb-4">Upcoming Appointments</h2>
-    <ul className="space-y-4">
-      {patient.appointments.map((app, index) => (
-        <li
-          key={index}
-          className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-        >
-          <div>
-            <p className="font-semibold">{app.appointment.doctorName}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-300">
-              {app.appointment.specialty}
-            </p>
-          </div>
-          <div className="text-right">
-            <p>{app.appointment.date}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-300">
-              {app.appointment.time}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-const RecentDocuments = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6 mb-8">
-    <h2 className="text-2xl font-bold mb-4">Recent Documents</h2>
-    <ul className="space-y-2">
-      {patient.documents.map((doc) => (
-        <li
-          key={doc.document.id}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded transition-all duration-300"
-        >
-          <div className="flex items-center">
-            <FileText
-              className="text-gray-400 dark:text-gray-500 mr-2"
-              size={20}
-            />
-            <span>{doc.document.name}</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-            <span>{doc.document.date}</span>
-            <ChevronRight size={16} />
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-const Notifications = ({ patient }: { patient: Patient }) => (
-  <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-6">
-    <h2 className="text-2xl font-bold mb-4">Recent Notifications</h2>
-    <ul className="space-y-4">
-      {patient.notifications.map((notification, index) => (
-        <li
-          key={index}
-          className="flex items-start p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-        >
-          <Bell className="text-blue-500 mr-3 mt-1 flex-shrink-0" size={20} />
-          <div>
-            <p className="font-semibold">{notification.title}</p>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              {notification.message}
-            </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              {notification.time}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
+const DocumentCard = ({ document }: { document: any }) => (
+  <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+    <div className="bg-blue-500/10 p-2 rounded-lg shrink-0">
+      <File className="text-blue-500" size={20} />
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="font-medium text-sm truncate">{document.name}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        {document.date}
+      </p>
+    </div>
+    <button className="shrink-0 text-blue-500 hover:text-blue-600">
+      <ArrowRight size={16} />
+    </button>
   </div>
 );
 
 const ProfilePage = ({ patient }: { patient: Patient }) => {
+  const upcomingAppointments = patient.appointments.slice(0, 3);
+  const recentNotifications = patient.notifications.slice(0, 3);
+  const healthGoals = patient.healthMetrics.healthGoals.slice(0, 3);
+  const recentDocuments = patient.documents.slice(0, 3);
+
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="max-w-7xl mx-auto p-4 space-y-6">
       <ProfileHeader patient={patient} />
-      <HealthSummary patient={patient} />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <HealthProgress patient={patient} />
-          <HealthGoals patient={patient} />
-        </div>
-        <div>
-          <UpcomingAppointments patient={patient} />
-          <RecentDocuments patient={patient} />
-        </div>
+
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <MetricCard
+          icon={Heart}
+          label="Blood Pressure"
+          value={patient.healthMetrics.bloodPressure}
+          trend={2.5}
+          color="text-red-500"
+        />
+        <MetricCard
+          icon={Activity}
+          label="Heart Rate"
+          value={`${patient.healthMetrics.heartRate} BPM`}
+          trend={-1.2}
+          color="text-blue-500"
+        />
+        <MetricCard
+          icon={User}
+          label="Weight"
+          value={`${patient.healthMetrics.weight} kg`}
+          trend={-0.5}
+          color="text-green-500"
+        />
+        <MetricCard
+          icon={Clock}
+          label="Health Status"
+          value={patient.healthStatus}
+          color="text-yellow-500"
+        />
       </div>
-      <Notifications patient={patient} />
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column  */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* - Health Progress */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between p-4">
+              <CardTitle className="text-lg">Health Progress</CardTitle>
+              <button className="text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                View All <ArrowRight size={14} />
+              </button>
+            </CardHeader>
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                {patient.healthMetrics.progressData.map((data, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
+                  >
+                    <span className="text-sm font-medium">{data.date}</span>
+                    <div className="flex gap-4 mt-1 sm:mt-0">
+                      <span className="text-xs">Weight: {data.weight} kg</span>
+                      <span className="text-xs">BP: {data.bloodPressure}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          {/* Upcoming Appointments */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between p-4">
+              <CardTitle className="text-lg">Upcoming</CardTitle>
+              <button className="text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                View All <ArrowRight size={14} />
+              </button>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-3">
+              {upcomingAppointments.map((app, index) => (
+                <AppointmentCard key={index} appointment={app.appointment} />
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+        {/* Right Column - Cards Stack */}
+        <div className="space-y-6">
+          {/* Recent Notifications */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between p-4">
+              <CardTitle className="text-lg">Notifications</CardTitle>
+              <button className="text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                View All <ArrowRight size={14} />
+              </button>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-3">
+              {recentNotifications.map((notification, index) => (
+                <NotificationCard key={index} notification={notification} />
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Health Goals */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between p-4">
+              <CardTitle className="text-lg">Health Goals</CardTitle>
+              <button className="text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                View All <ArrowRight size={14} />
+              </button>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-3">
+              {healthGoals.map((goal, index) => (
+                <GoalCard key={index} goal={goal} index={index} />
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+        {/* Recent Documents */}
+        <Card className="lg:col-span-3">
+          <CardHeader className="flex flex-row items-center justify-between p-4">
+            <CardTitle className="text-lg">Recent Documents</CardTitle>
+            <button className="text-xs text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+              View All <ArrowRight size={14} />
+            </button>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 space-y-3">
+            {recentDocuments.map((doc, index) => (
+              <DocumentCard key={index} document={doc.document} />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
