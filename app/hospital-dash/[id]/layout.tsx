@@ -190,7 +190,7 @@ const CollapsibleSidebar = ({
                 <div className="transition-all duration-300 ease-in-out overflow-hidden ">
                   <input
                     type="search"
-                    className="bg-slate-100 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none border-2  border-slate-900 focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
+                    className="bg-slate-100 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none border-2  focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
                     placeholder="Search..."
                   />
                 </div>
