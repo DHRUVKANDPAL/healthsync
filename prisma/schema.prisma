@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -168,4 +169,22 @@ model DoctorSession {
   userId    String
   expiresAt DateTime
   doctor Doctor @relation(fields: [userId], references: [id])
+}
+
+model Feedback{ 
+  id String @id @default(cuid())
+  name String
+  email String
+  message String
+  subject String?
+  reply Reply[]
+  createdAt       DateTime? @default(now())
+}
+
+model Reply{
+  id String @id @default(cuid())
+  userId String
+  feedback Feedback @relation(fields: [userId], references: [id])
+  message String
+  createdAt       DateTime? @default(now())
 }

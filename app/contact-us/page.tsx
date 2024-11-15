@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -11,13 +11,14 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,12 +32,24 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { toast } from "@/components/ui/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {toast} from "sonner";
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  type: z.union([z.literal("Message Support"), z.literal("Public Feedback")]).refine(
+    (value) => value === "Message Support" || value === "Public Feedback",
+    {
+      message: "Please select a valid type: 'Message Support' or 'Public Feedback'.",
+    }
+  ),
   email: z.string().email({ message: "Please enter a valid email address." }),
   subject: z
     .string()
@@ -61,24 +74,33 @@ const ContactCard = ({ icon: Icon, title, content }: any) => (
 );
 
 export default function ContactUs() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const form = useForm({
+  const [isPending, startTransition] = useTransition();
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: "", email: "", subject: "", message: "" },
+    defaultValues:{
+      email:"anonymous@healthsync.com",
+      name:"Anonymous-Healer",
+      subject:"Feedback"
+    }
   });
 
-  function onSubmit(values: any) {
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Message Sent",
-        description:
-          "We&apos;ve received your message and will get back to you soon.",
-      });
-      console.log(values);
-      form.reset();
-    }, 2000);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    startTransition(async () => {
+      if(values.type==="Public Feedback"){
+        console.log(values);
+        const res = await fetch("/api/contact/feedback", {
+          method: "POST",
+          body: JSON.stringify(values),
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data.success) {
+          toast.success("Feedback sent successfully");
+        } else {
+          toast.error("Unable to send feedback");
+        }
+      }
+    });
   }
 
   return (
@@ -146,7 +168,7 @@ export default function ContactUs() {
             >
               <CardContent className="p-8">
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-slate-100 mb-6">
-                  Send us a Message
+                  Send us a Message / Feedback
                 </h2>
                 <Form {...form}>
                   <form
@@ -232,13 +254,40 @@ export default function ContactUs() {
                         </FormItem>
                       )}
                     />
-
+                    <FormField
+                      control={form.control}
+                      name="type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Select type of Message</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select the type of Message" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Message Support">
+                                Message Support
+                              </SelectItem>
+                              <SelectItem value="Public Feedback">
+                                Public Feedback
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          
+                        </FormItem>
+                      )}
+                    />
                     <Button
                       type="submit"
                       className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
-                      disabled={isSubmitting}
+                      disabled={isPending}
                     >
-                      {isSubmitting ? (
+                      {isPending ? (
                         <>
                           <svg
                             className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -328,7 +377,7 @@ export default function ContactUs() {
                   </h2>
                   <div className="flex items-center justify-center text-gray-600 dark:text-slate-300 mb-4">
                     <Clock className="w-5 h-5 mr-2 text-indigo-500 dark:text-indigo-400" />
-                    <p>Monday to Friday, 9 AM - 6 PM IST</p>
+                    <p>Monday to Friday, 5 AM - 11 PM IST</p>
                   </div>
                   <Button
                     variant="outline"
