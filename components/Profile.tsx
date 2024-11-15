@@ -19,84 +19,84 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 interface Patient {
-  id: string;
+  id?: string;
   email?: string;
-  name: string;
-  gender: string;
-  dob: string;
-  aadharno: string;
-  bloodgroup: string;
+  name?: string;
+  gender?: string;
+  dob?: string;
+  aadharno?: string;
+  bloodgroup?: string;
   hashedPassword?: string;
-  contactno: string;
+  contactno?: string;
   alternatecontactno?: string;
-  address: string;
+  address?: string;
   emergencycontact?: string;
   prevHis?: string;
   imageUrl?: string;
   isVerified?: boolean;
-  medHis: any[]; // Replace 'any' with the appropriate type if available
-  session: any[]; // Replace 'any' with the appropriate type for PatientSession
-  queue: any[]; // Replace 'any' with the appropriate type for Queue
-  createdAt: string;
-  updatedAt: string;
+  medHis?: any[]; // Replace 'any' with the appropriate type if available
+  session?: any[]; // Replace 'any' with the appropriate type for PatientSession
+  queue?: any[]; // Replace 'any' with the appropriate type for Queue
+  createdAt?: string;
+  updatedAt?: string;
 
   // New Fields
-  age: number;
-  healthStatus: string;
-  notifications: Notification[];
-  healthRecords: HealthRecord[];
-  healthMetrics: HealthMetrics;
-  appointments: Appointment[];
-  documents: Document[];
+  age?: number;
+  healthStatus?: string;
+  notifications?: Notification[];
+  healthRecords?: HealthRecord[];
+  healthMetrics?: HealthMetrics;
+  appointments?: Appointment[];
+  documents?: Document[];
 }
 
 interface Notification {
-  title: string;
-  message: string;
-  time: string;
+  title?: string;
+  message?: string;
+  time?: string;
 }
 
 interface HealthRecord {
-  title: string;
-  date: string;
+  title?: string;
+  date?: string;
 }
 
 interface HealthMetrics {
-  bloodPressure: string;
-  heartRate: number;
-  weight: number;
-  progressData: ProgressData[];
-  healthGoals: HealthGoal[];
+  bloodPressure?: string;
+  heartRate?: number;
+  weight?: number;
+  progressData?: ProgressData[];
+  healthGoals?: HealthGoal[];
 }
 
 interface ProgressData {
-  date: string;
-  weight: number;
-  bloodPressure: number;
+  date?: string;
+  weight?: number;
+  bloodPressure?: number;
 }
 
 interface HealthGoal {
-  achieved: boolean;
-  description: string;
+  achieved?: boolean;
+  description?: string;
 }
 
 interface Appointment {
-  appointment: {
-    doctorName: string;
-    specialty: string;
-    date: string;
-    time: string;
+  appointment?: {
+    doctorName?: string;
+    specialty?: string;
+    date?: string;
+    time?: string;
   };
 }
 
 interface Document {
-  document: {
-    id: number;
-    name: string;
-    date: string;
+  document?: {
+    id?: number;
+    name?: string;
+    date?: string;
   };
 }
-const ProfileHeader = ({ patient }: { patient: Patient }) => (
+const ProfileHeader = ({ patient }: { patient: Patient |null }) => (
   <div className="relative bg-gradient-to-r from-blue-600 to-teal-600 dark:from-blue-900 dark:to-slate-800 text-white rounded-lg shadow-lg mb-6">
     <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
       <svg
@@ -111,12 +111,12 @@ const ProfileHeader = ({ patient }: { patient: Patient }) => (
       <div className="relative shrink-0">
         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white/30 overflow-hidden">
           <img
-            src={patient.imageUrl || "/api/placeholder/96/96"}
-            alt={patient.name}
+            src={patient?.imageUrl || "/api/placeholder/96/96"}
+            alt={patient?.name}
             className="w-full h-full object-cover"
           />
         </div>
-        {patient.isVerified && (
+        {patient?.isVerified && (
           <CheckCircle
             className="absolute -bottom-1 -right-1 text-white bg-teal-500 rounded-full p-0.5"
             size={20}
@@ -125,17 +125,17 @@ const ProfileHeader = ({ patient }: { patient: Patient }) => (
       </div>
       <div className="text-center flex flex-col  sm:text-left flex-1 min-w-0">
         <h1 className="text-xl sm:text-2xl font-bold mb-2 truncate">
-          {patient.name}
+          {patient?.name}
         </h1>
         <div className="flex flex-nowrap justify-center sm:justify-start gap-2 w-full">
           <span className="bg-black/20 backdrop-blur px-3 py-1 rounded-full text-xs">
-            {patient.age} yrs
+            {patient?.age} yrs
           </span>
           <span className="bg-black/20 backdrop-blur px-3 py-1 rounded-full text-xs">
-            {patient.gender}
+            {patient?.gender}
           </span>
           <span className="bg-black/20 backdrop-blur px-3 py-1 rounded-full text-xs">
-            Blood: {patient.bloodgroup}
+            Blood: {patient?.bloodgroup}
           </span>
         </div>
       </div>
@@ -250,11 +250,11 @@ const DocumentCard = ({ document }: { document: any }) => (
   </div>
 );
 
-const ProfilePage = ({ patient }: { patient: Patient }) => {
-  const upcomingAppointments = patient.appointments.slice(0, 3);
-  const recentNotifications = patient.notifications.slice(0, 3);
-  const healthGoals = patient.healthMetrics.healthGoals.slice(0, 3);
-  const recentDocuments = patient.documents.slice(0, 3);
+const ProfilePage = ({ patient }: { patient: Patient | null}) => {
+  const upcomingAppointments = patient?.appointments?.slice(0, 3);
+  const recentNotifications = patient?.notifications?.slice(0, 3);
+  const healthGoals = patient?.healthMetrics?.healthGoals?.slice(0, 3);
+  const recentDocuments = patient?.documents?.slice(0, 3);
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-6">
@@ -265,28 +265,28 @@ const ProfilePage = ({ patient }: { patient: Patient }) => {
         <MetricCard
           icon={Heart}
           label="Blood Pressure"
-          value={patient.healthMetrics.bloodPressure}
+          value={patient?.healthMetrics?.bloodPressure}
           trend={2.5}
           color="text-red-500"
         />
         <MetricCard
           icon={Activity}
           label="Heart Rate"
-          value={`${patient.healthMetrics.heartRate} BPM`}
+          value={`${patient?.healthMetrics?.heartRate} BPM`}
           trend={-1.2}
           color="text-blue-500"
         />
         <MetricCard
           icon={User}
           label="Weight"
-          value={`${patient.healthMetrics.weight} kg`}
+          value={`${patient?.healthMetrics?.weight} kg`}
           trend={-0.5}
           color="text-green-500"
         />
         <MetricCard
           icon={Clock}
           label="Health Status"
-          value={patient.healthStatus}
+          value={patient?.healthStatus}
           color="text-yellow-500"
         />
       </div>
@@ -305,7 +305,7 @@ const ProfilePage = ({ patient }: { patient: Patient }) => {
             </CardHeader>
             <CardContent className="p-4">
               <div className="space-y-3">
-                {patient.healthMetrics.progressData.map((data, index) => (
+                {patient?.healthMetrics?.progressData?.map((data, index) => (
                   <div
                     key={index}
                     className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
@@ -329,7 +329,7 @@ const ProfilePage = ({ patient }: { patient: Patient }) => {
               </button>
             </CardHeader>
             <CardContent className="p-4 pt-0 space-y-3">
-              {upcomingAppointments.map((app, index) => (
+              {upcomingAppointments?.map((app, index) => (
                 <AppointmentCard key={index} appointment={app.appointment} />
               ))}
             </CardContent>
@@ -346,7 +346,7 @@ const ProfilePage = ({ patient }: { patient: Patient }) => {
               </button>
             </CardHeader>
             <CardContent className="p-4 pt-0 space-y-3">
-              {recentNotifications.map((notification, index) => (
+              {recentNotifications?.map((notification, index) => (
                 <NotificationCard key={index} notification={notification} />
               ))}
             </CardContent>
@@ -361,7 +361,7 @@ const ProfilePage = ({ patient }: { patient: Patient }) => {
               </button>
             </CardHeader>
             <CardContent className="p-4 pt-0 space-y-3">
-              {healthGoals.map((goal, index) => (
+              {healthGoals?.map((goal, index) => (
                 <GoalCard key={index} goal={goal} index={index} />
               ))}
             </CardContent>
@@ -376,7 +376,7 @@ const ProfilePage = ({ patient }: { patient: Patient }) => {
             </button>
           </CardHeader>
           <CardContent className="p-4 pt-0 space-y-3">
-            {recentDocuments.map((doc, index) => (
+            {recentDocuments?.map((doc, index) => (
               <DocumentCard key={index} document={doc.document} />
             ))}
           </CardContent>

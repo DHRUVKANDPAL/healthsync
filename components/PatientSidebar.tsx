@@ -40,8 +40,8 @@ export function PatientSidebar({ ...props }: any) {
   const { userData } = props;
   const data = {
     user: {
-      name: "Dewansh Mishra",
-      email: "mishra@gmail.com",
+      name: userData.name,
+      email: userData.email,
       avatar: "/avatars/shadcn.jpg",
     },
     navMain: [
