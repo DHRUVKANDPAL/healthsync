@@ -107,5 +107,5 @@ export const hospitalLogout = async () => {
     console.log("Error");
   }
   //  location.reload();
-  revalidatePath("/patient-dash");
+  revalidatePath("/hospital-dash");
 };

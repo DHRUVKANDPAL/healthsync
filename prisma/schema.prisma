@@ -117,22 +117,36 @@ model Department{
   name String
   noOfDoctors String
   doctorsAvailable String
-  doctor Doctor[]
+  doctors DoctorinDept[]
   hospital Hospital @relation(fields: [userId], references: [id])
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
 }
 model Doctor{
   id              String   @id @default(cuid())
-  userId String
+  userId String @unique//unique id to login 
   name String 
   imageUrl String?
+  dob DateTime?
   aadharNo String?
-  licneceNo String? //registed with Medical Council of India (MCI) or a State Medical Council 
+  licenceNo String? //registed with Medical Council of India (MCI) or a State Medical Council 
+  contactno String?
+  email String?
+  hashedPassword String
   queue Queue[]
-  department Department @relation(fields: [userId], references: [id])
+  departments DoctorinDept[]
+  session DoctorSession[]
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
+}
+model DoctorinDept {
+  dept       Department     @relation(fields: [deptId], references: [id])
+  deptId     String 
+  doctor     Doctor @relation(fields: [doctorId], references: [id])
+  doctorId   String 
+  assignedAt DateTime @default(now())
+  isAvailable Boolean? @default(true)
+  @@id([deptId, doctorId])
 }
 model Queue{
   id              String   @id @default(cuid())
@@ -148,4 +162,10 @@ model HospitalSession {
   userId    String
   expiresAt DateTime
   hospital Hospital @relation(fields: [userId], references: [id])
+}
+model DoctorSession {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  doctor Doctor @relation(fields: [userId], references: [id])
 }
