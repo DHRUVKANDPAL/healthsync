@@ -227,7 +227,7 @@ export default function Component() {
           {" "}
           <Menubar>
             <MenubarMenu>
-              <MenubarTrigger className=" fixed bottom-10 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer data-[state=open]:bg-blue-600 hover:bg-blue-600 transition-all duration-300 flex justify-center items-center">
+              <MenubarTrigger className=" fixed bottom-10 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer data-[state=open]:bg-blue-600 hover:bg-blue-600 transition-all duration-300 flex justify-center items-center z-50">
                 <MessageCircleMore className="text-white " />
               </MenubarTrigger>
               <MenubarContent className="p-5 mr-5">
