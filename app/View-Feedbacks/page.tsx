@@ -60,22 +60,13 @@ interface Feedback {
 }
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  type: z
-    .union([z.literal("Message Support"), z.literal("Public Feedback")])
-    .refine(
-      (value) => value === "Message Support" || value === "Public Feedback",
-      {
-        message:
-          "Please select a valid type: 'Message Support' or 'Public Feedback'.",
-      }
-    ),
   email: z.string().email({ message: "Please enter a valid email address." }),
   subject: z
     .string()
     .min(5, { message: "Subject must be at least 5 characters." }),
   message: z
     .string()
-    .min(10, { message: "Message must be at least 10 characters." }),
+    .min(2, { message: "Message must be at least 2 characters." }),
 });
 export default function Component() {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
@@ -209,7 +200,7 @@ export default function Component() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
-      if (values.type === "Public Feedback") {
+      
         console.log(values);
         const res = await fetch("/api/contact/feedback", {
           method: "POST",
@@ -219,11 +210,12 @@ export default function Component() {
         console.log(data);
         if (data.success) {
           toast.success("Feedback sent successfully");
+          window.location.reload();
         } else {
           toast.error("Unable to send feedback");
         }
       }
-    });
+    );
   }
   return (
     <>
@@ -324,7 +316,7 @@ export default function Component() {
 
                     <Button
                       type="submit"
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                      className="w-full bg-indigo-600 hover:bg-blue-700 text-white"
                       disabled={isPending}
                     >
                       {isPending ? (
