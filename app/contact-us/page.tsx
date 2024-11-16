@@ -9,6 +9,7 @@ import {
   Clock,
   Send,
   ExternalLink,
+  MessageSquareMore,
 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -41,15 +42,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {toast} from "sonner";
+import { toast } from "sonner";
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  type: z.union([z.literal("Message Support"), z.literal("Public Feedback")]).refine(
-    (value) => value === "Message Support" || value === "Public Feedback",
-    {
-      message: "Please select a valid type: 'Message Support' or 'Public Feedback'.",
-    }
-  ),
+  type: z
+    .union([z.literal("Message Support"), z.literal("Public Feedback")])
+    .refine(
+      (value) => value === "Message Support" || value === "Public Feedback",
+      {
+        message:
+          "Please select a valid type: 'Message Support' or 'Public Feedback'.",
+      }
+    ),
   email: z.string().email({ message: "Please enter a valid email address." }),
   subject: z
     .string()
@@ -77,16 +81,16 @@ export default function ContactUs() {
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues:{
-      email:"anonymous@healthsync.com",
-      name:"Anonymous-Healer",
-      subject:"Feedback"
-    }
+    defaultValues: {
+      email: "anonymous@healthsync.com",
+      name: "Anonymous-Healer",
+      subject: "Feedback",
+    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
-      if(values.type==="Public Feedback"){
+      if (values.type === "Public Feedback") {
         console.log(values);
         const res = await fetch("/api/contact/feedback", {
           method: "POST",
@@ -167,10 +171,46 @@ export default function ContactUs() {
               id="contact-form"
             >
               <CardContent className="p-8">
-                <h2 className="text-2xl font-semibold text-gray-800 dark:text-slate-100 mb-6">
-                  Send us a Message / Feedback
-                </h2>
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mb-6">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-slate-100">
+                    Send us a Message / Feedback
+                  </h2>
+                  <Link href="/View-Feedbacks">
+                    <Button className="bg-indigo-500 text-indigo-50 hover:bg-indigo-700 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-50 flex items-center">
+                      <p>View Feedbacks</p>{" "}
+                      <MessageSquareMore className=" h-8 w-8" />
+                    </Button>
+                  </Link>
+                </div>
+
                 <Form {...form}>
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Select type of Message</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select the type of Message" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Message Support">
+                              Message Support
+                            </SelectItem>
+                            <SelectItem value="Public Feedback">
+                              Public Feedback
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6"
@@ -254,34 +294,7 @@ export default function ContactUs() {
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={form.control}
-                      name="type"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Select type of Message</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select the type of Message" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="Message Support">
-                                Message Support
-                              </SelectItem>
-                              <SelectItem value="Public Feedback">
-                                Public Feedback
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                          
-                        </FormItem>
-                      )}
-                    />
+
                     <Button
                       type="submit"
                       className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"

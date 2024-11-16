@@ -297,6 +297,15 @@ const Header = (props: Props) => {
                             Patient Login
                           </Link>
                           <Link
+                            href="/doctor-auth"
+                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
+                            onClick={() => {
+                              closeMenu();
+                            }}
+                          >
+                            Doctor Login
+                          </Link>
+                          <Link
                             href="/hospital-auth"
                             className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
                             onClick={() => {

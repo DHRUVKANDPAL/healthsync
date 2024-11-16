@@ -5,6 +5,7 @@ import { FiPhoneCall } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { MdEmail } from "react-icons/md";
+import Link from "next/link";
 
 type Props = {};
 
@@ -26,9 +27,12 @@ const Footer = (props: Props) => {
             </h2>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="hover:text-teal-300 transition-colors">
-                  Appointment
-                </a>
+                <Link
+                  href="/View-Feedbacks"
+                  className="hover:text-teal-300 transition-colors"
+                >
+                  Feedback
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-teal-300 transition-colors">
@@ -118,7 +122,7 @@ const Footer = (props: Props) => {
         </div>
       </div>
     </footer>
-  //  <></> 
+    //  <></>
   );
 };
 
