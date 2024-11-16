@@ -221,18 +221,25 @@ const Header = (props: Props) => {
                 Home
               </Link>
               <Link
-                href="/contact-us"
-                className="hover:text-teal-300 md:p-2"
-                onClick={closeMenu}
-              >
-                Contact Us
-              </Link>
-              <Link
                 href="/about-us"
                 className="hover:text-teal-300 md:p-2"
                 onClick={closeMenu}
               >
                 About Us
+              </Link>
+              <Link
+                href="/discuss"
+                className="hover:text-teal-300 md:p-2"
+                onClick={closeMenu}
+              >
+                Discuss
+              </Link>
+              <Link
+                href="/contact-us"
+                className="hover:text-teal-300 md:p-2"
+                onClick={closeMenu}
+              >
+                Contact Us
               </Link>
               {isLoggedIn ? (
                 <>
