@@ -466,7 +466,7 @@ export default function Component() {
                                       className="bg-muted p-2 rounded flex flex-col space-y-2"
                                     >
                                       <div className="text-sm flex gap-2 ">
-                                        <Avatar className="h-5 w-5 hidden sm:block">
+                                        <Avatar className="h-5 w-5  sm:block">
                                           <AvatarImage
                                             src={`https://avatar.vercel.sh/${
                                               reply.message + "0"
