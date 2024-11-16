@@ -63,7 +63,7 @@ const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   subject: z
     .string()
-    .min(5, { message: "Subject must be at least 5 characters." }),
+    .min(2, { message: "Subject must be at least 2 characters." }),
   message: z
     .string()
     .min(2, { message: "Message must be at least 2 characters." }),
@@ -83,7 +83,7 @@ export default function Component() {
     defaultValues: {
       email: "anonymous@healthsync.com",
       name: "Anonymous-Healer",
-      subject: "Feedback",
+      subject: "",
     },
   });
   useEffect(() => {
