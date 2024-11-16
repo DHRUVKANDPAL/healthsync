@@ -34,36 +34,36 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 
-export function PatientSidebar({ ...props }: any) {
+export function DoctorSidebar({ ...props }: any) {
   const { id } = props;
   const { handleLogout } = props;
   const { userData } = props;
   const data = {
     user: {
-      name: userData.name,
-      email: userData.email,
+      name: "ramesss",
+      email: "patell",
       avatar: "/avatars/shadcn.jpg",
     },
     navMain: [
       {
         title: "Profile",
-        url: `/patient-dash/${id}`,
+        url: `/doctor-dash/${id}`,
         icon: User,
         isActive: true,
       },
       {
         title: "Documents",
-        url: `/patient-dash/${id}/documents`,
+        url: `/doctor-dash/${id}/documents`,
         icon: FileText,
       },
       {
         title: "Appointments",
-        url: `/patient-dash/${id}/appointments`,
+        url: `/doctor-dash/${id}/appointments`,
         icon: Calendar,
       },
       {
         title: "Settings",
-        url: `/patient-dash/${id}/settings`,
+        url: `/doctor-dash/${id}/settings`,
         icon: Settings,
         items: [
           {
