@@ -12,7 +12,7 @@ import {
 import { useState, useEffect, useTransition } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { MessageCircleMore } from "lucide-react";
+import { Loader2, MessageCircleMore } from "lucide-react";
 
 import {
   Card,
@@ -455,7 +455,7 @@ export default function Component() {
                                   disabled={isPending}
                                   onClick={() => handleSendReply(feedback.id)}
                                 >
-                                  <Send className="h-2 w-2 sm:w-8 sm:h-8" />
+                                  {isPending?<Loader2 className="h-2 w-2 sm:w-8 sm:h-8 animate-spin" />:<Send className="h-2 w-2 sm:w-8 sm:h-8" />}
                                 </Button>
                               </div>
                               <div className="space-y-2">
