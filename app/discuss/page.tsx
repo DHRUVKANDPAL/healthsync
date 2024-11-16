@@ -438,7 +438,7 @@ export default function Component() {
                           </div>
                           <div className="space-y-2">
                             <h4 className="font-medium">{feedback.subject}</h4>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-foreground opacity-70">
                               {feedback.message}
                             </p>
                           </div>
