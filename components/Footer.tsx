@@ -28,7 +28,7 @@ const Footer = (props: Props) => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/View-Feedbacks"
+                  href="/discuss"
                   className="hover:text-teal-300 transition-colors"
                 >
                   Feedback

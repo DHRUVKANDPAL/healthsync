@@ -175,7 +175,7 @@ export default function ContactUs() {
                   <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-slate-100">
                     Send us a Message / Feedback
                   </h2>
-                  <Link href="/View-Feedbacks">
+                  <Link href="/discuss">
                     <Button className="bg-indigo-500 text-indigo-50 hover:bg-indigo-700 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-50 flex items-center">
                       <p>View Feedbacks</p>{" "}
                       <MessageSquareMore className=" h-8 w-8" />
