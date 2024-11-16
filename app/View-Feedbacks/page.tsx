@@ -142,28 +142,30 @@ export default function Component() {
   };
 
   const handleSendReply = async (feedbackId: number) => {
-    try {
-      const response = await fetch(`/api/reply/${feedbackId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: replyText }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to send reply");
+    startTransition(async () => {
+      try {
+        const response = await fetch(`/api/reply/${feedbackId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: replyText }),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to send reply");
+        }
+        const updatedFeedback = await response.json();
+        setFeedbacks(updatedFeedback.fb);
+        console.log(updatedFeedback);
+        setReplyText("");
+        setShowReplies((prevState) => ({
+          ...prevState,
+          [feedbackId]: false,
+        }));
+      } catch (err) {
+        console.error("Error sending reply:", err);
       }
-      const updatedFeedback = await response.json();
-      setFeedbacks(updatedFeedback.fb);
-      console.log(updatedFeedback);
-      setReplyText("");
-      setShowReplies((prevState) => ({
-        ...prevState,
-        [feedbackId]: false,
-      }));
-    } catch (err) {
-      console.error("Error sending reply:", err);
-    }
+    })
   };
   const handleHideReplies = (feedbackId: number) => {
     setShowReplies((prevState) => ({
@@ -450,6 +452,7 @@ export default function Component() {
                                 />
                                 <Button
                                   variant="default"
+                                  disabled={isPending}
                                   onClick={() => handleSendReply(feedback.id)}
                                 >
                                   <Send className="h-2 w-2 sm:w-8 sm:h-8" />
