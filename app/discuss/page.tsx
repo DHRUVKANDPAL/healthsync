@@ -48,6 +48,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import ScrollingAnnouncement from "@/components/ScrollBanner";
 
 interface Feedback {
   id: number;
@@ -220,12 +221,15 @@ export default function Component() {
   return (
     <>
       <Header></Header>
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+      <ScrollingAnnouncement></ScrollingAnnouncement>
+      </div>
       <div className=" w-full mx-auto py-10">
-        <div className=" fixed bottom-10 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer hover:bg-blue-600 transition-all duration-300 flex justify-center items-center z-50">
+        <div className=" fixed bottom-16 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer hover:bg-blue-600 transition-all duration-300 flex justify-center items-center z-50">
           {" "}
           <Menubar>
             <MenubarMenu>
-              <MenubarTrigger className=" fixed bottom-10 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer data-[state=open]:bg-blue-600 hover:bg-blue-600 transition-all duration-300 flex justify-center items-center z-50">
+              <MenubarTrigger className=" fixed bottom-16 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer data-[state=open]:bg-blue-600 hover:bg-blue-600 transition-all duration-300 flex justify-center items-center z-50">
                 <MessageCircleMore className="text-white " />
               </MenubarTrigger>
               <MenubarContent className="p-5 mr-5">
@@ -514,6 +518,7 @@ export default function Component() {
           </CardContent>
         </Card>
       </div>
+      <div className="h-16"></div>
       {/* <Footer></Footer> */}
     </>
   );
