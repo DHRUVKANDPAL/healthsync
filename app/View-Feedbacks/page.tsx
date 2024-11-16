@@ -165,7 +165,7 @@ export default function Component() {
       } catch (err) {
         console.error("Error sending reply:", err);
       }
-    })
+    });
   };
   const handleHideReplies = (feedbackId: number) => {
     setShowReplies((prevState) => ({
@@ -202,22 +202,20 @@ export default function Component() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
-      
-        console.log(values);
-        const res = await fetch("/api/contact/feedback", {
-          method: "POST",
-          body: JSON.stringify(values),
-        });
-        const data = await res.json();
-        console.log(data);
-        if (data.success) {
-          toast.success("Feedback sent successfully");
-          window.location.reload();
-        } else {
-          toast.error("Unable to send feedback");
-        }
+      console.log(values);
+      const res = await fetch("/api/contact/feedback", {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        toast.success("Feedback sent successfully");
+        window.location.reload();
+      } else {
+        toast.error("Unable to send feedback");
       }
-    );
+    });
   }
   return (
     <>
@@ -412,7 +410,20 @@ export default function Component() {
                         <div className="flex-1 space-y-2">
                           <div className="flex items-center justify-between">
                             <div>
-                              <h3 className="font-semibold">{feedback.name}</h3>
+                              <div className="flex items-center gap-2">
+                                <Avatar className="h-6 w-6  sm:hidden">
+                                  <AvatarImage
+                                    src={`https://avatar.vercel.sh/${feedback.email}`}
+                                  />
+                                  <AvatarFallback>
+                                    {feedback.name[0]}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <h3 className="font-semibold">
+                                  {feedback.name}
+                                </h3>
+                              </div>
+
                               <p className="text-sm text-muted-foreground">
                                 {feedback.email}
                               </p>
@@ -455,7 +466,11 @@ export default function Component() {
                                   disabled={isPending}
                                   onClick={() => handleSendReply(feedback.id)}
                                 >
-                                  {isPending?<Loader2 className="h-2 w-2 sm:w-8 sm:h-8 animate-spin" />:<Send className="h-2 w-2 sm:w-8 sm:h-8" />}
+                                  {isPending ? (
+                                    <Loader2 className="h-2 w-2 sm:w-8 sm:h-8 animate-spin" />
+                                  ) : (
+                                    <Send className="h-2 w-2 sm:w-8 sm:h-8" />
+                                  )}
                                 </Button>
                               </div>
                               <div className="space-y-2">
