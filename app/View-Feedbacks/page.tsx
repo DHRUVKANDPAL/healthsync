@@ -223,7 +223,7 @@ export default function Component() {
     <>
       <Header></Header>
       <div className=" w-full mx-auto py-10">
-        <div className=" fixed bottom-10 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer hover:bg-blue-600 transition-all duration-300 flex justify-center items-center">
+        <div className=" fixed bottom-10 right-8 rounded-full  bg-blue-800 w-12 h-12 cursor-pointer hover:bg-blue-600 transition-all duration-300 flex justify-center items-center z-50">
           {" "}
           <Menubar>
             <MenubarMenu>
