@@ -1,102 +1,51 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
 declare global {
   interface Window {
-    googleTranslateElementInit: () => void;
-    google: any;
+    googleTranslateElementInit?: () => void;
+    google?: any;
   }
 }
 
 const GoogleTranslate: React.FC = () => {
-  const scriptLoaded = useRef(false);
-  const [isScriptReady, setIsScriptReady] = useState(false);
-
   useEffect(() => {
-    // Clear any existing initialization
-    (window as any).googleTranslateElementInit = undefined;
+    const scriptId = "google-translate-script";
 
-    const initializeTranslate = () => {
-      try {
-        if (window.google && window.google.translate) {
-          new window.google.translate.TranslateElement(
-            { pageLanguage: "en" },
-            "google_translate_element"
-          );
-          setIsScriptReady(true);
-        }
-      } catch (error) {
-        console.error("Failed to initialize Google Translate:", error);
-      }
-    };
-
-    const loadScript = () => {
-      if (scriptLoaded.current) return;
-      scriptLoaded.current = true;
-
-      // Remove any existing script first
-      const existingScript = document.getElementById("google-translate-script");
-      if (existingScript) {
-        existingScript.remove();
+    const loadGoogleTranslateScript = () => {
+      if (document.getElementById(scriptId)) {
+        console.log("Google Translate script already exists.");
+        return; // Script is already loaded
       }
 
-      // Clear the translate element
-      const translateElement = document.getElementById(
-        "google_translate_element"
-      );
-      if (translateElement) {
-        translateElement.innerHTML = "";
-      }
-
-      // Create and append new script
       const script = document.createElement("script");
-      script.id = "google-translate-script";
-      script.src = "https://translate.google.com/translate_a/element.js";
+      script.id = scriptId;
+      script.src =
+        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
-
-      // Handle script load success
-      script.onload = () => {
-        window.googleTranslateElementInit = initializeTranslate;
-        initializeTranslate();
-      };
-
-      // Handle script load error
-      script.onerror = (error) => {
-        console.error("Error loading Google Translate script:", error);
-        scriptLoaded.current = false;
-      };
-
       document.body.appendChild(script);
     };
 
-    loadScript();
+    // Initialize Google Translate after the script loads
+    window.googleTranslateElementInit = () => {
+      if (window.google && window.google.translate) {
+        new window.google.translate.TranslateElement(
+          { pageLanguage: "en" },
+          "google_translate_element"
+        );
+      }
+    };
 
-    // Cleanup function
+    loadGoogleTranslateScript();
+
+    // Cleanup: No need to remove the script; leave it cached for next use
     return () => {
-      // Remove script and reset state
-      const script = document.getElementById("google-translate-script");
-      if (script) {
-        script.remove();
-      }
-
-      // Clear the translate element
-      const translateElement = document.getElementById(
-        "google_translate_element"
-      );
-      if (translateElement) {
-        translateElement.innerHTML = "";
-      }
-
-      scriptLoaded.current = false;
-      setIsScriptReady(false);
-      (window as any).googleTranslateElementInit = undefined;
+      // Cleanup code if needed
     };
   }, []);
 
   return (
     <div>
-      <div id="google_translate_element">
-        {!isScriptReady && <span>Loading translator...</span>}
-      </div>
+      <div id="google_translate_element"></div>
     </div>
   );
 };
