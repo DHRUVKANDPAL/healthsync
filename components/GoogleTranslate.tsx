@@ -9,34 +9,52 @@ declare global {
 
 const GoogleTranslate: React.FC = () => {
   useEffect(() => {
-    // Function to reset Google Translate's cache and state before loading the script
+    // Function to reset Google Translate cache and clear any related state
     const resetGoogleTranslateCache = () => {
-      // Remove the google_translate_element div if it exists
+      // Step 1: Remove the google_translate_element div if it exists
       const translateElement = document.getElementById('google_translate_element');
       if (translateElement) {
-        translateElement.innerHTML = ''; // Clear any previous widget instance
+        translateElement.innerHTML = ''; // Clear the contents (if any)
       }
 
-      // Remove any Google Translate scripts already loaded
+      // Step 2: Remove any previously loaded Google Translate scripts
       const existingScript = document.getElementById('google-translate-script');
       if (existingScript) {
-        existingScript.parentNode?.removeChild(existingScript); // Remove the existing script
+        existingScript.parentNode?.removeChild(existingScript); // Remove script
       }
 
-      // Optionally, reset the Google Translate state in the window object (if needed)
+      // Step 3: Reset any Google Translate internal state in the window object
       if (window.google && window.google.translate) {
-        window.google.translate = null; // Clear the google.translate object
+        window.google.translate = null; // Clear google.translate state
       }
+
+      // Step 4: Remove the hl query parameter from the URL (to avoid cached translated state)
+      if (window.location.search.includes('hl=')) {
+        const newUrl = window.location.href.replace(/([&?])hl=[a-z]{2}/, ''); // Remove hl param
+        window.history.replaceState(null, '', newUrl); // Replace URL without hl
+      }
+
+      // Step 5: Remove Google Translate related cookies
+      document.cookie.split(';').forEach((cookie) => {
+        const cookieName = cookie.split('=')[0].trim();
+        if (cookieName.includes('googtrans')) {
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+        }
+      });
+
+      // Step 6: Clear localStorage and sessionStorage (if used by Google Translate)
+      window.localStorage.clear();
+      window.sessionStorage.clear();
     };
 
-    // Reset Google Translate cache and state before script load
+    // Step 7: Reset Google Translate cache and state before loading the script
     resetGoogleTranslateCache();
 
     // Function to load the Google Translate script
     const loadGoogleTranslateScript = async () => {
       const scriptId = 'google-translate-script';
 
-      // Create and load the script asynchronously
+      // Step 8: Create and load the script asynchronously
       const script = document.createElement('script');
       script.id = scriptId;
       script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
@@ -73,7 +91,7 @@ const GoogleTranslate: React.FC = () => {
       };
     };
 
-    // Call the async function inside useEffect to load the script
+    // Step 9: Load the Google Translate script
     loadGoogleTranslateScript();
 
     // Cleanup: remove the script when the component is unmounted
