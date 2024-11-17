@@ -9,26 +9,32 @@ declare global {
 
 const GoogleTranslate: React.FC = () => {
   useEffect(() => {
-    // Ensure we clear the translation state before loading the script
-    const resetTranslationState = () => {
-      // Remove the Google Translate language code from the URL (if any)
-      if (window.location.search.includes('hl=')) {
-        const newUrl = window.location.href.replace(/([&?])hl=[a-z]{2}/, ''); // Remove `hl` query param
-        window.history.replaceState(null, '', newUrl); // Replace the URL without the `hl` query
+    // Function to reset Google Translate's cache and state before loading the script
+    const resetGoogleTranslateCache = () => {
+      // Remove the google_translate_element div if it exists
+      const translateElement = document.getElementById('google_translate_element');
+      if (translateElement) {
+        translateElement.innerHTML = ''; // Clear any previous widget instance
+      }
+
+      // Remove any Google Translate scripts already loaded
+      const existingScript = document.getElementById('google-translate-script');
+      if (existingScript) {
+        existingScript.parentNode?.removeChild(existingScript); // Remove the existing script
+      }
+
+      // Optionally, reset the Google Translate state in the window object (if needed)
+      if (window.google && window.google.translate) {
+        window.google.translate = null; // Clear the google.translate object
       }
     };
 
-    // Clear the translation state before loading the script
-    resetTranslationState();
+    // Reset Google Translate cache and state before script load
+    resetGoogleTranslateCache();
 
+    // Function to load the Google Translate script
     const loadGoogleTranslateScript = async () => {
       const scriptId = 'google-translate-script';
-
-      // Check if the script is already loaded
-      if (document.getElementById(scriptId)) {
-        console.log('Google Translate script already exists.');
-        return; // Script is already loaded
-      }
 
       // Create and load the script asynchronously
       const script = document.createElement('script');
@@ -67,7 +73,7 @@ const GoogleTranslate: React.FC = () => {
       };
     };
 
-    // Call the async function inside useEffect
+    // Call the async function inside useEffect to load the script
     loadGoogleTranslateScript();
 
     // Cleanup: remove the script when the component is unmounted
