@@ -10,14 +10,15 @@ const GoogleTranslate: React.FC = () => {
   const scriptLoaded = useRef(false);
 
   useEffect(() => {
-    if (scriptLoaded.current) return;  // Prevent multiple script loads
+    if (scriptLoaded.current || sessionStorage.getItem('google-translate-loaded')) return;
 
-    scriptLoaded.current = true;
-
+    // Mark the script as loaded in sessionStorage to prevent reloading it across page refreshes
+    sessionStorage.setItem('google-translate-loaded', 'true');
+    
     const existingScript = document.getElementById('google-translate-script');
     if (existingScript) {
       console.log('Script already loaded');
-      return;  // Prevent appending the script if it's already in the DOM
+      return;
     }
 
     const script = document.createElement('script');
@@ -35,11 +36,13 @@ const GoogleTranslate: React.FC = () => {
       );
     };
 
-    // Cleanup if component is unmounted
+    // Cleanup script only if necessary
     return () => {
       const scriptElement = document.getElementById('google-translate-script');
       if (scriptElement) {
-        scriptElement.remove();  // Ensure script is removed when the component unmounts
+        // Only remove the script if it's not the last one in session
+        scriptElement.remove();
+        sessionStorage.removeItem('google-translate-loaded');
       }
     };
   }, []);
