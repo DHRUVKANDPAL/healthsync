@@ -9,6 +9,18 @@ declare global {
 
 const GoogleTranslate: React.FC = () => {
   useEffect(() => {
+    // Ensure we clear the translation state before loading the script
+    const resetTranslationState = () => {
+      // Remove the Google Translate language code from the URL (if any)
+      if (window.location.search.includes('hl=')) {
+        const newUrl = window.location.href.replace(/([&?])hl=[a-z]{2}/, ''); // Remove `hl` query param
+        window.history.replaceState(null, '', newUrl); // Replace the URL without the `hl` query
+      }
+    };
+
+    // Clear the translation state before loading the script
+    resetTranslationState();
+
     const loadGoogleTranslateScript = async () => {
       const scriptId = 'google-translate-script';
 
@@ -44,8 +56,7 @@ const GoogleTranslate: React.FC = () => {
         if (window.google && window.google.translate) {
           new window.google.translate.TranslateElement(
             {
-              pageLanguage: 'en', // Set the default page language as 'en'
-              includedLanguages: 'en,es,fr,de,it', // List of languages you want to support
+              pageLanguage: 'en', // Set the default page language
               autoDisplay: false, // Prevent auto-translation on page load
             },
             'google_translate_element'
@@ -67,20 +78,6 @@ const GoogleTranslate: React.FC = () => {
       }
     };
   }, []); // Empty dependency array to run once when component mounts
-
-  // Clear translation from URL and reset on refresh to ensure the original language is shown
-  useEffect(() => {
-    // Reset the translation state and URL on page load
-    const resetTranslationState = () => {
-      // Remove the Google Translate language code from the URL (if any)
-      if (window.location.search.includes('hl=')) {
-        const newUrl = window.location.href.replace(/([&?])hl=[a-z]{2}/, '');
-        window.history.replaceState(null, '', newUrl); // Replace URL without translation query
-      }
-    };
-
-    resetTranslationState();
-  }, []); // This will only run once when the component mounts
 
   return (
     <div>
