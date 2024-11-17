@@ -10,21 +10,23 @@ const GoogleTranslate: React.FC = () => {
   const scriptLoaded = useRef(false);
 
   useEffect(() => {
-    if (scriptLoaded.current || sessionStorage.getItem('google-translate-loaded')) return;
+    if (scriptLoaded.current) return;  // Prevent multiple script loads
 
-    // Mark the script as loaded in sessionStorage to prevent reloading it across page refreshes
-    sessionStorage.setItem('google-translate-loaded', 'true');
-    
+    // Mark the script as loaded
+    scriptLoaded.current = true;
+
     const existingScript = document.getElementById('google-translate-script');
     if (existingScript) {
       console.log('Script already loaded');
-      return;
+      return; // Script already loaded, no need to add it again
     }
+
+    // Generate a unique URL to avoid caching
+    const scriptUrl = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&nocache=${new Date().getTime()}`;
 
     const script = document.createElement('script');
     script.id = 'google-translate-script';
-    script.src =
-      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.src = scriptUrl;
     script.async = true;
     document.body.appendChild(script);
 
@@ -36,13 +38,11 @@ const GoogleTranslate: React.FC = () => {
       );
     };
 
-    // Cleanup script only if necessary
+    // Cleanup script when the component unmounts (if needed)
     return () => {
       const scriptElement = document.getElementById('google-translate-script');
       if (scriptElement) {
-        // Only remove the script if it's not the last one in session
-        scriptElement.remove();
-        sessionStorage.removeItem('google-translate-loaded');
+        scriptElement.remove();  // Remove the script from the DOM when the component unmounts
       }
     };
   }, []);
