@@ -9,6 +9,8 @@ import { IoMenu } from "react-icons/io5";
 import Link from "next/link";
 import Logo from "./Logo";
 import DarkModeToggle from "./DarkModeToggle";
+import GoogleTranslate from "./GoogleTranslate";
+
 
 type Props = {};
 
@@ -241,6 +243,7 @@ const Header = (props: Props) => {
               >
                 Contact Us
               </Link>
+              
               {isLoggedIn ? (
                 <>
                   <Link

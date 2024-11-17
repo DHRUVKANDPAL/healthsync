@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Logo from "./Logo";
 import { BsLinkedin, BsGithub, BsInstagram } from "react-icons/bs";
@@ -6,6 +7,7 @@ import { FaRegClock } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { MdEmail } from "react-icons/md";
 import Link from "next/link";
+import GoogleTranslate from "./GoogleTranslate";
 
 type Props = {};
 
@@ -16,7 +18,7 @@ const Footer = (props: Props) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="flex flex-col items-center sm:items-start">
             <Logo />
-            <p className="mt-4 text-sm text-teal-100 dark:text-teal-200 text-center sm:text-left">
+            <p className="mt-4 text-sm text-teal-100 dark:text-teal-200 text-center sm:text-left ">
               Leading the way in Medical and Healthy Life Services
             </p>
           </div>
@@ -65,21 +67,22 @@ const Footer = (props: Props) => {
                 <MdEmail className="text-teal-400 dark:text-teal-300 h-4 w-4 mr-2" />
                 <span>HealthSync@gmail.com</span>
               </li>
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <GrLocation className="text-teal-400 dark:text-teal-300 h-4 w-4 mr-2" />
                 <span>On your phone</span>
+              </li> */}
+              <li className="flex items-center text-sm ">
+                <FaRegClock className="text-teal-400 dark:text-teal-300 h-4 w-4 mr-2" />
+                <span>24/7 Available</span>
               </li>
             </ul>
           </div>
 
           <div>
             <h2 className="text-teal-300 dark:text-teal-200 font-semibold mb-4">
-              Working Hours
+              Translate Page
             </h2>
-            <div className="flex items-center text-sm">
-              <FaRegClock className="text-teal-400 dark:text-teal-300 h-4 w-4 mr-2" />
-              <span>24/7 Available</span>
-            </div>
+            <GoogleTranslate />
           </div>
         </div>
 
@@ -112,6 +115,7 @@ const Footer = (props: Props) => {
             >
               <BsGithub className="h-5 w-5" />
             </a>
+
             <a
               href="#"
               className="text-teal-300 dark:text-teal-200 hover:text-teal-400 transition-colors"
