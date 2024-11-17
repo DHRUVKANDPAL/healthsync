@@ -39,11 +39,15 @@ const GoogleTranslate: React.FC = () => {
         };
       });
 
-      // Define the googleTranslateElementInit after script is loaded
+      // Define the googleTranslateElementInit after the script is loaded
       window.googleTranslateElementInit = () => {
         if (window.google && window.google.translate) {
           new window.google.translate.TranslateElement(
-            { pageLanguage: 'en' },
+            {
+              pageLanguage: 'en', // Set the default page language as 'en'
+              includedLanguages: 'en,es,fr,de,it', // List of languages you want to support
+              autoDisplay: false, // Prevent auto-translation on page load
+            },
             'google_translate_element'
           );
         } else {
@@ -63,6 +67,20 @@ const GoogleTranslate: React.FC = () => {
       }
     };
   }, []); // Empty dependency array to run once when component mounts
+
+  // Clear translation from URL and reset on refresh to ensure the original language is shown
+  useEffect(() => {
+    // Reset the translation state and URL on page load
+    const resetTranslationState = () => {
+      // Remove the Google Translate language code from the URL (if any)
+      if (window.location.search.includes('hl=')) {
+        const newUrl = window.location.href.replace(/([&?])hl=[a-z]{2}/, '');
+        window.history.replaceState(null, '', newUrl); // Replace URL without translation query
+      }
+    };
+
+    resetTranslationState();
+  }, []); // This will only run once when the component mounts
 
   return (
     <div>
