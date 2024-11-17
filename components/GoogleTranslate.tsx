@@ -9,7 +9,7 @@ declare global {
 const GoogleTranslate: React.FC = () => {
   useEffect(() => {
     // Check if the script is already loaded
-   //  if (document.getElementById('google-translate-script')) return;
+    if (document.getElementById('google-translate-script')) return;
 
     const script = document.createElement('script');
     script.id = 'google-translate-script';
