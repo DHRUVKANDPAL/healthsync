@@ -56,6 +56,8 @@ const GoogleTranslate: React.FC = () => {
       script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.async = true;
 
+      window.googleTranslateElementInit = initializeGoogleTranslate; // Ensure the callback is set
+
       document.body.appendChild(script);
 
       await new Promise((resolve, reject) => {
@@ -64,30 +66,28 @@ const GoogleTranslate: React.FC = () => {
       });
     };
 
+    // Function to initialize Google Translate
     const initializeGoogleTranslate = () => {
-      window.googleTranslateElementInit = () => {
-        if (window.google && window.google.translate) {
-          new window.google.translate.TranslateElement(
-            {
-              pageLanguage: 'en', // Set the default page language
-              autoDisplay: false, // Prevent auto-translation on page load
-            },
-            'google_translate_element'
-          );
-        }
-      };
-
-      if (window.googleTranslateElementInit) {
-        window.googleTranslateElementInit();
+      if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: 'en', // Set the default page language
+            autoDisplay: false, // Prevent auto-translation on page load
+          },
+          'google_translate_element'
+        );
+      } else {
+        console.error('Google Translate API not available or loaded.');
       }
     };
 
     // Step 1: Reset state before script loading
     resetGoogleTranslateCache().then(() => {
       // Step 2: Load script and initialize Google Translate
-      loadGoogleTranslateScript().then(initializeGoogleTranslate);
+      loadGoogleTranslateScript();
     });
 
+    // Clean up the script when the component unmounts
     return () => {
       const scriptElement = document.getElementById('google-translate-script');
       if (scriptElement && scriptElement.parentNode) {
