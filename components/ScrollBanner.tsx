@@ -11,7 +11,7 @@ const ScrollingAnnouncement = () => {
       <div 
         className="absolute whitespace-nowrap text-lg font-medium text-white tracking-wide py-4 animate-scroll font-ubuntu-font"
       >
-        {`🎉 Welcome to the Discuss Section!`}&nbsp;&nbsp;&nbsp;&nbsp;{`💬You are free to Diss & Cuss here!🔥`}&nbsp;&nbsp;&nbsp;&nbsp;{`🎙️Let your thoughts flow, but keep the vibes friendly! ✨❤️`}
+        {`🎉 Welcome to the Discuss Section!`}&nbsp;&nbsp;&nbsp;&nbsp;{`💬Feel free to share your thoughts and engage in meaningful conversations! ✨`}&nbsp;&nbsp;&nbsp;&nbsp;{`🎙️ Express yourself freely while maintaining a positive and friendly vibe! ❤️ `}
       </div>
 
       <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-blue-800 to-transparent z-10 dark:bg-gradient-to-r dark:from-slate-800 dark:to-transparent" />
