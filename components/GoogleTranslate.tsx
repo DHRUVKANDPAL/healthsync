@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 declare global {
   interface Window {
@@ -7,9 +7,12 @@ declare global {
 }
 
 const GoogleTranslate: React.FC = () => {
+  const scriptLoaded = useRef(false);
+
   useEffect(() => {
-    // Check if the script is already loaded
-    if (document.getElementById('google-translate-script')) return;
+    if (scriptLoaded.current) return;
+
+    scriptLoaded.current = true;
 
     const script = document.createElement('script');
     script.id = 'google-translate-script';
