@@ -128,7 +128,7 @@ model Doctor{
   imageUrl String?
   dob DateTime?
   aadharNo String?
-  licenceNo String? //registed with Medical Council of India (MCI) or a State Medical Council 
+  licenceNo String @unique 
   contactno String?
   email String?
   hashedPassword String
