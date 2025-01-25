@@ -22,6 +22,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, "Department name is required"),
@@ -30,25 +31,25 @@ const formSchema = z.object({
   doctorsAvailable: z.string().min(1, "Available doctors count is required"),
 });
 
-type Department = z.infer<typeof formSchema> & { id: string };
+type Department = z.infer<typeof formSchema> & { did: string };
 
 const departmentsData: Department[] = [
   {
-    id: "1",
+    did: "cardiology",
     name: "Cardiology",
     hod: "Dr. Sharma",
     noOfDoctors: "10",
     doctorsAvailable: "7",
   },
   {
-    id: "2",
+    did: "neurology",
     name: "Neurology",
     hod: "Dr. Verma",
     noOfDoctors: "8",
     doctorsAvailable: "5",
   },
   {
-    id: "3",
+    did: "orthopedics",
     name: "Orthopedics",
     hod: "Dr. Gupta",
     noOfDoctors: "12",
@@ -83,7 +84,7 @@ export default function Departments() {
   const [search, setSearch] = useState("");
   const [departments, setDepartments] = useState(departmentsData);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const { id } = useParams();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -97,7 +98,7 @@ export default function Departments() {
   const handleAddDepartment = (values: z.infer<typeof formSchema>) => {
     setDepartments([
       ...departments,
-      { id: (departments.length + 1).toString(), ...values },
+      { did: (departments.length + 1).toString(), ...values },
     ]);
     setIsDialogOpen(false);
     form.reset();
@@ -126,7 +127,7 @@ export default function Departments() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredDepartments.map((dept) => (
-          <DepartmentCard key={dept.id} dept={dept} />
+          <DepartmentCard key={dept.did} dept={dept} id={id} />
         ))}
       </div>
 

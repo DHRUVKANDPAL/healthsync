@@ -1,24 +1,30 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserCheck, Building2, Stethoscope, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 type Department = {
-  id: string;
+  did: string;
   name: string;
   hod: string;
   noOfDoctors: string;
   doctorsAvailable: string;
 };
 
-export default function DepartmentCard({ dept }: { dept: Department }) {
+export default function DepartmentCard({
+  dept,
+  id,
+}: {
+  dept: Department;
+  id: string | string[];
+}) {
   const router = useRouter();
 
   const handleRedirect = () => {
-    router.push(`/departments/${dept.id}`);
+    console.log(dept.did);
+    router.push(`/hospital-dash/${id}/departments/department/${dept.did}`); // log the department ID on
   };
 
   return (
