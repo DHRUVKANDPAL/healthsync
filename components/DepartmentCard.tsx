@@ -23,7 +23,6 @@ export default function DepartmentCard({
   const router = useRouter();
 
   const handleRedirect = () => {
-    console.log(dept.did);
     router.push(`/hospital-dash/${id}/departments/department/${dept.did}`); // log the department ID on
   };
 
