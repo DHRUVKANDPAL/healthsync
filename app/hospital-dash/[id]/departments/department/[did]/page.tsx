@@ -1,57 +1,104 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
 
-const doctors = [
-  {
-    id: "doc1",
-    name: "Dr. Arjun Sharma",
-    imageUrl: "https://via.placeholder.com/150",
-    licenceNo: "MCI123456",
-    contactno: "+91 9876543210",
-    email: "arjun.sharma@hospital.com",
-    isAvailable: true,
-  },
-  {
-    id: "doc2",
-    name: "Dr. Priya Verma",
-    imageUrl: "https://via.placeholder.com/150",
-    licenceNo: "MCI654321",
-    contactno: "+91 8765432109",
-    email: "priya.verma@hospital.com",
-    isAvailable: false,
-  },
-  {
-    id: "doc3",
-    name: "Dr. Rohan Mehta",
-    imageUrl: "https://via.placeholder.com/150",
-    licenceNo: "MCI112233",
-    contactno: "+91 9988776655",
-    email: "rohan.mehta@hospital.com",
-    isAvailable: true,
-  },
-];
+const formSchema = z.object({
+  licenceNo: z.string().min(1, "Licence Number is required"),
+});
 
-export default function DepartmentDetails() {
-  const { id, did } = useParams(); // Extract hospital and department IDs from URL
+export default function DoctorDetails() {
+  const { id, did } = useParams(); // Extract hospital and doctor IDs from URL
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [doctors, setDoctors] = useState<any[]>([]);
 
-  // Filter doctors based on search input
-  const filteredDoctors = doctors.filter((doctor) =>
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      licenceNo: "",
+    },
+  });
+
+  // Fetch doctors when the component mounts
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const res = await fetch(`/api/doctodept/${did}`);
+        const data = await res.json();
+        if (data.success) {
+          setDoctors(data.doctor || []);
+        } else {
+          toast.error("Failed to fetch doctors.");
+        }
+      } catch (error) {
+        toast.error("Error fetching doctors.");
+      }
+    };
+
+    fetchDoctors();
+  }, [did]);
+
+  // Handle adding a new doctor
+  async function handleAddDoctor(values: z.infer<typeof formSchema>) {
+    startTransition(async () => {
+      try {
+        const res = await fetch(`/api/doctodept/${did}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+        const data = await res.json();
+        if (data.success) {
+          setDoctors(data.doctor || []);
+          toast.success("Doctor added successfully.");
+          setIsDialogOpen(false);
+          form.reset();
+        } else {
+          toast.error("Unable to add doctor.");
+        }
+      } catch (error) {
+        toast.error("Error adding doctor.");
+      }
+    });
+  }
+
+  // Filter doctors based on the search term
+  const filteredDoctors = doctors.filter((doctor: any) =>
     doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="p-10">
-      <h1 className="text-3xl font-bold text-teal-700">Department Details</h1>
+      <h1 className="text-3xl font-bold text-teal-700">Doctor Details</h1>
       <p className="mt-2 text-gray-700">
-        Showing details for department{" "}
-        <span className="font-semibold">{did}</span> in hospital{" "}
-        <span className="font-semibold">{id}</span>.
+        Showing details for Doctor <span className="font-semibold">{did}</span>{" "}
+        in hospital <span className="font-semibold">{id}</span>.
       </p>
 
-      <div className="mt-6">
+      <div className="flex gap-4 my-6">
+        <Button
+          className="bg-teal-600 text-white px-6 py-2 rounded-lg shadow-md"
+          onClick={() => setIsDialogOpen(true)}
+        >
+          Add Doctor
+        </Button>
         <input
           type="text"
           placeholder="Search doctors..."
@@ -61,11 +108,45 @@ export default function DepartmentDetails() {
         />
       </div>
 
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Doctor</DialogTitle>
+          </DialogHeader>
+          <form
+            onSubmit={form.handleSubmit(handleAddDoctor)}
+            className="space-y-4"
+          >
+            <FormField
+              name="licenceNo"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Licence Number</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter Licence Number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md"
+              >
+                Add
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       <div className="mt-6">
         <h2 className="text-2xl font-semibold text-gray-800">Doctors List</h2>
         <div className="mt-4 space-y-4">
           {filteredDoctors.length > 0 ? (
-            filteredDoctors.map((doctor) => (
+            filteredDoctors.map((doctor: any) => (
               <div
                 key={doctor.id}
                 className="p-4 border border-gray-200 rounded-lg shadow-sm flex items-center space-x-4"

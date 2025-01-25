@@ -116,7 +116,7 @@ export default function Departments() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredDepartments?.length ? (
-          filteredDepartments.map((dept) => (
+          filteredDepartments.map((dept:any) => (
             <DepartmentCard key={dept.did} dept={dept} id={id} />
           ))
         ) : (

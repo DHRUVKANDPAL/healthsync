@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { UserCheck, Building2, Stethoscope, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 type Department = {
-  did: string;
+  id: string;
   name: string;
   hod: string;
   noOfDoctors: string;
@@ -23,9 +23,10 @@ export default function DepartmentCard({
   const router = useRouter();
 
   const handleRedirect = () => {
-    router.push(`/hospital-dash/${id}/departments/department/${dept.did}`); // log the department ID on
+    
+    router.push(`/hospital-dash/${id}/departments/department/${dept.id}`); // log the department ID on
   };
-
+  console.log("Data is:", dept);
   return (
     <Card
       onClick={handleRedirect}
