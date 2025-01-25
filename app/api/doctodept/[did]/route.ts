@@ -4,9 +4,9 @@ import { NextRequest } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { did: string } }
 ) {
-  const id = params.id;
+  const id = params.did;
   
   try {
     const values = await req.json();
@@ -34,6 +34,7 @@ export async function POST(
         doctor: true,
       },
     });
+    console.log(doctor);
     return new Response(JSON.stringify({ success: true, doctor }));
   } catch (error) {
     return new Response(JSON.stringify({ success: false }));

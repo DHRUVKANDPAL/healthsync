@@ -6,6 +6,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import {
+  Form,
   FormField,
   FormItem,
   FormLabel,
@@ -27,7 +28,7 @@ export default function DoctorDetails() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [doctors, setDoctors] = useState<any[]>([]);
+  const [doctors, setDoctors] = useState<any>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,7 +54,7 @@ export default function DoctorDetails() {
     };
 
     fetchDoctors();
-  }, [did]);
+  }, []);
 
   // Handle adding a new doctor
   async function handleAddDoctor(values: z.infer<typeof formSchema>) {
@@ -78,12 +79,12 @@ export default function DoctorDetails() {
       }
     });
   }
-
+  console.log(doctors);
   // Filter doctors based on the search term
-  const filteredDoctors = doctors.filter((doctor: any) =>
-    doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredDoctors = doctors?.filter((doctor: any) =>
+    doctor.doctor?.name?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
-
+  console.log(filteredDoctors);
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold text-teal-700">Doctor Details</h1>
@@ -113,32 +114,34 @@ export default function DoctorDetails() {
           <DialogHeader>
             <DialogTitle>Add New Doctor</DialogTitle>
           </DialogHeader>
-          <form
-            onSubmit={form.handleSubmit(handleAddDoctor)}
-            className="space-y-4"
-          >
-            <FormField
-              name="licenceNo"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Licence Number</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Enter Licence Number" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter>
-              <Button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md"
-              >
-                Add
-              </Button>
-            </DialogFooter>
-          </form>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleAddDoctor)}
+              className="space-y-4"
+            >
+              <FormField
+                name="licenceNo"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Licence Number</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter Licence Number" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md"
+                >
+                  Add
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 
@@ -152,19 +155,19 @@ export default function DoctorDetails() {
                 className="p-4 border border-gray-200 rounded-lg shadow-sm flex items-center space-x-4"
               >
                 <img
-                  src={doctor.imageUrl}
-                  alt={doctor.name}
+                  src={doctor.doctor.imageUrl}
+                  alt={doctor.doctor.name}
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
                   <h3 className="text-xl font-medium text-gray-900">
-                    {doctor.name}
+                    {doctor.doctor.name}
                   </h3>
                   <p className="text-gray-600">
-                    Licence No: {doctor.licenceNo}
+                    Licence No: {doctor.doctor.licenceNo}
                   </p>
-                  <p className="text-gray-600">Contact: {doctor.contactno}</p>
-                  <p className="text-gray-600">Email: {doctor.email}</p>
+                  <p className="text-gray-600">Contact: {doctor.doctor.contactno}</p>
+                  <p className="text-gray-600">Email: {doctor.doctor.email}</p>
                   <p
                     className={`text-sm font-semibold ${
                       doctor.isAvailable ? "text-green-600" : "text-red-600"
