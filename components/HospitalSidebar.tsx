@@ -17,6 +17,7 @@ import {
   Settings,
   Settings2,
   SquareTerminal,
+  Stethoscope,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -43,6 +44,12 @@ export function HospitalSidebar({ ...props }: any) {
       href: `/hospital-dash/${id}`,
       icon: Home,
       section: "home",
+    },
+    {
+      title: "Departments",
+      href: `/hospital-dash/${id}/departments`,
+      icon: Stethoscope,
+      section: "departments",
     },
     {
       title: "Search Patient",
@@ -83,6 +90,11 @@ export function HospitalSidebar({ ...props }: any) {
         url: `/hospital-dash/${id}`,
         icon: Home,
         isActive: true,
+      },
+      {
+        title: "Departments",
+        url: `/hospital-dash/${id}/departments`,
+        icon: Stethoscope,
       },
       {
         title: "Search",
