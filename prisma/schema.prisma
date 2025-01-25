@@ -41,7 +41,7 @@ model MedicalHistory{
   userId    String
   condition String
   treatmentdetails String?
-  patient Patient@relation(fields: [userId], references: [id])
+  patient Patient@relation(fields: [userId], references: [id],onDelete: Cascade)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -49,7 +49,7 @@ model PatientSession {
   id        String   @id
   userId    String
   expiresAt DateTime
-  patient Patient @relation(fields: [userId], references: [id])
+  patient Patient @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model Hospital{
@@ -96,7 +96,7 @@ model Room{
   typeof String //icu general ward single room shared room 
   bookedby String? @default("Unbooked")
   aadhar String?
-  hospital Hospital @relation(fields: [userId], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id],onDelete: Cascade)
   updatedAt       DateTime? @updatedAt
 }
 model HospitalRoomHistory{
@@ -109,17 +109,15 @@ model HospitalRoomHistory{
   aadhar String?
   bookedAt DateTime 
   checkout DateTime?
-  hospital Hospital @relation(fields: [userId], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 model Department{
   id              String   @id @default(cuid())
   userId String
   hod String
   name String
-  noOfDoctors String
-  doctorsAvailable String
   doctors DoctorinDept[]
-  hospital Hospital @relation(fields: [userId], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id],onDelete: Cascade)
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
 }
@@ -141,9 +139,9 @@ model Doctor{
   updatedAt       DateTime? @updatedAt
 }
 model DoctorinDept {
-  dept       Department     @relation(fields: [deptId], references: [id])
+  dept       Department     @relation(fields: [deptId], references: [id],onDelete: Cascade)
   deptId     String 
-  doctor     Doctor @relation(fields: [doctorId], references: [id])
+  doctor     Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
   doctorId   String 
   assignedAt DateTime @default(now())
   isAvailable Boolean? @default(true)
@@ -153,8 +151,8 @@ model Queue{
   id              String   @id @default(cuid())
   userId String
   patientId String
-  patient Patient@relation(fields: [patientId], references: [id])
-  doctor Doctor @relation(fields: [userId], references: [id])
+  patient Patient@relation(fields: [patientId], references: [id],onDelete: Cascade)
+  doctor Doctor @relation(fields: [userId], references: [id],onDelete: Cascade)
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
 }
@@ -162,13 +160,13 @@ model HospitalSession {
   id        String   @id
   userId    String
   expiresAt DateTime
-  hospital Hospital @relation(fields: [userId], references: [id])
+  hospital Hospital @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 model DoctorSession {
   id        String   @id
   userId    String
   expiresAt DateTime
-  doctor Doctor @relation(fields: [userId], references: [id])
+  doctor Doctor @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 
 model Feedback{ 
@@ -184,7 +182,7 @@ model Feedback{
 model Reply{
   id String @id @default(cuid())
   userId String
-  feedback Feedback @relation(fields: [userId], references: [id])
+  feedback Feedback @relation(fields: [userId], references: [id],onDelete: Cascade)
   message String
   createdAt       DateTime? @default(now())
 }

@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DepartmentCard from "@/components/DepartmentCard";
 import {
   Dialog,
@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1, "Department name is required"),
@@ -33,58 +34,13 @@ const formSchema = z.object({
 
 type Department = z.infer<typeof formSchema> & { did: string };
 
-const departmentsData: Department[] = [
-  {
-    did: "cardiology",
-    name: "Cardiology",
-    hod: "Dr. Sharma",
-    noOfDoctors: "10",
-    doctorsAvailable: "7",
-  },
-  {
-    did: "neurology",
-    name: "Neurology",
-    hod: "Dr. Verma",
-    noOfDoctors: "8",
-    doctorsAvailable: "5",
-  },
-  {
-    did: "orthopedics",
-    name: "Orthopedics",
-    hod: "Dr. Gupta",
-    noOfDoctors: "12",
-    doctorsAvailable: "9",
-  },
-];
-
-// function DepartmentCard({ dept }: { dept: Department }) {
-//   return (
-//     <Card className="shadow-lg rounded-xl p-6 border border-gray-300 hover:shadow-2xl transition-all bg-white">
-//       <CardHeader>
-//         <CardTitle className="text-2xl font-bold text-gray-900">
-//           {dept.name}
-//         </CardTitle>
-//       </CardHeader>
-//       <CardContent className="text-gray-700 space-y-2">
-//         <p>
-//           <strong>HOD:</strong> {dept.hod}
-//         </p>
-//         <p>
-//           <strong>No. of Doctors:</strong> {dept.noOfDoctors}
-//         </p>
-//         <p>
-//           <strong>Doctors Available:</strong> {dept.doctorsAvailable}
-//         </p>
-//       </CardContent>
-//     </Card>
-//   );
-// }
-
 export default function Departments() {
   const [search, setSearch] = useState("");
-  const [departments, setDepartments] = useState(departmentsData);
+  const [departments, setDepartments] = useState<Department[] | null>(null);
+  const [isPending, startTransition] = useTransition();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { id } = useParams();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -95,17 +51,50 @@ export default function Departments() {
     },
   });
 
-  const handleAddDepartment = (values: z.infer<typeof formSchema>) => {
-    setDepartments([
-      ...departments,
-      { did: (departments.length + 1).toString(), ...values },
-    ]);
-    setIsDialogOpen(false);
-    form.reset();
-  };
+  // Fetch departments on mount
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const res = await fetch("/api/dept");
+        const data = await res.json();
+        if (data.success) {
+          setDepartments(data.getDept);
+        } else {
+          toast.error("Failed to fetch departments.");
+        }
+      } catch (error) {
+        toast.error("Error fetching departments.");
+      }
+    };
+    fetchDepartments();
+  }, []);
+
+  // Handle adding a new department
+  async function handleAddDepartment(values: z.infer<typeof formSchema>) {
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/dept", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ values, id }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          setDepartments(data.getDept);
+          toast.success("Department added successfully.");
+          setIsDialogOpen(false);
+          form.reset();
+        } else {
+          toast.error("Unable to add department.");
+        }
+      } catch (error) {
+        toast.error("Error adding department.");
+      }
+    });
+  }
 
   const filteredDepartments = departments
-    .filter((dept) => dept.name.toLowerCase().includes(search.toLowerCase()))
+    ?.filter((dept) => dept.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
@@ -126,9 +115,15 @@ export default function Departments() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredDepartments.map((dept) => (
-          <DepartmentCard key={dept.did} dept={dept} id={id} />
-        ))}
+        {filteredDepartments?.length ? (
+          filteredDepartments.map((dept) => (
+            <DepartmentCard key={dept.did} dept={dept} id={id} />
+          ))
+        ) : (
+          <div className="text-center col-span-full text-gray-600">
+            No departments found. Add a new department.
+          </div>
+        )}
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
