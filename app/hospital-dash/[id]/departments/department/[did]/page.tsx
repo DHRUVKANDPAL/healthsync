@@ -13,7 +13,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState, useTransition } from "react";
@@ -166,7 +166,9 @@ export default function DoctorDetails() {
                   <p className="text-gray-600">
                     Licence No: {doctor.doctor.licenceNo}
                   </p>
-                  <p className="text-gray-600">Contact: {doctor.doctor.contactno}</p>
+                  <p className="text-gray-600">
+                    Contact: {doctor.doctor.contactno}
+                  </p>
                   <p className="text-gray-600">Email: {doctor.doctor.email}</p>
                   <p
                     className={`text-sm font-semibold ${
