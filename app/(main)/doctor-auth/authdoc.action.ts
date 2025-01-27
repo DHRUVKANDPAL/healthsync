@@ -100,3 +100,28 @@ export const doctorLogout = async () => {
   //  location.reload();
   revalidatePath("/doctor-dash");
 };
+
+
+export const imageEditDoctor= async ({
+  url,
+  id,
+}: {
+  url: string;
+  id: any;
+}) => {
+  try {
+    const updateUser = await prisma.doctor.update({
+      where: {
+        id: id,
+      },
+      data: {
+        imageUrl: url,
+      },
+    });
+    console.log("Edited");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating patient:", error);
+    return { success: false, error: "Failed to update patient" };
+  }
+};

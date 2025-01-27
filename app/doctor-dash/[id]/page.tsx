@@ -1,7 +1,11 @@
+'use client'
 import DoctorProfilePage from "@/components/DoctorProfilePage";
 import type { Doctor } from "@/types/doctor";
+import { Loader2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const doctorData: Doctor = {
+const doctorData1: Doctor = {
   id: "1",
   userId: "doc123",
   name: "Mashoor Gulati",
@@ -19,9 +23,27 @@ const doctorData: Doctor = {
 };
 
 export default function Page() {
+  const {id}=useParams();
+  const[doctorData,setDoctorData]=useState<Doctor>();
+  useEffect(() => {
+    const fetchDoctorData = async () => {
+      try {
+        const response = await fetch(`/api/doctor/${id}`);
+        const data = await response.json();
+        console.log(data.user);
+        setDoctorData(data.user);
+      } catch (error) {
+        console.error("Error fetching doctor data:", error);
+      }
+    };
+    fetchDoctorData();
+  })
+  if(doctorData===undefined || doctorData===null){
+    return <Loader2 className="animate-spin" />
+  }
   return (
     <div className="pb-10">
-      <DoctorProfilePage doctor={doctorData} />
+      <DoctorProfilePage doctor={doctorData} id={id} />
     </div>
   );
 }

@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
+import DoctorImageEdit from "./DoctorImageEdit";
 
 interface Department {
   deptId: string;
@@ -46,7 +47,7 @@ interface Doctor {
   departments: Department[];
 }
 
-export default function DoctorProfilePage({ doctor }: { doctor: Doctor }) {
+export default function DoctorProfilePage({ doctor,id }: { doctor: Doctor,id:string|string[] }) {
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-6 space-y-6 bg-gray-50 dark:bg-slate-900/40">
       {/* Status Bar */}
@@ -113,13 +114,14 @@ export default function DoctorProfilePage({ doctor }: { doctor: Doctor }) {
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <Button
+              {/* <Button
                 variant="outline"
                 size="sm"
                 className="w-full md:w-auto dark:border-slate-700 dark:text-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800"
               >
                 Change Photo
-              </Button>
+              </Button> */}
+              <DoctorImageEdit id={id}></DoctorImageEdit>
             </div>
 
             <div className="flex-1 w-full">

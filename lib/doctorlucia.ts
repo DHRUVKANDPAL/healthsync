@@ -62,7 +62,16 @@ export const getDoctor = async () => {
         dob:true,
         aadharNo:true,
         queue:true,
-        departments:true,
+        departments:{
+          select: {
+            dept:{
+              select:{
+                name:true,
+              }
+            },
+            deptId:true
+          }
+        },
       },
     });
     return dbUser;
