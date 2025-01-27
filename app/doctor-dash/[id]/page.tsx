@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import DoctorProfilePage from "@/components/DoctorProfilePage";
 import type { Doctor } from "@/types/doctor";
 import { Loader2 } from "lucide-react";
@@ -23,8 +23,8 @@ const doctorData1: Doctor = {
 };
 
 export default function Page() {
-  const {id}=useParams();
-  const[doctorData,setDoctorData]=useState<Doctor>();
+  const { id } = useParams();
+  const [doctorData, setDoctorData] = useState<Doctor>();
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
@@ -37,12 +37,12 @@ export default function Page() {
       }
     };
     fetchDoctorData();
-  })
-  if(doctorData===undefined || doctorData===null){
-    return <Loader2 className="animate-spin" />
+  });
+  if (doctorData === undefined || doctorData === null) {
+    return <Loader2 className="animate-spin" />;
   }
   return (
-    <div className="pb-10">
+    <div className="">
       <DoctorProfilePage doctor={doctorData} id={id} />
     </div>
   );

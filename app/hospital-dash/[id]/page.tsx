@@ -191,7 +191,7 @@ export default function HospitalDashboard({ params }: HospitalDashboardProps) {
   const occupancyRate = ((totalRooms - availableRooms) / totalRooms) * 100;
 
   return (
-    <div className="pb-10 h-max bg-gray-50 dark:bg-gray-900">
+    <div className=" h-max bg-gray-50 dark:bg-gray-900">
       {/* Header Section */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

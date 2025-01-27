@@ -48,9 +48,9 @@ const PatientProfilePage: React.FC = () => {
 
     checkUser();
   }, [id, router]);
-  if(!userExists) return <BeatLoader />
+  if (!userExists) return <BeatLoader />;
   return (
-    <div className="pb-10">
+    <div className="">
       <ProfilePage patient={userData} />
     </div>
   );

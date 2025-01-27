@@ -112,7 +112,7 @@ export default function RootLayout({
               <DarkModeToggle />
             </div>
           </header>
-          <main className="flex-1 overflow-x-auto bg-gray-50 dark:bg-gray-900 min-h-screen">
+          <main className="flex-1 overflow-x-auto bg-gray-50 dark:bg-gray-900 ">
             <div className="lg:p-8 p-4">
               <EdgeStoreProvider>{children}</EdgeStoreProvider>
             </div>
