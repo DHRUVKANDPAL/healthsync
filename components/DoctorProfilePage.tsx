@@ -132,7 +132,7 @@ export default function DoctorProfilePage({ doctor }: { doctor: Doctor }) {
                     {doctor.departments.map((dept) => (
                       <Badge
                         key={dept.deptId}
-                        className="bg-teal-100 dark:bg-slate-700 text-teal-800 dark:text-slate-200"
+                        className="bg-teal-100 dark:bg-slate-700 text-teal-800 hover:bg-teal-400/50 dark:hover:bg-slate-600 cursor-default dark:text-slate-200 pb-1"
                       >
                         {dept.dept.name}
                       </Badge>
