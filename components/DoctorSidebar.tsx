@@ -17,6 +17,7 @@ import {
   Settings2,
   SquareTerminal,
   User,
+  Monitor,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -40,15 +41,21 @@ export function DoctorSidebar({ ...props }: any) {
   const { userData } = props;
   const data = {
     user: {
-      name: "ramesss",
-      email: "patell",
+      name: "Dr. Mashoor Gulati",
+      email: "mashooor@gulati.com",
       avatar: "/avatars/shadcn.jpg",
     },
     navMain: [
       {
         title: "Profile",
-        url: `/doctor-dash/${id}`,
+        url: `/doctor-dash/${id}/profile`,
         icon: User,
+        isActive: true,
+      },
+      {
+        title: "Dashboard",
+        url: `/doctor-dash/${id}`,
+        icon: Monitor,
         isActive: true,
       },
       {

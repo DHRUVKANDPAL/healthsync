@@ -41,7 +41,6 @@ export default function Page() {
   });
   if (doctorData === undefined || doctorData === null) {
     return <DoctorProfileShimmer/>;
-    ;
   }
   return (
     <div className="">
