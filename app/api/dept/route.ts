@@ -42,8 +42,14 @@ export async function POST(req: NextRequest) {
 
 
 export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
+  console.log(id);
    try {
       const getDept = await prisma.department.findMany({
+        where:{
+          userId:id!,
+        },
         include: {
           doctors: {
             select: {

@@ -53,11 +53,8 @@ export default function Departments() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const res = await fetch("/api/dept/", {
-          method: "GET",
-          body: JSON.stringify({ id }) 
-        });
-                const data = await res.json();
+        const res = await fetch(`/api/dept/?id=${id}`);
+        const data = await res.json();
         if (data.success) {
           setDepartments(data.getDept);
         } else {
