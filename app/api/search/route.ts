@@ -29,14 +29,7 @@ export async function POST(req: NextRequest) {
           },
         },
       },
-      select: {
-        id: true,
-        name: true,
-        address: true,
-        contactno: true,
-        email: true,
-        imageUrl: true,
-        createdAt: true,
+      include: {
         hospitaldep: {
           where: {
             name: {
@@ -48,31 +41,13 @@ export async function POST(req: NextRequest) {
               },
             },
           },
-          select: {
-            id: true,
-            name: true,
-            hod: true,
-            createdAt: true,
+          include: {
             doctors: {
               where: {
                 isAvailable: true,
               },
-              select: {
-                doctor: {
-                  select: {
-                    id: true,
-                    name: true,
-                    imageUrl: true,
-                    dob: true,
-                    licenceNo: true,
-                    contactno: true,
-                    email: true,
-                    createdAt: true,
-                  },
-                },
-                consulatationFees: true,
-                isAvailable: true,
-                assignedAt: true,
+              include: {
+                doctor: true,
               },
             },
           },
@@ -80,9 +55,15 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Process the results to include department and doctor statistics
+    // Add this for debugging
+   //  console.log(
+   //    "First hospital departments:",
+   //    hospitals.length > 0 ? hospitals[0].hospitaldep[0].doctors : "No hospitals found"
+   //  );
+
+    // Process the results with detailed hospital information and statistics
     const processedHospitals = hospitals.map((hospital:any) => {
-      const departmentsWithStats = hospital.departments.map((dept:any) => {
+      const departmentsWithStats = hospital.hospitaldep.map((dept:any) => {
         const fees = dept.doctors.map((doc:any) => doc.consulatationFees || 0);
         const availableDoctors = dept.doctors.filter((doc:any) => doc.isAvailable);
 
@@ -90,7 +71,7 @@ export async function POST(req: NextRequest) {
           departmentId: dept.id,
           departmentName: dept.name,
           hod: dept.hod,
-          createdAt: dept.createdAt,
+         //  createdAt: dept.createdAt,
           statistics: {
             minFees: Math.min(...fees),
             maxFees: Math.max(...fees),
@@ -102,14 +83,14 @@ export async function POST(req: NextRequest) {
             doctorId: doc.doctor.id,
             name: doc.doctor.name,
             imageUrl: doc.doctor.imageUrl,
-            dob: doc.doctor.dob,
-            licenceNo: doc.doctor.licenceNo,
+            // dob: doc.doctor.dob,
+            // licenceNo: doc.doctor.licenceNo,
             contactno: doc.doctor.contactno,
             email: doc.doctor.email,
             consulationFees: doc.consulatationFees,
             isAvailable: doc.isAvailable,
-            assignedAt: doc.assignedAt,
-            createdAt: doc.doctor.createdAt,
+            // assignedAt: doc.assignedAt,
+            // createdAt: doc.doctor.createdAt,
           })),
         };
       });
@@ -118,15 +99,50 @@ export async function POST(req: NextRequest) {
         hospitalInfo: {
           id: hospital.id,
           name: hospital.name,
-          address: hospital.address,
-          contactNo: hospital.contactNo,
-          email: hospital.email,
           imageUrl: hospital.imageUrl,
-          createdAt: hospital.createdAt,
+          licenceno: hospital.licenceno,
+          estyear: hospital.estyear,
+          Website: hospital.Website,
+          contactno: hospital.contactno,
+          alternatecontactno: hospital.alternatecontactno,
+          email: hospital.email,
+          address: hospital.address,
+          City: hospital.City,
+          State: hospital.State,
+          Zipcode: hospital.Zipcode,
+          facilities: {
+            beds: {
+              total: hospital.noofbeds,
+              available: hospital.bedsAvailable,
+              shared: hospital.sharedAvailable,
+              generalWard: hospital.generalWardAvailable,
+            },
+            opd: {
+              total: hospital.noofopds,
+              available: hospital.opdsAvailable,
+            },
+            icu: {
+              total: hospital.nooficu,
+              available: hospital.icuAvailable,
+            },
+            labs: {
+              total: hospital.nooflabs,
+              available: hospital.labsAvailable,
+            },
+            doctors: {
+              total: hospital.noofdoctorsregistered,
+              available: hospital.doctorsAvailable,
+            },
+          },
+          anyotherdetails: hospital.anyotherdetails,
+         //  idToLogin: hospital.idToLogin,
+          isVerified: hospital.isVerified,
+         //  createdAt: hospital.createdAt,
+         //  updatedAt: hospital.updatedAt,
         },
         statistics: {
-          totalDepartments: departmentsWithStats.length,
-          totalDoctors: departmentsWithStats.reduce(
+          totalRelevantDepartments: departmentsWithStats.length,
+          totalRelevantDoctors: departmentsWithStats.reduce(
             (sum:any, dept:any) => sum + dept.doctors.length,
             0
           ),
@@ -135,6 +151,28 @@ export async function POST(req: NextRequest) {
               (sum:any, dept:any) => sum + dept.statistics.averageFees,
               0
             ) / departmentsWithStats.length,
+          occupancyRates: {
+            beds: (
+              ((hospital.noofbeds - (hospital.bedsAvailable || 0)) /
+                hospital.noofbeds) *
+              100
+            ).toFixed(1),
+            opd: (
+              ((hospital.noofopds - (hospital.opdsAvailable || 0)) /
+                hospital.noofopds) *
+              100
+            ).toFixed(1),
+            icu: (
+              ((hospital.nooficu - (hospital.icuAvailable || 0)) /
+                hospital.nooficu) *
+              100
+            ).toFixed(1),
+            labs: (
+              ((hospital.nooflabs - (hospital.labsAvailable || 0)) /
+                hospital.nooflabs) *
+              100
+            ).toFixed(1),
+          },
         },
         departments: departmentsWithStats,
       };
