@@ -38,7 +38,7 @@ export default function Page() {
       }
     };
     fetchDoctorData();
-  });
+  },[]);
   if (doctorData === undefined || doctorData === null) {
     return <DoctorProfileShimmer/>;
     ;
