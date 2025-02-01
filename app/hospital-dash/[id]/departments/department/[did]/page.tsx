@@ -18,6 +18,7 @@ import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formSchema = z.object({
   licenceNo: z.string().min(1, "Licence Number is required"),
@@ -154,11 +155,19 @@ export default function DoctorDetails() {
                 key={doctor.id}
                 className="p-4 border border-gray-200 rounded-lg shadow-sm flex items-center space-x-4"
               >
-                <img
-                  src={doctor.doctor.imageUrl}
-                  alt={doctor.doctor.name}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
+                <Avatar className="w-24 h-24 rounded-lg border-4 border-teal-100 dark:border-slate-700">
+                  <AvatarImage
+                    src={doctor.doctor.imageUrl || "/placeholder-avatar.png"}
+                    alt={doctor.doctor.name}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="text-lg bg-gradient-to-br from-teal-500 to-blue-500 text-white">
+                    {doctor.doctor.name
+                      .split(" ")
+                      .map((n: any) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <h3 className="text-xl font-medium text-gray-900">
                     {doctor.doctor.name}
