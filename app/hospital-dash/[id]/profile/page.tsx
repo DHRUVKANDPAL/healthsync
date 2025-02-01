@@ -1,6 +1,9 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import HospitalProfilePage from "@/components/HospitalProfilePage";
-const hospitalData = {
+import { useParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
+const hospitalData1 = {
   id: "1",
   name: "City Hospital",
   email: "contact@cityhospital.com",
@@ -28,6 +31,24 @@ const hospitalData = {
 };
 
 export default function Page() {
+  const [hospitalData,setHospitalData]=useState();
+  const {id}=useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/hospital/${id}`);
+        const data = await response.json();
+        console.log(data.user);
+        setHospitalData(data.user);
+      } catch (error) {
+        console.error("Error fetching hospital data:", error);
+      }
+    }
+    fetchData();
+  },[])
+  if(hospitalData===undefined || hospitalData===null){
+    return <Loader2 className="animate-spin"></Loader2>
+  }
   return (
     <div className="p-4 md:p-6">
       <HospitalProfilePage hospital={hospitalData} />

@@ -43,13 +43,13 @@ interface Hospital {
   id: string;
   name: string;
   imageUrl?: string;
-  contactNo?: string;
+  contactno?: string;
   email?: string;
   address?: string;
-  establishedYear?: string;
-  departments: Department[];
-  bedCount?: number;
-  emergencyNumber?: string;
+  estyear?: string;
+  hospitaldep: Department[];
+  noofbeds?: number;
+  alternatecontactno?: string;
   accreditations?: string[];
   operatingHours?: OperatingHours[];
   stats?: {
@@ -252,7 +252,7 @@ export default function HospitalProfilePage({
                 </div>
               </div>
 
-              {tempHospital.emergencyNumber && (
+              {tempHospital.alternatecontactno && (
                 <div className="mt-4">
                   <Badge
                     variant="destructive"
@@ -262,33 +262,33 @@ export default function HospitalProfilePage({
                     Emergency:{" "}
                     {isEditing ? (
                       <Input
-                        value={tempHospital.emergencyNumber}
+                        value={tempHospital.alternatecontactno}
                         onChange={(e) =>
-                          updateTempHospital("emergencyNumber", e.target.value)
+                          updateTempHospital("alternatecontactno", e.target.value)
                         }
                         className="w-32"
                       />
                     ) : (
-                      tempHospital.emergencyNumber
+                      tempHospital.alternatecontactno
                     )}
                   </Badge>
                 </div>
               )}
 
               <div className="mt-4 text-gray-700 dark:text-gray-300 space-y-2">
-                {(isEditing || tempHospital.contactNo) && (
+                {(isEditing || tempHospital.contactno) && (
                   <div className="flex items-center gap-2">
                     <Phone className="w-5 h-5 text-teal-500" />
                     {isEditing ? (
                       <Input
-                        value={tempHospital.contactNo || ""}
+                        value={tempHospital.contactno || ""}
                         onChange={(e) =>
-                          updateTempHospital("contactNo", e.target.value)
+                          updateTempHospital("contactno", e.target.value)
                         }
                         placeholder="Contact Number"
                       />
                     ) : (
-                      tempHospital.contactNo
+                      tempHospital.contactno
                     )}
                   </div>
                 )}
@@ -324,21 +324,21 @@ export default function HospitalProfilePage({
                     )}
                   </div>
                 )}
-                {(isEditing || tempHospital.establishedYear) && (
+                {(isEditing || tempHospital.estyear) && (
                   <div className="flex items-center gap-2">
                     <Building2 className="w-5 h-5 text-teal-500" />
                     Established in{" "}
                     {isEditing ? (
                       <Input
-                        value={tempHospital.establishedYear || ""}
+                        value={tempHospital.estyear || ""}
                         onChange={(e) =>
-                          updateTempHospital("establishedYear", e.target.value)
+                          updateTempHospital("estyear", e.target.value)
                         }
                         placeholder="Year"
                         className="w-24"
                       />
                     ) : (
-                      tempHospital.establishedYear
+                      tempHospital.estyear
                     )}
                   </div>
                 )}
@@ -384,10 +384,10 @@ export default function HospitalProfilePage({
             <StatCard
               icon={Bed}
               label="Total Beds"
-              value={tempHospital.bedCount?.toLocaleString() || "N/A"}
+              value={tempHospital.noofbeds?.toLocaleString() || "N/A"}
               isEditing={isEditing}
               onValueChange={(value) =>
-                updateTempHospital("bedCount", parseInt(value))
+                updateTempHospital("noofbeds", parseInt(value))
               }
             />
             <StatCard
@@ -468,7 +468,7 @@ export default function HospitalProfilePage({
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tempHospital.departments.map((dept) => (
+            {tempHospital?.hospitaldep?.map((dept) => (
               <Card key={dept.deptId} className="bg-white dark:bg-gray-800">
                 <CardContent className="p-4">
                   <div className="space-y-4">
@@ -486,7 +486,7 @@ export default function HospitalProfilePage({
               </Card>
             ))}
           </div>
-          {tempHospital.departments.length === 0 && (
+          {tempHospital.hospitaldep.length === 0 && (
             <div className="text-center py-6 text-gray-500 dark:text-gray-400">
               No departments available.
             </div>

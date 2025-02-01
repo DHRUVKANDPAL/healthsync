@@ -55,6 +55,7 @@ model PatientSession {
 model Hospital{
   id              String   @id @default(cuid())
   name String
+  imageUrl String?
   licenceno String
   estyear Int
   Website String
