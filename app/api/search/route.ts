@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
           some: {
             name: {
               in: departments,
+              mode:"insensitive",
             },
             doctors: {
               some: {
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
           where: {
             name: {
               in: departments,
+              mode:"insensitive",
             },
             doctors: {
               some: {
