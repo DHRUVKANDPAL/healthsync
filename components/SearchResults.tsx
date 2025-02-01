@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { triage } from "@/lib/gemini";
 import {  StarHalf, Star as StarOutline } from "lucide-react";
+import { Slider } from "./ui/slider";
 
 // Types based on the API response
 interface HospitalFacilities {
@@ -128,30 +129,35 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   const [activeTab, setActiveTab] = useState<"doctors" | "hospitals">(
     "doctors"
   );
+  const [departmentSuggestions, setDepartmentSuggestions] = useState<string[]>(
+    []
+  );
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
+    null
+  );
+  const [maxFees, setMaxFees] = useState<number>(2000);
+  const [minRating, setMinRating] = useState<number>(3);
+  const [interpretation, setInterpretation] = useState<string>("");
+
   useEffect(() => {
     const fetchData = async () => {
       if (!searchQuery) return;
-
       setLoading(true);
       try {
-        const departmentSuggestions = await triage(searchQuery);
-        console.log("Gemini suggestions:", departmentSuggestions);
-
-        const response = await fetch("/api/search", {
+        const response = await triage(searchQuery);
+        console.log("Gemini suggestions:", response);
+        setDepartmentSuggestions(response.possible_departments);
+        setInterpretation(response.interpration);
+        const searchResponse = await fetch("/api/search", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            departments: departmentSuggestions.possible_departments,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ departments: response.possible_departments }),
         });
 
-        const data: APIResponse = await response.json();
+        const data: APIResponse = await searchResponse.json();
         console.log("Search results:", data);
         setSearchResults(data);
 
-        // Extract and combine all doctors with their department and hospital info
         const doctors = data.hospitals.flatMap((hospital) =>
           hospital.departments.flatMap((dept) =>
             dept.doctors.map((doctor) => ({
@@ -161,16 +167,28 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
             }))
           )
         );
-        setAllDoctors(doctors);
+        // setAllDoctors(doctors);
+        const uniqueDoctors = Array.from(
+          new Map(doctors.map((doc) => [doc.doctorId, doc])).values()
+        );
+
+        setAllDoctors(uniqueDoctors);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [searchQuery]);
+
+  const filteredDoctors = allDoctors.filter(
+    (doctor) =>
+      (!selectedDepartment || doctor.departmentName === selectedDepartment) &&
+      doctor.consulationFees <= maxFees &&
+      doctor.ratings >= minRating
+  );
  
 
   const StarRating = ({ rating }:{rating:number}) => {
@@ -266,7 +284,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
             </div>
             <div className="flex items-center text-muted-foreground">
               <Mail className="w-4 h-4 mr-2" />
-              {doctor.email}
+              <span title={doctor.email}>
+                {doctor.email.length > 30
+                  ? doctor.email.slice(0, 27) + "..."
+                  : doctor.email}
+              </span>
             </div>
           </div>
         </div>
@@ -428,17 +450,147 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
           <p className="text-lg text-muted-foreground">
             No results found for "{searchQuery}"
           </p>
+          <div className="container mx-auto py-8 px-4 space-y-8 ">
+            <div className="space-y-3">
+              <h3 className="text-lg font-semibold">Suggested Departments</h3>
+              <p className="text-muted-foreground text-sm pb-2">Interpretation : {interpretation}</p>
+              <div className="flex flex-wrap gap-3">
+                {departmentSuggestions.map((dept) => (
+                  <Badge
+                    key={dept}
+                    variant={
+                      selectedDepartment === dept ? "default" : "outline"
+                    }
+                    className="cursor-pointer px-4 py-2 text-sm"
+                    onClick={() =>
+                      setSelectedDepartment(
+                        selectedDepartment === dept ? null : dept
+                      )
+                    }
+                  >
+                    {dept}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="container mx-auto py-8 px-4 space-y-8 ">
+      {/* Tabs */}
       <TabSwitcher />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      {/* Suggested Departments */}
+      <div className="space-y-3">
+        <div>
+          <h3 className="text-lg font-semibold">Suggested Departments</h3>
+          <p className="text-muted-foreground text-sm pb-2">
+            Interpretation : {interpretation}
+          </p>
+        </div>
+        {/* <p>{interpretation}</p> */}
+        <div className="flex flex-wrap gap-3">
+          {departmentSuggestions.map((dept) => (
+            <Badge
+              key={dept}
+              variant={selectedDepartment === dept ? "default" : "outline"}
+              className="cursor-pointer px-4 py-2 text-sm"
+              onClick={() =>
+                setSelectedDepartment(selectedDepartment === dept ? null : dept)
+              }
+            >
+              {dept}
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      {/* Filters (Doctors Only) */}
+      {activeTab === "doctors" && (
+        <Card className="bg-background border-border ">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-semibold flex items-center">
+              Refine Results
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Consultation Fees Filter */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-medium text-foreground/80">
+                    Maximum Consultation Fees
+                  </h3>
+                  <span className="flex items-center text-sm font-semibold text-teal-600 dark:text-teal-400">
+                    <IndianRupee className="w-3 h-3 mr-1" />
+                    {maxFees}
+                  </span>
+                </div>
+                <div className="px-1">
+                  <Slider
+                    defaultValue={[maxFees]}
+                    max={2000}
+                    min={100}
+                    step={100}
+                    value={[maxFees]}
+                    onValueChange={(value) => setMaxFees(value[0])}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between mt-2">
+                    <span className="text-xs text-muted-foreground">₹100</span>
+                    <span className="text-xs text-muted-foreground">₹2000</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rating Filter */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-medium text-foreground/80">
+                    Minimum Rating
+                  </h3>
+                  <span className="flex items-center text-sm font-semibold text-amber-500">
+                    <Star className="w-3 h-3 mr-1 fill-amber-500" />
+                    {minRating.toFixed(1)}
+                  </span>
+                </div>
+                <div className="px-1">
+                  <Slider
+                    defaultValue={[minRating]}
+                    max={5}
+                    min={0}
+                    step={0.5}
+                    value={[minRating]}
+                    onValueChange={(value) => setMinRating(value[0])}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between mt-2">
+                    <span className="text-xs text-muted-foreground">0</span>
+                    <span className="text-xs text-muted-foreground">5.0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Filter Stats */}
+            <div className="pt-4 mt-6 border-t border-border">
+              <p className="text-sm text-center text-muted-foreground">
+                Showing doctors with consultation fees up to ₹{maxFees} and
+                minimum rating of {minRating} stars
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Doctor & Hospital Listings */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {activeTab === "doctors" &&
-          allDoctors.map((doctor) => (
+          filteredDoctors.map((doctor) => (
             <DoctorCard key={doctor.doctorId} doctor={doctor} />
           ))}
         {activeTab === "hospitals" &&

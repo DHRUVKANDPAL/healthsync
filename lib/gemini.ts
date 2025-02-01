@@ -113,7 +113,7 @@ Output:
 {
   "user_input": "Pet dard ho rha h",
   "possible_departments": ["Gastroenterology"],
-  "interpretation": "Stomach Ache"
+  "interpretation": "Patient is experiencing abdominal pain, possibly due to indigestion, infection, or other underlying causes."
 }
 
 Example 2:
@@ -122,7 +122,7 @@ Output:
 {
   "user_input": "Kaan me dard hai",
   "possible_departments": ["ENT", "Otolaryngology"],
-  "interpretation": "Ear Pain"
+  "interpretation": "Patient is experiencing ear pain, which could be due to an ear infection, injury, or other conditions like sinus issues."
 }
 
 Example 3:
@@ -131,7 +131,7 @@ Output:
 {
   "user_input": "I have a fever and headache",
   "possible_departments": ["General Practitioner", "Physician"],
-  "interpretation": "Headache"
+  "interpretation": "Patient is experiencing fever, which could indicate an infection, inflammation, or other underlying health conditions."
 }
 
 Example 4:
@@ -140,14 +140,14 @@ Output:
 {
   "user_input": "Pair ghisad gaya",
   "possible_departments": ["Physician", "Orthopedics", "General Practitioner"],
-  "interpretation": "Foot Injury"
+  "interpretation": "Patient's leg is injured, possibly due to a scrape, bruise, or sprain, requiring attention for potential swelling or pain."
 }
 
 Example 5:
 {
   "user_input": "Jee machal rha h",
   "possible_departments": ["General Practitioner", "Physician", "Psychiatry", "Gastroenterology", "Neurology"],
-  "interpretation": "Symptoms suggest anxiety, dizziness, and possibly vomiting."
+  "interpretation": "Patient is experiencing discomfort or unease, possibly due to anxiety or the sensation of nausea, which might lead to vomiting."
 }
 
 
