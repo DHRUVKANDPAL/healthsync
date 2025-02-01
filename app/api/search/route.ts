@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { departments } = body;
-
+    console.log(departments);
     if (!Array.isArray(departments) || departments.length === 0) {
       return NextResponse.json(
         { error: "Invalid departments array" },

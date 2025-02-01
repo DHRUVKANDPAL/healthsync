@@ -10,11 +10,13 @@ import Link from "next/link";
 import Logo from "./Logo";
 import DarkModeToggle from "./DarkModeToggle";
 import GoogleTranslate from "./GoogleTranslate";
+import SearchResults from "./SearchResults";
 
+type Props = {
+  onSearchStateChange?: (isSearching: boolean) => void;
+};
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = ({ onSearchStateChange }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,6 +28,8 @@ const Header = (props: Props) => {
   const [showLogo, setShowLogo] = useState(true);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
   const toggleSearch = () => {
     if (window.innerWidth < 640) {
       setIsSearchOpen(!isSearchOpen);
@@ -111,6 +115,26 @@ const Header = (props: Props) => {
       setLocation("Error fetching location");
     }
   };
+
+  useEffect(() => {
+    if (onSearchStateChange) {
+      onSearchStateChange(showResults && !!searchQuery);
+    }
+  }, [showResults, searchQuery, onSearchStateChange]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowResults(!!searchQuery);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (!query) {
+      setShowResults(false);
+    }
+  };
+
   return (
     <>
       <header className="sticky sm:-top-[72px] top-0 z-30">
@@ -173,11 +197,20 @@ const Header = (props: Props) => {
                       isSearchOpen ? "w-48" : "w-0"
                     }`}
                   >
-                    <input
-                      type="search"
-                      className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 m-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 sm:w-64"
-                      placeholder="Search..."
-                    />
+                    <form onSubmit={handleSearchSubmit}>
+                      <input
+                        type="search"
+                        value={searchQuery}
+                        onChange={(e) => handleSearchChange(e)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleSearchSubmit(e);
+                          }
+                        }}
+                        className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
+                        placeholder="Search..."
+                      />
+                    </form>
                   </div>
                 </>
               ) : (
@@ -185,11 +218,20 @@ const Header = (props: Props) => {
                   <label htmlFor="search" className="mr-2">
                     <CiSearch className="text-teal-50 h-6 w-6" />
                   </label>
-                  <input
-                    type="search"
-                    className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
-                    placeholder="Search..."
-                  />
+                  <form onSubmit={handleSearchSubmit}>
+                    <input
+                      type="search"
+                      value={searchQuery}
+                      onChange={(e) => handleSearchChange(e)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSearchSubmit(e);
+                        }
+                      }}
+                      className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
+                      placeholder="Search..."
+                    />
+                  </form>
                 </div>
               )}
             </div>
@@ -243,7 +285,7 @@ const Header = (props: Props) => {
               >
                 Contact Us
               </Link>
-              
+
               {isLoggedIn ? (
                 <>
                   <Link
@@ -349,6 +391,11 @@ const Header = (props: Props) => {
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={closeMenu}
           ></div>
+        )}
+        {showResults && searchQuery && (
+          <div className="w-full bg-white dark:bg-slate-900 shadow-lg z-20">
+            <SearchResults searchQuery={searchQuery} />
+          </div>
         )}
       </header>
     </>

@@ -8,8 +8,8 @@ type Props = {};
 
 const page = (props: Props) => {
   useEffect(() => {
-    async function Gemini(input:string) {
-      const output=await triage(input);
+    async function Gemini(input: string) {
+      const output = await triage(input);
       console.log(output);
     }
     async function fetchData() {
@@ -23,11 +23,12 @@ const page = (props: Props) => {
         }),
       });
 
-      // const data = await response.json();
+      const data = await response.json();
+      console.log(data);
     }
     Gemini("pet dard");
     fetchData();
-  },[])
+  }, []);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* <BeatLoader className="w-[50px] h-[20px]"></BeatLoader> */}

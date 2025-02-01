@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Chartstats from "@/components/Chartstats";
 import Faq from "@/components/faq";
 import Features from "@/components/Features";
@@ -6,25 +6,22 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Testimonial from "@/components/Testimonial";
-import Iphone15Pro from "@/components/ui/iphone-15-pro";
 import Safari from "@/components/ui/safari";
 import Vision from "@/components/Vision";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 
 export default function Home() {
-  const isMobile=useIsMobile();
-  
-  return (
-    <main className="  select-none bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <Header></Header>
+  const isMobile = useIsMobile();
+  const [isSearching, setIsSearching] = useState(false);
+
+  const MainContent = () => (
+    <>
       <div className="relative">
         <div className="relative">
           <Hero></Hero>
         </div>
         <div className="absolute rounded-lg top-[80%] w-full ">
-          {/*  */}
           <Vision></Vision>
         </div>
       </div>
@@ -49,6 +46,13 @@ export default function Home() {
         <Faq></Faq>
       </div>
       <Footer></Footer>
+    </>
+  );
+
+  return (
+    <main className="select-none bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <Header onSearchStateChange={setIsSearching} />
+      {!isSearching && <MainContent />}
     </main>
   );
 }
