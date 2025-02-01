@@ -46,8 +46,6 @@ export default function Departments() {
     defaultValues: {
       name: "",
       hod: "",
-      noOfDoctors: "",
-      doctorsAvailable: "",
     },
   });
 
@@ -55,8 +53,11 @@ export default function Departments() {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const res = await fetch("/api/dept");
-        const data = await res.json();
+        const res = await fetch("/api/dept/", {
+          method: "GET",
+          body: JSON.stringify({ id }) 
+        });
+                const data = await res.json();
         if (data.success) {
           setDepartments(data.getDept);
         } else {
@@ -116,7 +117,7 @@ export default function Departments() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredDepartments?.length ? (
-          filteredDepartments.map((dept:any) => (
+          filteredDepartments.map((dept: any) => (
             <DepartmentCard key={dept.did} dept={dept} id={id} />
           ))
         ) : (
