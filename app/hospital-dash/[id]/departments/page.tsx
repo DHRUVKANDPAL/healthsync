@@ -28,8 +28,6 @@ import { toast } from "sonner";
 const formSchema = z.object({
   name: z.string().min(1, "Department name is required"),
   hod: z.string().min(1, "HOD name is required"),
-  noOfDoctors: z.string().min(1, "Number of doctors is required"),
-  doctorsAvailable: z.string().min(1, "Available doctors count is required"),
 });
 
 type Department = z.infer<typeof formSchema> & { did: string };
@@ -160,35 +158,7 @@ export default function Departments() {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="noOfDoctors"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>No. of Doctors</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter number of doctors" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="doctorsAvailable"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Doctors Available</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Enter available doctors count"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <DialogFooter>
                 <Button
                   type="submit"
