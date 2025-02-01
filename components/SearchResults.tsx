@@ -30,6 +30,7 @@ import {
   Activity,
 } from "lucide-react";
 import { triage } from "@/lib/gemini";
+import {  StarHalf, Star as StarOutline } from "lucide-react";
 
 // Types based on the API response
 interface HospitalFacilities {
@@ -80,6 +81,7 @@ interface Doctor {
   email: string;
   consulationFees: number;
   isAvailable: boolean;
+  ratings: number;
 }
 
 interface Department {
@@ -169,6 +171,48 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
 
     fetchData();
   }, [searchQuery]);
+ 
+
+  const StarRating = ({ rating }:{rating:number}) => {
+    const totalStars = 5;
+    const filledStars = Math.floor(rating); // Full stars
+    const hasHalfStar = rating % 1 !== 0; // Check for a half star
+    const emptyStars = totalStars - filledStars - (hasHalfStar ? 1 : 0); // Remaining empty stars
+
+    return (
+      <div className="flex items-center space-x-1">
+        {/* Fully Filled Stars */}
+        {[...Array(filledStars)].map((_, i) => (
+          <Star
+            key={i}
+            className="w-4 h-4 fill-teal-500 text-teal-500 dark:fill-teal-400 dark:text-teal-400"
+          />
+        ))}
+
+        {/* Half Star if needed */}
+        {hasHalfStar && (
+          <StarHalf className="w-4 h-4 fill-teal-500 text-teal-500 dark:fill-teal-400 dark:text-teal-400" />
+        )}
+
+        {/* Empty Stars */}
+        {[...Array(emptyStars)].map((_, i) => (
+          <StarOutline
+            key={`empty-${i}`}
+            className="w-4 h-4 fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600"
+          />
+        ))}
+
+        {/* Display Numeric Rating */}
+        <span className="ml-2 text-sm text-muted-foreground">
+          {rating.toFixed(1)}
+        </span>
+      </div>
+    );
+  };
+
+  // Usage Example:
+   // Example rating
+  
 
   const DoctorCard = ({
     doctor,
@@ -229,15 +273,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
       </CardHeader>
 
       <CardFooter className="flex justify-between items-center bg-muted/50 pt-4">
-        <div className="flex items-center space-x-1">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              className="w-4 h-4 fill-teal-500 text-teal-500 dark:fill-teal-400 dark:text-teal-400"
-            />
-          ))}
-          <span className="ml-2 text-sm text-muted-foreground">(4.8)</span>
-        </div>
+        <StarRating rating={doctor.ratings} />;
         <div className="flex items-center">
           <Badge className="mr-2 bg-teal-500/10 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300">
             <IndianRupee className="w-3 h-3 mr-1" />

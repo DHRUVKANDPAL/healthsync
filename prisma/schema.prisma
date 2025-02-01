@@ -132,6 +132,7 @@ model Doctor{
   licenceNo String @unique 
   contactno String?
   email String?
+  ratings Float? @default(3.7)
   hashedPassword String
   queue Queue[]
   departments DoctorinDept[]
@@ -188,3 +189,7 @@ model Reply{
   message String
   createdAt       DateTime? @default(now())
 }
+
+
+
+

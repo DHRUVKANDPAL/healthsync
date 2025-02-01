@@ -91,6 +91,7 @@ export async function POST(req: NextRequest) {
             email: doc.doctor.email,
             consulationFees: doc.consulatationFees,
             isAvailable: doc.isAvailable,
+            ratings: doc.doctor.ratings,
             // assignedAt: doc.assignedAt,
             // createdAt: doc.doctor.createdAt,
           })),

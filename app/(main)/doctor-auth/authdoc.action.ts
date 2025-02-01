@@ -125,3 +125,48 @@ export const imageEditDoctor= async ({
     return { success: false, error: "Failed to update patient" };
   }
 };
+
+
+
+
+export const doctorsignupDummy = async (
+  values: any
+) => {
+  try {
+    const existingdoctor = await prisma.doctor?.findUnique({
+      where: {
+        userId: values?.userId,
+      },
+    });
+    if (existingdoctor) {
+      return { error: "doctor already exists", success: false };
+    }
+    const hashedPassword = await new Argon2id().hash(values.password);
+
+    const doctor = await prisma.doctor.create({
+      data: {
+        userId: values.userId,
+        name: values.name,
+        dob: values.dob,
+        aadharNo: values.aadharNo,
+        licenceNo: values.licenceNo,
+        contactno: values.contactno,
+        email: values.email.toLowerCase(),
+        ratings:values.ratings,
+        imageUrl:values.imageUrl,
+        hashedPassword: hashedPassword,
+      },
+    });
+    const session = await doctorlucia.createSession(doctor.id, {});
+    const sessionCookie = await doctorlucia.createSessionCookie(session.id);
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+    return { success: true, id: doctor.id };
+  } catch (error) {
+    console.log(error);
+    return { error: "Something went wrong", success: false };
+  }
+};
