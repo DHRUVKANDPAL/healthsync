@@ -1,11 +1,17 @@
 "use client";
 import BeatLoader from "@/components/BeatLoader";
+import { triage } from "@/lib/gemini";
+// import { MedicalTriage, triage } from "@/lib/gemini";
 import React, { useEffect } from "react";
 
 type Props = {};
 
 const page = (props: Props) => {
   useEffect(() => {
+    async function Gemini(input:string) {
+      const output=await triage(input);
+      console.log(output);
+    }
     async function fetchData() {
       const response = await fetch("/api/search", {
         method: "POST",
@@ -19,7 +25,7 @@ const page = (props: Props) => {
 
       // const data = await response.json();
     }
-
+    Gemini("pet dard");
     fetchData();
   },[])
   return (
