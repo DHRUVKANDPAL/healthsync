@@ -164,7 +164,7 @@ export default function DoctorDetails() {
                   <AvatarFallback className="text-lg bg-gradient-to-br from-teal-500 to-blue-500 text-white">
                     {doctor.doctor.name
                       .split(" ")
-                      .map((n) => n[0])
+                      .map((n: any) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
