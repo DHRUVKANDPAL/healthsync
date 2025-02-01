@@ -146,6 +146,7 @@ model DoctorinDept {
   doctorId   String 
   assignedAt DateTime @default(now())
   isAvailable Boolean? @default(true)
+  consulatationFees Float? @default(500)
   @@id([deptId, doctorId])
 }
 model Queue{
