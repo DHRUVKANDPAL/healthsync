@@ -11,6 +11,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -43,11 +49,12 @@ import {
   ChevronRight,
   Search,
   Activity,
+  SlidersHorizontal,
 } from "lucide-react";
 import { triage } from "@/lib/gemini";
 import { StarHalf, Star as StarOutline } from "lucide-react";
 import { Slider } from "./ui/slider";
-
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 // Types based on the API response
 interface HospitalFacilities {
   beds: {
@@ -224,6 +231,147 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
     }
   });
 
+  const FilterSidebar = ({ className }: { className?: string }) => (
+    <div className={`space-y-4 ${className}`}>
+      {/* Sort Options */}
+      <Card className="bg-background">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-medium">Sort By</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Sort by..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="relevance">Relevance</SelectItem>
+              <SelectItem value="fees-low-high">Fees: Low to High</SelectItem>
+              <SelectItem value="fees-high-low">Fees: High to Low</SelectItem>
+              <SelectItem value="rating-high-low">
+                Rating: High to Low
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
+
+      {/* Filters Accordion */}
+      <Card className="bg-background">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-medium">Filters</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Accordion type="multiple" className="w-full">
+            {/* Department Filter */}
+            <AccordionItem value="department">
+              <AccordionTrigger className="px-4">Department</AccordionTrigger>
+              <AccordionContent className="px-4">
+                <div className="flex flex-wrap gap-2">
+                  {departmentSuggestions.map((dept) => (
+                    <Badge
+                      key={dept}
+                      variant={
+                        selectedDepartment === dept ? "default" : "outline"
+                      }
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setSelectedDepartment(
+                          selectedDepartment === dept ? null : dept
+                        )
+                      }
+                    >
+                      {dept}
+                    </Badge>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Fees Filter */}
+            <AccordionItem value="fees">
+              <AccordionTrigger className="px-4">
+                Consultation Fees
+              </AccordionTrigger>
+              <AccordionContent className="px-4 pb-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Max Fee:</span>
+                    <span className="flex items-center text-sm font-semibold text-teal-600">
+                      <IndianRupee className="w-3 h-3 mr-1" />
+                      {maxFees}
+                    </span>
+                  </div>
+                  <Slider
+                    defaultValue={[maxFees]}
+                    max={2000}
+                    min={100}
+                    step={100}
+                    value={[maxFees]}
+                    onValueChange={(value) => setMaxFees(value[0])}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Rating Filter */}
+            <AccordionItem value="rating">
+              <AccordionTrigger className="px-4">Rating</AccordionTrigger>
+              <AccordionContent className="px-4 pb-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Min Rating:</span>
+                    <span className="flex items-center text-sm font-semibold text-amber-500">
+                      <Star className="w-3 h-3 mr-1 fill-amber-500" />
+                      {minRating}
+                    </span>
+                  </div>
+                  <Slider
+                    defaultValue={[minRating]}
+                    max={5}
+                    min={0}
+                    step={0.5}
+                    value={[minRating]}
+                    onValueChange={(value) => setMinRating(value[0])}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Availability Filter */}
+            <AccordionItem value="availability">
+              <AccordionTrigger className="px-4">Availability</AccordionTrigger>
+              <AccordionContent className="px-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="available-only">Show Available Only</Label>
+                  <Switch
+                    id="available-only"
+                    checked={availableOnly}
+                    onCheckedChange={setAvailableOnly}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Verification Filter */}
+            <AccordionItem value="verification">
+              <AccordionTrigger className="px-4">Verification</AccordionTrigger>
+              <AccordionContent className="px-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="verified-only">Show Verified Only</Label>
+                  <Switch
+                    id="verified-only"
+                    checked={verifiedOnly}
+                    onCheckedChange={setVerifiedOnly}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
   const StarRating = ({ rating }: { rating: number }) => {
     const totalStars = 5;
     const filledStars = Math.floor(rating); // Full stars
@@ -269,71 +417,97 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   }: {
     doctor: Doctor & { departmentName: string; hospitalName: string };
   }) => (
-    <Card className="group relative transition-all duration-300 hover:shadow-xl dark:hover:shadow-teal-500/20 hover:scale-[1.02]">
+    <Card className="group h-full transition-all duration-300 hover:shadow-lg dark:hover:shadow-teal-500/10 hover:-translate-y-1">
       <CardHeader className="space-y-4">
-        <div className="flex items-start justify-between">
-          <div className="flex space-x-4">
-            <Avatar className="h-12 w-12 border-2 border-teal-500/20">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="flex items-start space-x-4">
+            <Avatar className="h-16 w-16 ring-2 ring-teal-500/20 ring-offset-2 ring-offset-background">
               <AvatarImage src={doctor.imageUrl || "/api/placeholder/64/64"} />
-              <AvatarFallback className="bg-teal-500/10">
+              <AvatarFallback className="bg-teal-500/10 text-teal-700 dark:text-teal-300">
                 {doctor.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <CardTitle className="text-lg font-semibold text-primary">
+            <div className="space-y-1">
+              <CardTitle className="text-xl font-semibold text-primary">
                 {doctor.name}
               </CardTitle>
-              <Badge variant="outline" className="mt-1">
-                <Stethoscope className="w-3 h-3 mr-1" />
+              <Badge variant="outline" className="inline-flex items-center">
+                <Stethoscope className="w-3 h-3 mr-1.5" />
                 {doctor.departmentName}
               </Badge>
             </div>
           </div>
           <Badge
             variant={doctor.isAvailable ? "default" : "secondary"}
-            className={`${
+            className={`self-start ${
               doctor.isAvailable
-                ? "bg-teal-500/10 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300"
-                : ""
+                ? "bg-teal-500/10 text-teal-700 dark:text-teal-300 dark:bg-teal-500/20"
+                : "bg-gray-100 dark:bg-gray-800"
             }`}
           >
-            {doctor.isAvailable ? (
-              <Clock className="w-3 h-3 mr-1 animate-pulse" />
-            ) : null}
+            {doctor.isAvailable && (
+              <Clock className="w-3 h-3 mr-1.5 animate-pulse" />
+            )}
             {doctor.isAvailable ? "Available Now" : "Unavailable"}
           </Badge>
         </div>
 
-        <div className="space-y-2">
-          <CardDescription className="flex items-center text-sm">
-            <Building className="w-4 h-4 mr-2 text-muted-foreground" />
-            {doctor.hospitalName}
-          </CardDescription>
-          <div className="grid grid-cols-2 gap-2 text-sm">
+        <div className="space-y-3">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Building className="w-4 h-4 mr-2 flex-shrink-0" />
+            <span className="truncate" title={doctor.hospitalName}>
+              {doctor.hospitalName}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
             <div className="flex items-center text-muted-foreground">
-              <Phone className="w-4 h-4 mr-2" />
-              {doctor.contactno}
+              <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span className="truncate">{doctor.contactno}</span>
             </div>
-            <div className="flex items-center text-muted-foreground">
-              <Mail className="w-4 h-4 mr-2" />
-              <span title={doctor.email}>
-                {doctor.email.length > 30
-                  ? doctor.email.slice(0, 27) + "..."
-                  : doctor.email}
-              </span>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center text-muted-foreground">
+                    <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <span className="truncate">{doctor.email}</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{doctor.email}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </CardHeader>
 
-      <CardFooter className="flex justify-between items-center bg-muted/50 pt-4">
-        <StarRating rating={doctor.ratings} />;
+      <CardFooter className="mt-auto flex justify-between items-center bg-muted/50 p-4 rounded-b-lg">
+        <div className="flex items-center space-x-1">
+          {[...Array(5)].map((_, i) => (
+            <svg
+              key={i}
+              className={`w-4 h-4 ${
+                i < doctor.ratings
+                  ? "text-teal-400"
+                  : "text-gray-300 dark:text-gray-600"
+              }`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
         <div className="flex items-center">
-          <Badge className="mr-2 bg-teal-500/10 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300">
+          <Badge className="mr-2 bg-teal-500/10 text-teal-700 dark:text-teal-300 dark:bg-teal-500/20">
             <IndianRupee className="w-3 h-3 mr-1" />
             {doctor.consulationFees}
           </Badge>
-          <Button variant="ghost" size="icon" className="rounded-full">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full hover:bg-teal-500/10 hover:text-teal-700 dark:hover:text-teal-300"
+          >
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
@@ -342,31 +516,30 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   );
 
   const HospitalCard = ({ hospital }: { hospital: Hospital }) => (
-    <Card className="group transition-all duration-300 hover:shadow-xl dark:hover:shadow-blue-500/20 hover:scale-[1.02]">
+    <Card className="group h-full transition-all duration-300 hover:shadow-lg dark:hover:shadow-blue-500/10 hover:-translate-y-1">
       <CardHeader>
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <CardTitle className="text-lg font-semibold text-primary">
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-xl font-semibold text-primary">
                 {hospital.hospitalInfo.name}
               </CardTitle>
               {hospital.hospitalInfo.isVerified && (
-                <Badge
-                  variant="default"
-                  className="bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300"
-                >
-                  <Check className="w-3 h-3 mr-1" />
+                <Badge className="bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
+                  <Check className="w-3 h-3 mr-1.5" />
                   Verified
                 </Badge>
               )}
             </div>
-            <CardDescription className="flex items-center">
-              <MapPin className="w-4 h-4 mr-2" />
-              {hospital.hospitalInfo.City}, {hospital.hospitalInfo.State}
-            </CardDescription>
+            <div className="flex items-center text-muted-foreground">
+              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span className="truncate">
+                {hospital.hospitalInfo.City}, {hospital.hospitalInfo.State}
+              </span>
+            </div>
           </div>
-          <Badge variant="outline" className="flex items-center">
-            <Calendar className="w-3 h-3 mr-1" />
+          <Badge variant="outline" className="self-start whitespace-nowrap">
+            <Calendar className="w-3 h-3 mr-1.5" />
             Est. {hospital.hospitalInfo.estyear}
           </Badge>
         </div>
@@ -378,64 +551,93 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
             <Badge
               key={dept.departmentId}
               variant="secondary"
-              className="bg-blue-500/5 hover:bg-blue-500/10 transition-colors"
+              className="bg-blue-500/5 text-blue-700 dark:text-blue-300 hover:bg-blue-500/10 transition-colors"
             >
               {dept.departmentName}
-              <span className="ml-1 text-xs opacity-70">
-                (₹{dept.statistics.minFees}-{dept.statistics.maxFees})
+              <span className="ml-1.5 text-xs opacity-70">
+                ₹{dept.statistics.minFees}-{dept.statistics.maxFees}
               </span>
             </Badge>
           ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <div className="flex items-center text-sm text-muted-foreground">
-              <Users className="w-4 h-4 mr-2" />
-              {hospital.statistics.totalRelevantDoctors} Doctors Available
+              <Users className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span className="truncate">
+                {hospital.statistics.totalRelevantDoctors} Doctors Available
+              </span>
             </div>
             <div className="flex items-center text-sm text-muted-foreground">
-              <Phone className="w-4 h-4 mr-2" />
-              {hospital.hospitalInfo.contactno}
+              <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span className="truncate">
+                {hospital.hospitalInfo.contactno}
+              </span>
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Mail className="w-4 h-4 mr-2" />
-              {hospital.hospitalInfo.email}
-            </div>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Globe className="w-4 h-4 mr-2" />
-              {hospital.hospitalInfo.Website}
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <span className="truncate">
+                      {hospital.hospitalInfo.email}
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{hospital.hospitalInfo.email}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Globe className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <span className="truncate">
+                      {hospital.hospitalInfo.Website}
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{hospital.hospitalInfo.Website}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="flex justify-between items-center bg-muted/50 pt-4">
-        <div className="flex items-center space-x-2">
-          <Badge variant="outline">
+      <CardFooter className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-b-lg">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="outline" className="bg-background/50">
             OPD: {hospital.hospitalInfo.facilities.opd.available}/
             {hospital.hospitalInfo.facilities.opd.total}
           </Badge>
-          <Badge variant="outline">
+          <Badge variant="outline" className="bg-background/50">
             ICU: {hospital.hospitalInfo.facilities.icu.available}/
             {hospital.hospitalInfo.facilities.icu.total}
           </Badge>
         </div>
-        <div className="flex items-center">
-          <Badge className="mr-2 bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300">
+        <div className="flex items-center justify-end">
+          <Badge className="mr-2 bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
             <IndianRupee className="w-3 h-3 mr-1" />
             Avg. {Math.round(hospital.statistics.averageFeesAcrossDepartments)}
           </Badge>
-          <Button variant="ghost" size="icon" className="rounded-full">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full hover:bg-blue-500/10 hover:text-blue-700 dark:hover:text-blue-300"
+          >
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       </CardFooter>
     </Card>
   );
-
   const TabSwitcher = () => (
     <div className="flex justify-center mb-8">
       <div className="inline-flex gap-2">
@@ -514,174 +716,87 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar */}
-        <div className="w-full md:w-80 space-y-6">
-          {/* Sort Options */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Sort By</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sort by..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="relevance">Relevance</SelectItem>
-                  <SelectItem value="fees-low-high">
-                    Fees: Low to High
-                  </SelectItem>
-                  <SelectItem value="fees-high-low">
-                    Fees: High to Low
-                  </SelectItem>
-                  <SelectItem value="rating-high-low">
-                    Rating: High to Low
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
+    <div className="container mx-auto px-4 py-6">
+      {/* Mobile Filter Button */}
+      <div className="lg:hidden mb-4">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full flex items-center gap-2"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters & Sort
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="left"
+            className="w-[300px] sm:w-[400px] overflow-y-auto"
+          >
+            <div className="py-4">
+              <FilterSidebar />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
 
-          {/* Filters Accordion */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Filters</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <Accordion type="single" collapsible className="w-full">
-                {/* Department Filter */}
-                <AccordionItem value="department">
-                  <AccordionTrigger className="px-6">
-                    Department
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6">
-                    <div className="flex flex-wrap gap-2">
-                      {departmentSuggestions.map((dept) => (
-                        <Badge
-                          key={dept}
-                          variant={
-                            selectedDepartment === dept ? "default" : "outline"
-                          }
-                          className="cursor-pointer"
-                          onClick={() =>
-                            setSelectedDepartment(
-                              selectedDepartment === dept ? null : dept
-                            )
-                          }
-                        >
-                          {dept}
-                        </Badge>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+      {/* Tab Switcher */}
+      <TabSwitcher />
 
-                {/* Fees Filter */}
-                <AccordionItem value="fees">
-                  <AccordionTrigger className="px-6">
-                    Consultation Fees
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Max Fee:</span>
-                        <span className="flex items-center text-sm font-semibold text-teal-600">
-                          <IndianRupee className="w-3 h-3 mr-1" />
-                          {maxFees}
-                        </span>
-                      </div>
-                      <Slider
-                        defaultValue={[maxFees]}
-                        max={2000}
-                        min={100}
-                        step={100}
-                        value={[maxFees]}
-                        onValueChange={(value) => setMaxFees(value[0])}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                {/* Rating Filter */}
-                <AccordionItem value="rating">
-                  <AccordionTrigger className="px-6">Rating</AccordionTrigger>
-                  <AccordionContent className="px-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Min Rating:</span>
-                        <span className="flex items-center text-sm font-semibold text-amber-500">
-                          <Star className="w-3 h-3 mr-1 fill-amber-500" />
-                          {minRating}
-                        </span>
-                      </div>
-                      <Slider
-                        defaultValue={[minRating]}
-                        max={5}
-                        min={0}
-                        step={0.5}
-                        value={[minRating]}
-                        onValueChange={(value) => setMinRating(value[0])}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                {/* Availability Filter */}
-                <AccordionItem value="availability">
-                  <AccordionTrigger className="px-6">
-                    Availability
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6">
-                    <div className="flex items-center justify-between space-y-2">
-                      <Label htmlFor="available-only">
-                        Show Available Only
-                      </Label>
-                      <Switch
-                        id="available-only"
-                        checked={availableOnly}
-                        onCheckedChange={setAvailableOnly}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                {/* Verification Filter */}
-                <AccordionItem value="verification">
-                  <AccordionTrigger className="px-6">
-                    Verification
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6">
-                    <div className="flex items-center justify-between space-y-2">
-                      <Label htmlFor="verified-only">Show Verified Only</Label>
-                      <Switch
-                        id="verified-only"
-                        checked={verifiedOnly}
-                        onCheckedChange={setVerifiedOnly}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </CardContent>
-          </Card>
+      {/* Main Content Layout */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block w-72 flex-shrink-0">
+          <div className="sticky top-4">
+            <FilterSidebar />
+          </div>
         </div>
 
-        {/* Main Content */}
+        {/* Results Area */}
         <div className="flex-1">
-          {/* Results Count */}
+          {/* Results Count and Interpretation */}
           <div className="mb-6">
             <h2 className="text-xl font-semibold">
               {activeTab === "doctors"
                 ? `${sortedDoctors.length} Doctors Found`
                 : `${searchResults?.hospitals.length || 0} Hospitals Found`}
             </h2>
-            <p className="text-sm text-muted-foreground">{interpretation}</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {interpretation}
+            </p>
           </div>
 
+          {/* Active Filters */}
+          {(selectedDepartment ||
+            availableOnly ||
+            verifiedOnly ||
+            maxFees < 2000 ||
+            minRating > 0) && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {selectedDepartment && (
+                <Badge variant="secondary" className="flex items-center gap-1">
+                  Department: {selectedDepartment}
+                </Badge>
+              )}
+              {availableOnly && (
+                <Badge variant="secondary">Available Only</Badge>
+              )}
+              {verifiedOnly && <Badge variant="secondary">Verified Only</Badge>}
+              {maxFees < 2000 && (
+                <Badge variant="secondary" className="flex items-center gap-1">
+                  Max Fee: ₹{maxFees}
+                </Badge>
+              )}
+              {minRating > 0 && (
+                <Badge variant="secondary" className="flex items-center gap-1">
+                  Min Rating: {minRating}★
+                </Badge>
+              )}
+            </div>
+          )}
+
           {/* Results Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             {activeTab === "doctors" &&
               sortedDoctors.map((doctor) => (
                 <DoctorCard key={doctor.doctorId} doctor={doctor} />
