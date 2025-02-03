@@ -516,126 +516,151 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   );
 
   const HospitalCard = ({ hospital }: { hospital: Hospital }) => (
-    <Card className="group h-full transition-all duration-300 hover:shadow-lg dark:hover:shadow-blue-500/10 hover:-translate-y-1">
-      <CardHeader>
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="text-xl font-semibold text-primary">
-                {hospital.hospitalInfo.name}
-              </CardTitle>
-              {hospital.hospitalInfo.isVerified && (
-                <Badge className="bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
-                  <Check className="w-3 h-3 mr-1.5" />
-                  Verified
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-center text-muted-foreground">
-              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="truncate">
-                {hospital.hospitalInfo.City}, {hospital.hospitalInfo.State}
-              </span>
-            </div>
-          </div>
-          <Badge variant="outline" className="self-start whitespace-nowrap">
-            <Calendar className="w-3 h-3 mr-1.5" />
-            Est. {hospital.hospitalInfo.estyear}
-          </Badge>
+    <Card className="group h-full transition-all duration-300 hover:shadow-lg dark:hover:shadow-blue-500/10 hover:-translate-y-1 relative overflow-hidden">
+      {/* Background Image with Gradient */}
+      {hospital.hospitalInfo.imageUrl && (
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${hospital.hospitalInfo.imageUrl})`,
+              maskImage:
+                "linear-gradient(to bottom, white 50%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, white 50%, transparent 100%)",
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-60% to-white dark:to-slate-950" />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white dark:to-slate-950" />
         </div>
-      </CardHeader>
+      )}
 
-      <CardContent className="space-y-4">
-        <div className="flex flex-wrap gap-2">
-          {hospital.departments.map((dept) => (
+      {/* Card Content - Positioned Relatively */}
+      <div className="relative z-10">
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <CardTitle className="text-xl font-semibold text-primary">
+                  {hospital.hospitalInfo.name}
+                </CardTitle>
+                {hospital.hospitalInfo.isVerified && (
+                  <Badge className="bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
+                    <Check className="w-3 h-3 mr-1.5" />
+                    Verified
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-center text-muted-foreground font-semibold">
+                <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span className="truncate">
+                  {hospital.hospitalInfo.City}, {hospital.hospitalInfo.State}
+                </span>
+              </div>
+            </div>
             <Badge
-              key={dept.departmentId}
-              variant="secondary"
-              className="bg-blue-500/5 text-blue-700 dark:text-blue-300 hover:bg-blue-500/10 transition-colors"
+              variant="outline"
+              className="self-start whitespace-nowrap border-2 border-slate-800/25"
             >
-              {dept.departmentName}
-              <span className="ml-1.5 text-xs opacity-70">
-                ₹{dept.statistics.minFees}-{dept.statistics.maxFees}
-              </span>
+              <Calendar className="w-3 h-3 mr-1.5" />
+              Est. {hospital.hospitalInfo.estyear}
             </Badge>
-          ))}
-        </div>
+          </div>
+        </CardHeader>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Users className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="truncate">
-                {hospital.statistics.totalRelevantDoctors} Doctors Available
-              </span>
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {hospital.departments.map((dept) => (
+              <Badge
+                key={dept.departmentId}
+                variant="secondary"
+                className="bg-blue-500/5 text-blue-700 dark:text-blue-300 hover:bg-blue-500/10 transition-colors"
+              >
+                {dept.departmentName}
+                <span className="ml-1.5 text-xs opacity-70">
+                  ₹{dept.statistics.minFees}-{dept.statistics.maxFees}
+                </span>
+              </Badge>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Users className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span className="truncate">
+                  {hospital.statistics.totalRelevantDoctors} Doctors Available
+                </span>
+              </div>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span className="truncate">
+                  {hospital.hospitalInfo.contactno}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="truncate">
-                {hospital.hospitalInfo.contactno}
-              </span>
+            <div className="space-y-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="truncate">
+                        {hospital.hospitalInfo.email}
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{hospital.hospitalInfo.email}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <Globe className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="truncate">
+                        {hospital.hospitalInfo.Website}
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{hospital.hospitalInfo.Website}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
-          <div className="space-y-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
-                    <span className="truncate">
-                      {hospital.hospitalInfo.email}
-                    </span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{hospital.hospitalInfo.email}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Globe className="w-4 h-4 mr-2 flex-shrink-0" />
-                    <span className="truncate">
-                      {hospital.hospitalInfo.Website}
-                    </span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{hospital.hospitalInfo.Website}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
-      </CardContent>
+        </CardContent>
 
-      <CardFooter className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-b-lg">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="bg-background/50">
-            OPD: {hospital.hospitalInfo.facilities.opd.available}/
-            {hospital.hospitalInfo.facilities.opd.total}
-          </Badge>
-          <Badge variant="outline" className="bg-background/50">
-            ICU: {hospital.hospitalInfo.facilities.icu.available}/
-            {hospital.hospitalInfo.facilities.icu.total}
-          </Badge>
-        </div>
-        <div className="flex items-center justify-end">
-          <Badge className="mr-2 bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
-            <IndianRupee className="w-3 h-3 mr-1" />
-            Avg. {Math.round(hospital.statistics.averageFeesAcrossDepartments)}
-          </Badge>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full hover:bg-blue-500/10 hover:text-blue-700 dark:hover:text-blue-300"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
-      </CardFooter>
+        <CardFooter className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-b-lg">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline" className="bg-background/50">
+              OPD: {hospital.hospitalInfo.facilities.opd.available}/
+              {hospital.hospitalInfo.facilities.opd.total}
+            </Badge>
+            <Badge variant="outline" className="bg-background/50">
+              ICU: {hospital.hospitalInfo.facilities.icu.available}/
+              {hospital.hospitalInfo.facilities.icu.total}
+            </Badge>
+          </div>
+          <div className="flex items-center justify-end">
+            <Badge className="mr-2 bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
+              <IndianRupee className="w-3 h-3 mr-1" />
+              Avg.{" "}
+              {Math.round(hospital.statistics.averageFeesAcrossDepartments)}
+            </Badge>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full hover:bg-blue-500/10 hover:text-blue-700 dark:hover:text-blue-300"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </CardFooter>
+      </div>
     </Card>
   );
   const TabSwitcher = () => (
