@@ -57,6 +57,36 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const totalRoomsPromise = hospitals.map(async (hospital: any) => {
+      const roomCounts = await prisma.room.groupBy({
+        by: ["typeof"],
+        where: { userId: hospital.id },
+        _count: {
+          typeof: true,
+        },
+      });
+
+      // Organize room counts into the respective categories
+      const roomData = {
+        singleRoom: roomCounts.find((room) => room.typeof === "Single Room")?._count
+          .typeof || 0,
+        ICU: roomCounts.find((room) => room.typeof === "ICU")?._count.typeof || 0,
+        GeneralWard: roomCounts.find((room) => room.typeof === "General Ward")?._count
+          .typeof || 0,
+        SharedRoom: roomCounts.find((room) => room.typeof === "Shared Room")?._count
+          .typeof || 0,
+      };
+
+      // Calculate the total rooms
+      const total = roomData.singleRoom +
+        roomData.ICU +
+        roomData.GeneralWard +
+        roomData.SharedRoom;
+
+      return { total: { ...roomData, total } };
+    });
+    const totalRooms = await Promise.all(totalRoomsPromise);
+
     // Add this for debugging
    //  console.log(
    //    "First hospital departments:",
@@ -64,7 +94,14 @@ export async function POST(req: NextRequest) {
    //  );
 
     // Process the results with detailed hospital information and statistics
-    const processedHospitals = hospitals.map((hospital:any) => {
+    const processedHospitals = hospitals.map((hospital:any,index:number) => {
+      const roomsData = totalRooms[index]?.total || {
+        singleRoom: 0,
+        ICU: 0,
+        GeneralWard: 0,
+        SharedRoom: 0,
+        total: 0,
+      };
       const departmentsWithStats = hospital.hospitaldep.map((dept:any) => {
         const fees = dept.doctors.map((doc:any) => doc.consulatationFees || 0);
         const availableDoctors = dept.doctors.filter((doc:any) => doc.isAvailable);
@@ -115,7 +152,7 @@ export async function POST(req: NextRequest) {
           Zipcode: hospital.Zipcode,
           facilities: {
             beds: {
-              total: hospital.noofbeds,
+              total: totalRooms[0].total,
               available: hospital.bedsAvailable,
               shared: hospital.sharedAvailable,
               generalWard: hospital.generalWardAvailable,
@@ -125,17 +162,21 @@ export async function POST(req: NextRequest) {
               available: hospital.opdsAvailable,
             },
             icu: {
-              total: hospital.nooficu,
+              total: roomsData.ICU,
               available: hospital.icuAvailable,
             },
-            labs: {
-              total: hospital.nooflabs,
-              available: hospital.labsAvailable,
+            singleRoom: {
+              total:roomsData.singleRoom,
+              available: hospital.bedsAvailable,
             },
-            doctors: {
-              total: hospital.noofdoctorsregistered,
-              available: hospital.doctorsAvailable,
-            },
+            // labs: {
+            //   total: hospital.nooflabs,
+            //   available: hospital.labsAvailable,
+            // },
+            // doctors: {
+            //   total: hospital.noofdoctorsregistered,
+            //   available: hospital.doctorsAvailable,
+            // },
           },
           anyotherdetails: hospital.anyotherdetails,
          //  idToLogin: hospital.idToLogin,
@@ -178,6 +219,7 @@ export async function POST(req: NextRequest) {
           },
         },
         departments: departmentsWithStats,
+        
       };
     });
 

@@ -55,6 +55,7 @@ import { triage } from "@/lib/gemini";
 import { StarHalf, Star as StarOutline } from "lucide-react";
 import { Slider } from "./ui/slider";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Footer from "./Footer";
 // Types based on the API response
 interface HospitalFacilities {
   beds: {
@@ -63,6 +64,7 @@ interface HospitalFacilities {
     shared: number;
     generalWard: number;
   };
+  singleRoom: { total: number; available: number };
   opd: { total: number; available: number };
   icu: { total: number; available: number };
   labs: { total: number; available: number };
@@ -640,13 +642,15 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
         <CardFooter className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-b-lg">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="outline" className="bg-background/50">
-              OPD: {hospital.hospitalInfo.facilities.opd.available}/
-              {hospital.hospitalInfo.facilities.opd.total}
+              Single Rooms:{" "}
+              {hospital.hospitalInfo.facilities.singleRoom.available}/
+              {hospital.hospitalInfo.facilities.singleRoom.total}
             </Badge>
             <Badge variant="outline" className="bg-background/50">
               ICU: {hospital.hospitalInfo.facilities.icu.available}/
               {hospital.hospitalInfo.facilities.icu.total}
             </Badge>
+            
           </div>
           <div className="flex items-center justify-end">
             <Badge className="mr-2 bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
@@ -744,102 +748,117 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      {/* Mobile Filter Button */}
-      <div className="lg:hidden mb-4">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full flex items-center gap-2"
+    <>
+      <div className="container mx-auto px-4 py-6">
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden mb-4">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full flex items-center gap-2"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filters & Sort
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="w-[300px] sm:w-[400px] overflow-y-auto"
             >
-              <SlidersHorizontal className="w-4 h-4" />
-              Filters & Sort
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side="left"
-            className="w-[300px] sm:w-[400px] overflow-y-auto"
-          >
-            <div className="py-4">
+              <div className="py-4">
+                <FilterSidebar />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* Tab Switcher */}
+        <TabSwitcher />
+
+        {/* Main Content Layout */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block w-72 flex-shrink-0">
+            <div className="sticky top-4">
               <FilterSidebar />
             </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-
-      {/* Tab Switcher */}
-      <TabSwitcher />
-
-      {/* Main Content Layout */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:block w-72 flex-shrink-0">
-          <div className="sticky top-4">
-            <FilterSidebar />
-          </div>
-        </div>
-
-        {/* Results Area */}
-        <div className="flex-1">
-          {/* Results Count and Interpretation */}
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold">
-              {activeTab === "doctors"
-                ? `${sortedDoctors.length} Doctors Found`
-                : `${searchResults?.hospitals.length || 0} Hospitals Found`}
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              {interpretation}
-            </p>
           </div>
 
-          {/* Active Filters */}
-          {(selectedDepartment ||
-            availableOnly ||
-            verifiedOnly ||
-            maxFees < 2000 ||
-            minRating > 0) && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {selectedDepartment && (
-                <Badge variant="secondary" className="flex items-center gap-1">
-                  Department: {selectedDepartment}
-                </Badge>
-              )}
-              {availableOnly && (
-                <Badge variant="secondary">Available Only</Badge>
-              )}
-              {verifiedOnly && <Badge variant="secondary">Verified Only</Badge>}
-              {maxFees < 2000 && (
-                <Badge variant="secondary" className="flex items-center gap-1">
-                  Max Fee: ₹{maxFees}
-                </Badge>
-              )}
-              {minRating > 0 && (
-                <Badge variant="secondary" className="flex items-center gap-1">
-                  Min Rating: {minRating}★
-                </Badge>
-              )}
+          {/* Results Area */}
+          <div className="flex-1">
+            {/* Results Count and Interpretation */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold">
+                {activeTab === "doctors"
+                  ? `${sortedDoctors.length} Doctors Found`
+                  : `${searchResults?.hospitals.length || 0} Hospitals Found`}
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                {interpretation}
+              </p>
             </div>
-          )}
 
-          {/* Results Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-            {activeTab === "doctors" &&
-              sortedDoctors.map((doctor) => (
-                <DoctorCard key={doctor.doctorId} doctor={doctor} />
-              ))}
-            {activeTab === "hospitals" &&
-              searchResults?.hospitals.map((hospital) => (
-                <HospitalCard
-                  key={hospital.hospitalInfo.id}
-                  hospital={hospital}
-                />
-              ))}
+            {/* Active Filters */}
+            {(selectedDepartment ||
+              availableOnly ||
+              verifiedOnly ||
+              maxFees < 2000 ||
+              minRating > 0) && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {selectedDepartment && (
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
+                    Department: {selectedDepartment}
+                  </Badge>
+                )}
+                {availableOnly && (
+                  <Badge variant="secondary">Available Only</Badge>
+                )}
+                {verifiedOnly && (
+                  <Badge variant="secondary">Verified Only</Badge>
+                )}
+                {maxFees < 2000 && (
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
+                    Max Fee: ₹{maxFees}
+                  </Badge>
+                )}
+                {minRating > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
+                    Min Rating: {minRating}★
+                  </Badge>
+                )}
+              </div>
+            )}
+
+            {/* Results Grid */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              {activeTab === "doctors" &&
+                sortedDoctors.map((doctor) => (
+                  <DoctorCard key={doctor.doctorId} doctor={doctor} />
+                ))}
+              {activeTab === "hospitals" &&
+                searchResults?.hospitals.map((hospital) => (
+                  <HospitalCard
+                    key={hospital.hospitalInfo.id}
+                    hospital={hospital}
+                  />
+                ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="h-24"></div>
+      <Footer />
+    </>
   );
 };
 
