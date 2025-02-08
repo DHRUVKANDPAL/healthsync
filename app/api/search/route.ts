@@ -4,16 +4,18 @@ import prisma from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
+    // console.log("1");
     const body = await req.json();
-    const { departments } = body;
+    const { departments,latitude,longitude } = body;
     console.log(departments);
+    // console.log("2");
     if (!Array.isArray(departments) || departments.length === 0) {
       return NextResponse.json(
         { error: "Invalid departments array" },
         { status: 400 }
       );
     }
-
+// console.log("3");
     const hospitals = await prisma.hospital.findMany({
       where: {
         hospitaldep: {
@@ -56,6 +58,61 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+// console.log("4");
+
+ if (!latitude || !longitude) {
+   return NextResponse.json(
+     { error: "Latitude and longitude are required to calculate distance" },
+     { status: 400 }
+   );
+ }
+
+ const userLat = parseFloat(latitude);
+ const userLon = parseFloat(longitude);
+
+ if (isNaN(userLat) || isNaN(userLon)) {
+   return NextResponse.json(
+     { error: "Invalid latitude or longitude values" },
+     { status: 400 }
+   );
+ }
+
+ const hospitalsWithDistance = hospitals.map((hospital) => {
+   const hospitalLat = hospital.latitude;
+   const hospitalLon = hospital.longitude;
+
+   if (isNaN(hospitalLat!!) || isNaN(hospitalLon!!)) {
+     return { ...hospital, dist: null }; // Alias distance to dist and handle null case
+   }
+
+   // Haversine formula
+   const R = 6371; // Earth's radius in kilometers
+   const lat1 = (userLat * Math.PI) / 180; // Convert degrees to radians
+   const lon1 = (userLon * Math.PI) / 180;
+   const lat2 = (hospitalLat!! * Math.PI) / 180;
+   const lon2 = (hospitalLon!! * Math.PI) / 180;
+
+   const dLat = lat2 - lat1;
+   const dLon = lon2 - lon1;
+
+   const a =
+     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+     Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+   let distance = R * c; // Distance in kilometers
+   if(distance>1000) distance*=1.2
+   else if(distance>750) distance*=1.26
+   else if(distance>500) distance*=1.30
+   else if(distance>250) distance*=1.33
+   else distance *=1.37
+   return {
+     ...hospital,
+     dist: distance, // Alias distance to dist
+   };
+ });
+ console.log(latitude,longitude);
+ console.log("hospitalsWithDistance", hospitalsWithDistance);
+
 
     const totalRoomsPromise = hospitals.map(async (hospital: any) => {
       const roomCounts = await prisma.room.groupBy({
@@ -222,7 +279,7 @@ export async function POST(req: NextRequest) {
         
       };
     });
-
+    // console.log(processedHospitals);
     return NextResponse.json({
       totalHospitals: processedHospitals.length,
       hospitals: processedHospitals,

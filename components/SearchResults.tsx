@@ -326,7 +326,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             </AccordionItem>
 
             {/* Rating Filter */}
-            <AccordionItem value="rating">
+            <AccordionItem value="rating" >
               <AccordionTrigger className="px-4">Rating</AccordionTrigger>
               <AccordionContent className="px-4 pb-4">
                 <div className="space-y-4">

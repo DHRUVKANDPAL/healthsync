@@ -66,11 +66,13 @@ model Hospital{
   City String
   State String
   Zipcode String 
-  noofbeds Int
-  noofopds Int
-  nooficu Int
-  nooflabs Int
-  noofdoctorsregistered Int
+  // noofbeds Int
+  // noofopds Int
+  // nooficu Int
+  // nooflabs Int
+  // noofdoctorsregistered Int
+  latitude Float?
+  longitude Float?
   anyotherdetails String?
   hashedPassword  String?
   bedsAvailable Int? @default(0) //single beds
@@ -88,6 +90,7 @@ model Hospital{
   roomHistory HospitalRoomHistory[]
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
+  // sumitSati Boolean?
 }
 model Room{
   id              String   @id @default(cuid())

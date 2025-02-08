@@ -78,44 +78,73 @@ doctor_ids = [
   # Add all 100 doctor IDs here
 
 department_ids = [
-  "cm6cifdr80001wghquj6k27tt",
-  "cm6mgg2m60001ljwbr7leaki5",
-  "cm6mhwzmn000t4eovxeqwsjgf",
-  "cm6mhwzue000v4eov8dl7ekiu",
-  "cm6mhwzz1000x4eov1x1nw3s2",
-  "cm6mhx03k000z4eov2fflhfin",
-  "cm6mhx08600114eoviua7z2u7",
-  "cm6mhx0cl00134eov6nz9zggr",
-  "cm6mhx0hc00154eovtv56puwq",
-  "cm6mhx0m200174eovsavtccqn",
-  "cm6mhx0r000194eovnzz6givs",
-  "cm6mhx0vm001b4eovi6qckcq9",
-  "cm6mhx106001d4eov64we1rai",
-  "cm6mhx14m001f4eovd37g76fi",
-  "cm6mhx19d001h4eov0qak8tps",
-  "cm6mhx1dx001j4eov34q53kfg",
-  "cm6mi1e0j001l4eov74ys8ben",
-  "cm6mi1e5n001n4eovdehddngp",
-  "cm6mi1eah001p4eovk8a84bi7",
-  "cm6mi1efg001r4eovylns6zcy",
-  "cm6mi1ek7001t4eovvpgnqj7v",
-  "cm6mi1epb001v4eovhbaf284g",
-  "cm6mi1eu6001x4eovi4ro9pk3",
-  "cm6mi1ez2001z4eovszummxf1",
-  "cm6mi1f3s00214eov5quqpt72",
-  "cm6mi1f8n00234eovtgl48o2p",
-  "cm6mi1fda00254eov0beepaae",
-  "cm6mi1fi500274eovh0ae754u",
-  "cm6mi1fn000294eovt7ae82tr",
-  "cm6mi1frr002b4eovy173oath",
-  "cm6mi1fwk002d4eovby890tq6",
-  "cm6mi3pjs002f4eovb8pn11eu"
-];
+    "cm6w1z6tb0015vo7i3xe4e2pn",
+    "cm6w1z70t0017vo7iru2scgrb",
+    "cm6w1z75a0019vo7isxg3tk26",
+    "cm6w1z79c001bvo7ihp57tzoi",
+    "cm6w1z7dl001dvo7ii4bpwl4j",
+    "cm6w1z7ic001fvo7ili1f92d5",
+    "cm6w1z7mn001hvo7idej61ard",
+    "cm6w1z7qu001jvo7ixgp5nl51",
+    "cm6w1z7uw001lvo7i00bu4qae",
+    "cm6w1z7yv001nvo7iomiixnzf",
+    "cm6w1z82z001pvo7ijxowb0ag",
+    "cm6w1z87b001rvo7iedo3ek8h",
+    "cm6w1z8mb001tvo7i1svjohrq",
+    "cm6w1z8rd001vvo7i29j4xu6o",
+    "cm6w1z8ws001xvo7iget9d0e6",
+    "cm6w22u98002tvo7isg5rcis3",
+    "cm6w22ue2002vvo7iq9j8brve",
+    "cm6w22uiz002xvo7iosuthiz3",
+    "cm6w22uns002zvo7iulsub604",
+    "cm6w22uso0031vo7i5ybg81tl",
+    "cm6w22ux50033vo7iau873zod",
+    "cm6w22v1i0035vo7i659s8e21",
+    "cm6w22v6d0037vo7i1eehifdo",
+    "cm6w22vat0039vo7ig20o7oyh",
+    "cm6w22vf2003bvo7idq4mdh1k",
+    "cm6w22vja003dvo7in0h9ustu",
+    "cm6w22vnx003fvo7i42m01w2u",
+    "cm6w22vsd003hvo7ixy7b7144",
+    "cm6w22vwu003jvo7ig31bmxqv",
+    "cm6w22w11003lvo7i4ig2sqm8",
+    "cm6w277gj003nvo7i0gscylbh",
+    "cm6w277ky003pvo7i9e59x2ks",
+    "cm6w277p4003rvo7i4ql59z61",
+    "cm6w277ti003tvo7ia0f8z27w",
+    "cm6w277xp003vvo7iz3hwp96o",
+    "cm6w27820003xvo7ihla4n714",
+    "cm6w27869003zvo7it54y02eb",
+    "cm6w278ai0041vo7i2rs1f9zr",
+    "cm6w278ep0043vo7i8801c8ey",
+    "cm6w278j50045vo7ir42icb9p",
+    "cm6w278nd0047vo7iubumut4j",
+    "cm6w278rq0049vo7ipazcx074",
+    "cm6w278w0004bvo7ipu199ktx",
+    "cm6w2790k004dvo7izc19ticq",
+    "cm6w2795b004fvo7ixcsph8te",
+    "cm6w2acpv004hvo7iamh8zywz",
+    "cm6w2acuk004jvo7i7abb79k3",
+    "cm6w2ad56004lvo7ikkpu05x3",
+    "cm6w2ad9g004nvo7iswsrf4qp",
+    "cm6w2addt004pvo7i7xgodckj",
+    "cm6w2adii004rvo7imvyiljn4",
+    "cm6w2adml004tvo7iwpwmoz97",
+    "cm6w2adqt004vvo7ipzlt6nkb",
+    "cm6w2adv7004xvo7i1qg418se",
+    "cm6w2adzt004zvo7ivx2z4t4k",
+    "cm6w2ae3x0051vo7iyjyjm975",
+    "cm6w2ae840053vo7ifxzu1vou",
+    "cm6w2aec90055vo7i6w9kup6y",
+    "cm6w2aegd0057vo7ieqvzqkur",
+    "cm6w2aeky0059vo7ivvajpo18",
+]
+
  # Add all department IDs here
 
 # Generate unique random combinations
 combinations = []
-for _ in range(150):
+for _ in range(300):
     doc_id = random.choice(doctor_ids)
     dept_id = random.choice(department_ids)
     pair = {"doctorId": doc_id, "deptId": dept_id}
@@ -129,3 +158,5 @@ json_output = json.dumps(combinations, indent=4)
 
 # Print or save the JSON output
 print(json_output)
+
+

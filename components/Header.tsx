@@ -30,8 +30,10 @@ const Header = ({ onSearchStateChange }: Props) => {
   const closeMenu = () => setIsMenuOpen(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
-  let latitude = 19.0760;
-  let longitude = 72.8777;
+  // let latitude = 19.0760;
+  // let longitude = 72.8777;
+  const[latitude, setLatitude] = useState(19.0760);
+  const[longitude, setLongitude] = useState(72.8777);
   const toggleSearch = () => {
     if (window.innerWidth < 640) {
       setIsSearchOpen(!isSearchOpen);
@@ -94,17 +96,21 @@ const Header = ({ onSearchStateChange }: Props) => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          latitude = position.coords.latitude;
-          longitude = position.coords.latitude;
+          const { latitude, longitude } = position.coords;
+          console.log(latitude," ", longitude);
+          setLatitude(latitude);
+          setLongitude(longitude);
           fetchLocation({ latitude, longitude });
         },
         (error) => {
           setLocation("Error getting location");
-        }
+        },
+        { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
       );
     } else {
       setLocation("Geolocation not supported");
     }
+    
   }, []);
 
   const fetchLocation = async ({ latitude, longitude }: any) => {
