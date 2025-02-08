@@ -14,19 +14,7 @@ export async function GET(
        queue:true,
      },
   })
-  if(!user ) return new Response(JSON.stringify({ success: false }), {
-    headers: { "Content-Type": "application/json" },
-  })
-  if (!user || user.id === undefined) {
-    return new Response(JSON.stringify({ success: false }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  if (user && id !== user.id) {
-    return new Response(JSON.stringify({ success: false }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  }
+  
   let onlineFee = user?.departments[0]?.consulatationFees;
 
   if (onlineFee) {
