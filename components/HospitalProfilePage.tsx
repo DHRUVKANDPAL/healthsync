@@ -48,7 +48,7 @@ interface Hospital {
   address?: string;
   estyear?: string;
   hospitaldep: Department[];
-  noofbeds?: number;
+  // noofbeds?: number;
   alternatecontactno?: string;
   accreditations?: string[];
   operatingHours?: OperatingHours[];
@@ -381,7 +381,7 @@ export default function HospitalProfilePage({
                 })
               }
             />
-            <StatCard
+            {/* <StatCard
               icon={Bed}
               label="Total Beds"
               value={tempHospital.noofbeds?.toLocaleString() || "N/A"}
@@ -389,7 +389,7 @@ export default function HospitalProfilePage({
               onValueChange={(value) =>
                 updateTempHospital("noofbeds", parseInt(value))
               }
-            />
+            /> */}
             <StatCard
               icon={Award}
               label="Patient Satisfaction"

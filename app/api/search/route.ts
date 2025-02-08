@@ -158,7 +158,7 @@ export async function POST(req: NextRequest) {
               generalWard: hospital.generalWardAvailable,
             },
             opd: {
-              total: hospital.noofopds,
+              total: 10, //hospital.noofopds,
               available: hospital.opdsAvailable,
             },
             icu: {
@@ -195,28 +195,28 @@ export async function POST(req: NextRequest) {
               (sum:any, dept:any) => sum + dept.statistics.averageFees,
               0
             ) / departmentsWithStats.length,
-          occupancyRates: {
-            beds: (
-              ((hospital.noofbeds - (hospital.bedsAvailable || 0)) /
-                hospital.noofbeds) *
-              100
-            ).toFixed(1),
-            opd: (
-              ((hospital.noofopds - (hospital.opdsAvailable || 0)) /
-                hospital.noofopds) *
-              100
-            ).toFixed(1),
-            icu: (
-              ((hospital.nooficu - (hospital.icuAvailable || 0)) /
-                hospital.nooficu) *
-              100
-            ).toFixed(1),
-            labs: (
-              ((hospital.nooflabs - (hospital.labsAvailable || 0)) /
-                hospital.nooflabs) *
-              100
-            ).toFixed(1),
-          },
+          // occupancyRates: {
+          //   beds: (
+          //     ((hospital.noofbeds - (hospital.bedsAvailable || 0)) /
+          //       hospital.noofbeds) *
+          //     100
+          //   ).toFixed(1),
+          //   opd: (
+          //     ((hospital.noofopds - (hospital.opdsAvailable || 0)) /
+          //       hospital.noofopds) *
+          //     100
+          //   ).toFixed(1),
+          //   icu: (
+          //     ((hospital.nooficu - (hospital.icuAvailable || 0)) /
+          //       hospital.nooficu) *
+          //     100
+          //   ).toFixed(1),
+          //   labs: (
+          //     ((hospital.nooflabs - (hospital.labsAvailable || 0)) /
+          //       hospital.nooflabs) *
+          //     100
+          //   ).toFixed(1),
+          // },
         },
         departments: departmentsWithStats,
         

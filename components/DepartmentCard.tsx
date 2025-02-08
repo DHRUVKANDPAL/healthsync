@@ -9,7 +9,7 @@ type Department = {
   id: string;
   name: string;
   hod: string;
-  noOfDoctors: string;
+  // noOfDoctors: string;
   doctorsAvailable: string;
 };
 
@@ -89,7 +89,7 @@ export default function DepartmentCard({
               >
                 Doctors
               </div>
-              <div className="font-semibold">{dept.noOfDoctors}</div>
+              {/* <div className="font-semibold">{dept.noOfDoctors}</div> */}
             </div>
           </div>
         </div>

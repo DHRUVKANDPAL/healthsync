@@ -39,11 +39,11 @@ export const HospitalSignUpSchema = z
     city: z.string(),
     state: z.string(),
     zipcode: z.string(),
-    noOfBeds: z.coerce.number(),
-    noOfOpds: z.coerce.number(),
-    noOfIcu: z.coerce.number(),
-    noOfLabs: z.coerce.number(),
-    noOfDoctorsRegistered: z.coerce.number(),
+    // noOfBeds: z.coerce.number(),
+    // noOfOpds: z.coerce.number(),
+    // noOfIcu: z.coerce.number(),
+    // noOfLabs: z.coerce.number(),
+    // noOfDoctorsRegistered: z.coerce.number(),
     idToLogin: z.string(),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
@@ -267,7 +267,7 @@ const HospitalSignUp = () => {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="noOfBeds"
               render={({ field }) => (
@@ -283,8 +283,8 @@ const HospitalSignUp = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+            {/* <FormField
               control={form.control}
               name="noOfOpds"
               render={({ field }) => (
@@ -300,8 +300,8 @@ const HospitalSignUp = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+            {/* <FormField
               control={form.control}
               name="noOfIcu"
               render={({ field }) => (
@@ -317,8 +317,8 @@ const HospitalSignUp = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+            {/* <FormField
               control={form.control}
               name="noOfLabs"
               render={({ field }) => (
@@ -334,8 +334,8 @@ const HospitalSignUp = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+            {/* <FormField
               control={form.control}
               name="noOfDoctorsRegistered"
               render={({ field }) => (
@@ -351,7 +351,7 @@ const HospitalSignUp = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="idToLogin"
