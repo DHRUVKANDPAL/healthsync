@@ -30,6 +30,8 @@ const Header = ({ onSearchStateChange }: Props) => {
   const closeMenu = () => setIsMenuOpen(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
+  let latitude = 19.0760;
+  let longitude = 72.8777;
   const toggleSearch = () => {
     if (window.innerWidth < 640) {
       setIsSearchOpen(!isSearchOpen);
@@ -92,7 +94,8 @@ const Header = ({ onSearchStateChange }: Props) => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
+          latitude = position.coords.latitude;
+          longitude = position.coords.latitude;
           fetchLocation({ latitude, longitude });
         },
         (error) => {
@@ -394,7 +397,7 @@ const Header = ({ onSearchStateChange }: Props) => {
         )}
         {showResults && searchQuery && (
           <div className="w-full bg-white dark:bg-slate-900 shadow-lg z-20">
-            <SearchResults searchQuery={searchQuery} />
+            <SearchResults searchQuery={searchQuery} latitude={latitude} longitude={longitude}/>
           </div>
         )}
       </header>

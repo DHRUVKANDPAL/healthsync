@@ -140,9 +140,15 @@ interface APIResponse {
 
 interface SearchResultsProps {
   searchQuery: string;
+  latitude: number;
+  longitude: number;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  searchQuery,
+  latitude,
+  longitude,
+}) => {
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<APIResponse | null>(null);
   const [allDoctors, setAllDoctors] = useState<
@@ -178,7 +184,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
         const searchResponse = await fetch("/api/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ departments: response.possible_departments }),
+          body: JSON.stringify({
+            departments: response.possible_departments,
+            latitude: latitude,
+            longitude: longitude,
+          }),
         });
 
         const data: APIResponse = await searchResponse.json();
