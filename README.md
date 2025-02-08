@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HealthSync
 
-## Getting Started
+## Overview
+HealthSync is a comprehensive healthcare management platform that connects hospitals, patients, ambulances, blood banks, and pharmacies on a single platform. It enables efficient hospital queue management, real-time availability of beds, AI-based doctor recommendations, and seamless inventory management for medical facilities.
 
-First, run the development server:
+### **Live Demo**
+[HealthSync Live](https://healthsync-alpha.vercel.app)
 
+## Features
+- **Hospital & Patient Dashboard**: View real-time data on hospital resources and patient records.
+- **AI-based Doctor Recommendations**: Get personalized doctor and hospital suggestions.
+- **OPD Queue Management**: Reduce waiting time with an optimized queuing system.
+- **Inventory Management**: Track medical supplies in hospitals and pharmacies.
+- **Emergency Services**: Quick ambulance and blood bank availability.
+
+## Installation & Setup
+To set up and run HealthSync locally, follow these steps:
+
+### **Prerequisites**
+- Node.js (v16+ recommended)
+- Git
+- npm or yarn
+
+### **Installation Steps**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/your-username/healthsync.git
+cd healthsync
+
+# Install dependencies
+npm install  # or yarn install
+
+# Set up environment variables
+cp .env.example .env
+# Configure the environment variables in the .env file
+
+# Start the development server
+npm run dev  # or yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **Build & Deploy**
+To build and deploy the project, run:
+```bash
+npm run build  # or yarn build
+npm run start  # or yarn start
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## **Contributing**
+We welcome contributions! To contribute:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make changes and commit (`git commit -m "Add new feature"`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a Pull Request.
