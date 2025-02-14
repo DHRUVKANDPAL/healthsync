@@ -10,6 +10,12 @@ import Safari from "@/components/ui/safari";
 import Vision from "@/components/Vision";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
+import {
+  AnimatedSpan,
+  Terminal,
+  TypingAnimation,
+} from "@/components/magicui/terminal";
+import { ShineBorder } from "@/components/magicui/shine-border";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -27,16 +33,64 @@ export default function Home() {
       </div>
       <div className="h-[600px] sm:h-[650px] lg:h-[800px] xl:h-[700px] "></div>
       <Features></Features>
-      <div className="relative flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-        {!isMobile && (
-          <Safari
-            url="healthsync.vercel.app"
-            className="w-full px-10 my-10 "
-            imageSrc={
-              "https://res.cloudinary.com/ddd4ftror/image/upload/healthsync/plpt7u632qoc6ud0z4li"
-            }
-          />
-        )}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-center dark:bg-slate-900/20 py-10 ">
+        {/* Left Side - Terminal */}
+        <div className="relative flex items-center justify-end px-2 ">
+          <Terminal>
+            <TypingAnimation>&gt; HealthSync on the way!</TypingAnimation>
+
+            <AnimatedSpan delay={1500} className="text-green-500">
+              <span>✔ Connecting to hospital database.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={2000} className="text-green-500">
+              <span>✔ Verifying patient records.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={2500} className="text-green-500">
+              <span>✔ Syncing OPD appointments.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={3000} className="text-green-500">
+              <span>✔ Updating real-time bed availability.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={3500} className="text-green-500">
+              <span>✔ Optimizing pharmacy inventory.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={4000} className="text-green-500">
+              <span>✔ Processing doctor prescriptions.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={4500} className="text-green-500">
+              <span>✔ Sending automated patient notifications.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={5000} className="text-green-500">
+              <span>✔ Ensuring data encryption & security.</span>
+            </AnimatedSpan>
+
+            <AnimatedSpan delay={5500} className="text-blue-500">
+              <span> AI Diagnostics Module Loaded:</span>
+              <span className="pl-2">
+                - Predictive health analytics activated.
+              </span>
+            </AnimatedSpan>
+
+            <TypingAnimation delay={6000} className="text-muted-foreground">
+              HealthSync is now live and operational.
+            </TypingAnimation>
+
+            <TypingAnimation delay={6500} className="text-muted-foreground">
+              Real-time hospital management enabled.
+            </TypingAnimation>
+          </Terminal>
+        </div>
+        {/* Right Side - Information Text */}
+        <div className="relative flex items-center justify-start px-2 ">
+          <ShineBorder  color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+        </div>
       </div>
       <Chartstats></Chartstats>
       <div className="w-5/6 mx-auto ">

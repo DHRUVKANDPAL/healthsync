@@ -11,10 +11,14 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@datadog/browser-logs": "^5.23.3",
     "@edgestore/react": "^0.2.2",
     "@edgestore/server": "^0.2.2",
     "@google/generative-ai": "^0.21.0",
     "@hookform/resolvers": "^3.9.0",
+    "@livekit/components-react": "2.8.0",
+    "@livekit/components-styles": "1.1.4",
+    "@livekit/krisp-noise-filter": "0.2.16",
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@prisma/client": "^5.18.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -50,14 +54,17 @@
     "@vercel/speed-insights": "^1.0.12",
     "argon2": "^0.40.3",
     "axios": "^1.7.7",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.1.8",
     "input-otp": "^1.2.4",
+    "livekit-client": "2.8.1",
+    "livekit-server-sdk": "2.9.7",
     "lucia": "^3.2.0",
     "lucide-react": "^0.428.0",
+    "motion": "^12.4.3",
     "next": "14.2.5",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.3.0",
@@ -76,18 +83,12 @@
     "react-router-dom": "^6.26.1",
     "recharts": "^2.12.7",
     "sonner": "^1.5.0",
-    "tailwind-merge": "^2.5.2",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "tinykeys": "^3.0.0",
     "ts-node": "^10.9.2",
     "vaul": "^0.9.1",
-    "zod": "^3.23.8",
-    "@datadog/browser-logs": "^5.23.3",
-    "@livekit/components-react": "2.8.0",
-    "@livekit/components-styles": "1.1.4",
-    "@livekit/krisp-noise-filter": "0.2.16",
-    "livekit-client": "2.8.1",
-    "livekit-server-sdk": "2.9.7",
-    "tinykeys": "^3.0.0"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -96,8 +97,8 @@
     "eslint": "^8",
     "eslint-config-next": "^0.2.4",
     "postcss": "^8",
+    "source-map-loader": "^5.0.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "source-map-loader": "^5.0.0"
+    "typescript": "^5"
   }
 }

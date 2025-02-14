@@ -32,7 +32,10 @@ model Patient {
   isVerified Boolean? @default(false)
   medHis          MedicalHistory[]
   session         PatientSession[]
-  queue Queue[]
+  transaction Transaction[]
+  // queue Queue[]
+  onlineAppointments OnlineMeet[]
+  offlineAppointments OfflineMeet[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -66,11 +69,6 @@ model Hospital{
   City String
   State String
   Zipcode String 
-  // noofbeds Int
-  // noofopds Int
-  // nooficu Int
-  // nooflabs Int
-  // noofdoctorsregistered Int
   latitude Float?
   longitude Float?
   anyotherdetails String?
@@ -137,7 +135,7 @@ model Doctor{
   email String?
   ratings Float? @default(3.7)
   hashedPassword String
-  queue Queue[]
+  // queue Queue[]
   departments DoctorinDept[]
   session DoctorSession[]
   createdAt       DateTime? @default(now())
@@ -151,17 +149,60 @@ model DoctorinDept {
   assignedAt DateTime @default(now())
   isAvailable Boolean? @default(true)
   consulatationFees Float? @default(500)
+  onlineAppointments OnlineMeet[] 
+  offlineAppointments OfflineMeet[]
   @@id([deptId, doctorId])
 }
-model Queue{
-  id              String   @id @default(cuid())
-  userId String
-  patientId String
-  patient Patient@relation(fields: [patientId], references: [id],onDelete: Cascade)
-  doctor Doctor @relation(fields: [userId], references: [id],onDelete: Cascade)
-  createdAt       DateTime? @default(now())
-  updatedAt       DateTime? @updatedAt
+
+model OnlineMeet {
+  id          String   @id @default(cuid())
+  deptId      String
+  doctorId    String
+  patientId   String
+  patient     Patient @relation(fields: [patientId], references: [id],onDelete: Cascade)
+  doctorInDept DoctorinDept @relation(fields: [deptId, doctorId], references: [deptId, doctorId], onDelete: Cascade)
+  to DateTime
+  from        DateTime
+  isCompleted Boolean? @default(false)
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
 }
+
+model OfflineMeet {
+  id          String   @id @default(cuid())
+  deptId      String
+  doctorId    String
+  patientId   String
+  to DateTime
+  from        DateTime
+  patient     Patient @relation(fields: [patientId], references: [id],onDelete: Cascade)
+  doctorInDept DoctorinDept @relation(fields: [deptId, doctorId], references: [deptId, doctorId], onDelete: Cascade)
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Transaction {
+    id                String   @id @default(cuid())
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    userId            String
+    orderCreationId   String?
+    razorpayPaymentId String?
+    razorpayOrderId   String?
+    razorpaySignature String?
+    credits           Int
+    user              Patient     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// model Queue{
+//   id              String   @id @default(cuid())
+//   userId String
+//   patientId String
+//   patient Patient@relation(fields: [patientId], references: [id],onDelete: Cascade)
+//   doctor Doctor @relation(fields: [userId], references: [id],onDelete: Cascade)
+//   createdAt       DateTime? @default(now())
+//   updatedAt       DateTime? @updatedAt
+// }
 model HospitalSession {
   id        String   @id
   userId    String
