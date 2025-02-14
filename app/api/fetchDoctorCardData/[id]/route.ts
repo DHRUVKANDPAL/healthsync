@@ -18,7 +18,7 @@ export async function GET(
   let onlineFee = user?.departments[0]?.consulatationFees;
 
   if (onlineFee) {
-    onlineFee = parseFloat((onlineFee / 100 / 3).toFixed(2)) * 100;
+    onlineFee = parseFloat((onlineFee / 100 / 3).toFixed(2)) * 200;
   }
 
   const data={
