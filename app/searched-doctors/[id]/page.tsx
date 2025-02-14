@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -80,11 +80,11 @@ const DoctorProfile = () => {
     const fetchDoctorData = async () => {
       try {
         const response = await fetch(
-          `/api/fetchDoctorCardData/cm6mjaox4000i5e15eql1jufv`
+          `/api/fetchDoctorCardData/${id}`
         );
         const data = await response.json();
-        console.log(data.user);
-        setDoctor(data.user);
+        console.log(data.data);
+        setDoctor(data.data);
       } catch (error) {
         console.error("Error fetching doctor data:", error);
         setError("Failed to load doctor profile");
