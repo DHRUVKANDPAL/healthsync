@@ -1,0 +1,25 @@
+/* * {
+  box-sizing: border-box;
+} */
+
+/* html {
+  color-scheme: dark;
+  background-color: #111;
+} */
+
+
+/* .videocontainer {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+} */
+
+.videocontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
