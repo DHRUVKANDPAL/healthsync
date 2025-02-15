@@ -34,6 +34,9 @@ const Header = ({ onSearchStateChange }: Props) => {
   // let longitude = 72.8777;
   const[latitude, setLatitude] = useState(19.0760);
   const[longitude, setLongitude] = useState(72.8777);
+  const [accuracy, setAccuracy] = useState<number | null>(null); // Store accuracy
+  const [status, setStatus] = useState<string>("Getting location..."); // Status message
+  const [watchId, setWatchId] = useState<number | null>(null);
   const toggleSearch = () => {
     if (window.innerWidth < 640) {
       setIsSearchOpen(!isSearchOpen);
@@ -92,36 +95,172 @@ const Header = ({ onSearchStateChange }: Props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isLoginDropdownOpen, closeMenu]);
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          console.log(latitude," ", longitude);
-          setLatitude(latitude);
-          setLongitude(longitude);
-          fetchLocation({ latitude, longitude });
-        },
-        (error) => {
-          setLocation("Error getting location");
-        },
-        { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
-      );
-    } else {
-      setLocation("Geolocation not supported");
-    }
-    
-  }, []);
-
-  const fetchLocation = async ({ latitude, longitude }: any) => {
+  const fetchLocation = async ({
+    latitude,
+    longitude,
+  }: {
+    latitude: number;
+    longitude: number;
+  }) => {
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
       );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`); // More robust error checking
+      }
+
       const data = await response.json();
-      setLocation(data.display_name.split(",")[0]);
-    } catch (error) {
-      setLocation("Error fetching location");
+
+      // Check if the response has the expected data before accessing it
+      if (data && data.display_name) {
+        setLocation(data.display_name.split(",")[0]);
+      } else {
+        setLocation("Location name not found");
+      }
+    } catch (error: any) {
+      //added type any since we dont know what type of error
+      console.error("Error fetching location:", error);
+      setLocation(`Error fetching location: ${error.message}`);
+    }
+  };
+
+  useEffect(() => {
+    let currentWatchId: number | null = null; // Store watchId in a local variable
+
+    if ("geolocation" in navigator) {
+      // 1. Try to get an initial, potentially cached, position
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude, accuracy } = position.coords;
+          setLatitude(latitude);
+          setLongitude(longitude);
+          setAccuracy(accuracy);
+          
+          setStatus(
+            `Location found (accuracy: ±${accuracy.toFixed(2)} meters)`
+          );
+          fetchLocation({ latitude, longitude });
+          console.log(latitude, longitude, status);
+          // 2. Start watching for position changes
+          setStatus("Refining location...");
+          currentWatchId = navigator.geolocation.watchPosition(
+            // Store the watchId
+            (newPosition) => {
+              const {
+                latitude: newLat,
+                longitude: newLng,
+                accuracy: newAccuracy,
+              } = newPosition.coords;
+
+              // Update if more accurate or if no previous position
+              if (!accuracy || newAccuracy < accuracy) {
+                setLatitude(newLat);
+                setLongitude(newLng);
+                setAccuracy(newAccuracy);
+                setStatus(
+                  `Location updated (accuracy: ±${newAccuracy.toFixed(
+                    2
+                  )} meters)`
+                );
+                console.log(latitude, longitude, status);
+                fetchLocation({ latitude: newLat, longitude: newLng });
+              }
+              // Stop watching when sufficient accuracy is achieved
+              if (newAccuracy <= 100) {
+                navigator.geolocation.clearWatch(currentWatchId!);
+                setStatus(
+                  `Final location (accuracy: ±${newAccuracy.toFixed(2)} meters)`
+                );
+              }
+            },
+            (error) => {
+              console.error("watchPosition error:", error);
+              setStatus(`Error refining location: ${error.message}`);
+              if (currentWatchId !== null) {
+                navigator.geolocation.clearWatch(currentWatchId);
+              }
+            },
+            {
+              enableHighAccuracy: true,
+              maximumAge: 0,
+              timeout: 20000,
+            }
+          );
+          setWatchId(currentWatchId); //store the watchId
+        },
+        (error) => {
+          console.error("getCurrentPosition error:", error);
+          setStatus(`Error getting location: ${error.message}`);
+          // Start watchPosition if the initial getCurrentPosition fails
+          currentWatchId = navigator.geolocation.watchPosition(
+            // Store the watchId
+            (newPosition) => {
+              const {
+                latitude: newLat,
+                longitude: newLng,
+                accuracy: newAccuracy,
+              } = newPosition.coords;
+
+              // Update if more accurate or if no previous position
+              if (!accuracy || newAccuracy < accuracy) {
+                setLatitude(newLat);
+                setLongitude(newLng);
+                setAccuracy(newAccuracy);
+                setStatus(
+                  `Location updated (accuracy: ±${newAccuracy.toFixed(
+                    2
+                  )} meters)`
+                );
+                fetchLocation({ latitude: newLat, longitude: newLng });
+              }
+              // Stop watching when sufficient accuracy is achieved
+              if (newAccuracy <= 10) {
+                navigator.geolocation.clearWatch(currentWatchId!);
+                setStatus(
+                  `Final location (accuracy: ±${newAccuracy.toFixed(2)} meters)`
+                );
+              }
+            },
+            (error) => {
+              console.error("watchPosition error:", error);
+              setStatus(`Error refining location: ${error.message}`);
+              if (currentWatchId !== null) {
+                navigator.geolocation.clearWatch(currentWatchId);
+              }
+            },
+            {
+              enableHighAccuracy: true,
+              maximumAge: 0,
+              timeout: 20000,
+            }
+          );
+          setWatchId(currentWatchId);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 3000,
+          timeout: 6000,
+        }
+      );
+    } else {
+      setStatus("Geolocation not supported");
+    }
+
+    // Cleanup function to stop watching when the component unmounts
+    return () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  const handleStopTracking = () => {
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      setStatus("Location tracking stopped.");
+      setWatchId(null);
     }
   };
 
