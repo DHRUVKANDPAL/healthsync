@@ -62,6 +62,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Header from "@/components/Header";
+import { useRouter } from "next/navigation";
 // Types based on the API response
 interface HospitalFacilities {
   beds: {
@@ -156,7 +157,7 @@ interface SearchResultsProps {
 const page = ({ searchParams: { searchQuery, latitude, longitude } }: {searchParams:SearchResultsProps}) => {
   return (
     <>
-      <Header input={searchQuery} />
+      <Header input={searchQuery} lat={latitude} long={longitude} />
       <SearchResults
         searchQuery={searchQuery}
         latitude={latitude}
@@ -193,10 +194,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const [availableOnly, setAvailableOnly] = useState(false);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
-
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
-      if (!searchQuery) return;
+      if (!searchQuery || searchQuery.trim() === "") router.push("/");
       setLoading(true);
       try {
         const response = await triage(searchQuery);
@@ -731,12 +732,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   if (loading) {
     return <LoadingState />;
   }
-
-  if (!searchQuery) {
-    return null;
+  
+  if (!searchQuery || searchQuery.trim() === "") {
+    router.push("/");
   }
+  if(!searchResults) return <LoadingState />;
 
-  if (!loading && (!searchResults || searchResults.hospitals?.length === 0)) {
+  if (!loading && (searchResults?.hospitals?.length === 0)) {
     return (
       <Card className="container mx-auto py-12 text-center">
         <CardContent>
@@ -873,7 +875,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                   <DoctorCard key={doctor.doctorId} doctor={doctor} />
                 ))}
               {activeTab === "hospitals" &&
-                searchResults?.hospitals.map((hospital) => (
+                searchResults?.hospitals.sort((a, b) => a.hospitalInfo.dist - b.hospitalInfo.dist).map((hospital) => (
                   <HospitalCard
                     key={hospital.hospitalInfo.id}
                     hospital={hospital}

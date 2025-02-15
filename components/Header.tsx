@@ -16,9 +16,11 @@ import { useRouter } from "next/navigation";
 type Props = {
   onSearchStateChange?: (isSearching: boolean) => void;
   input?: string|"";
+  lat?: number|23.0225;
+  long?: number|78.4888;
 };
 
-const Header = ({ onSearchStateChange,input }: Props) => {
+const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,8 +36,8 @@ const Header = ({ onSearchStateChange,input }: Props) => {
   const [showResults, setShowResults] = useState(false);
   // let latitude = 19.0760;
   // let longitude = 72.8777;
-  const [latitude, setLatitude] = useState(19.076);
-  const [longitude, setLongitude] = useState(72.8777);
+  const [latitude, setLatitude] = useState(lat);
+  const [longitude, setLongitude] = useState(long);
   const [accuracy, setAccuracy] = useState<number | null>(null); // Store accuracy
   const [status, setStatus] = useState<string>("Getting location..."); // Status message
   const [watchId, setWatchId] = useState<number | null>(null);
@@ -257,7 +259,7 @@ const Header = ({ onSearchStateChange,input }: Props) => {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [searchQuery]); // Empty dependency array means this effect runs once on mount
 
   const handleStopTracking = () => {
     if (watchId !== null) {
@@ -552,8 +554,8 @@ const Header = ({ onSearchStateChange,input }: Props) => {
           <div className="w-full bg-white dark:bg-slate-900 shadow-lg z-20">
             <SearchResults
               searchQuery={searchQuery}
-              latitude={latitude}
-              longitude={longitude}
+              latitude={latitude!!}
+              longitude={longitude!!}
             />
           </div>
         )}
