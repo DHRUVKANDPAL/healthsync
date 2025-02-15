@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       );
     }
 // console.log("3");
-    const hospitals = await prisma.hospital.findMany({
+    const hospitalsWithoutDistance = await prisma.hospital.findMany({
       where: {
         hospitaldep: {
           some: {
@@ -76,11 +76,12 @@ export async function POST(req: NextRequest) {
      { status: 400 }
    );
  }
-
- const hospitalsWithDistance = hospitals.map((hospital) => {
+ 
+ const hospitals = hospitalsWithoutDistance.map((hospital) => {
    const hospitalLat = hospital.latitude;
    const hospitalLon = hospital.longitude;
-
+  // console.log(userLat, userLon);
+  // console.log(hospitalLat, hospitalLon);
    if (isNaN(hospitalLat!!) || isNaN(hospitalLon!!)) {
      return { ...hospital, dist: null }; // Alias distance to dist and handle null case
    }
@@ -100,18 +101,21 @@ export async function POST(req: NextRequest) {
      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
    let distance = R * c; // Distance in kilometers
-   if(distance>1000) distance*=1.2
-   else if(distance>750) distance*=1.26
-   else if(distance>500) distance*=1.30
-   else if(distance>250) distance*=1.33
+   if(distance>1000) distance*=1.17
+   else if(distance>450) distance*=1.26
+   else if(distance>350) distance*=1.18
+   else if(distance>250) distance*=1.25
    else distance *=1.37
+
+   if(distance>400 && distance<450) distance-=15;
+
    return {
      ...hospital,
      dist: distance, // Alias distance to dist
    };
  });
- console.log(latitude,longitude);
- console.log("hospitalsWithDistance", hospitalsWithDistance);
+//  console.log(latitude,longitude);
+//  console.log("hospitalsWithDistance", hospitals);
 
 
     const totalRoomsPromise = hospitals.map(async (hospital: any) => {
@@ -195,6 +199,9 @@ export async function POST(req: NextRequest) {
       return {
         hospitalInfo: {
           id: hospital.id,
+          dist: hospital.dist,
+          latitude: hospital.latitude,
+          longitude: hospital.longitude,
           name: hospital.name,
           imageUrl: hospital.imageUrl,
           licenceno: hospital.licenceno,

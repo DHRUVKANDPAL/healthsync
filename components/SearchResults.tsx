@@ -50,6 +50,7 @@ import {
   Search,
   Activity,
   SlidersHorizontal,
+  LandPlot,
 } from "lucide-react";
 import { triage } from "@/lib/gemini";
 import { StarHalf, Star as StarOutline } from "lucide-react";
@@ -89,6 +90,7 @@ interface HospitalInfo {
   facilities: HospitalFacilities;
   anyotherdetails: string | null;
   isVerified: boolean;
+  dist: number;
 }
 
 interface DepartmentStatistics {
@@ -654,9 +656,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 ICU: {hospital.hospitalInfo.facilities.icu.available}/
                 {hospital.hospitalInfo.facilities.icu.total}
               </Badge>
+             
             </div>
             <div className="flex items-center justify-end">
-              <Badge className="mr-2 bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
+              <Badge className="mr-1.5 bg-teal-500/10 text-teal-700 dark:text-teal-300 dark:bg-teal-500/20">
+                <LandPlot className="w-3 h-3 mr-1" />
+                {hospital.hospitalInfo.dist.toFixed(1) + " km"}
+              </Badge>
+              <Badge className="mr-1.5  bg-blue-500/10 text-blue-700 dark:text-blue-300 dark:bg-blue-500/20">
                 <IndianRupee className="w-3 h-3 mr-1" />
                 Avg.{" "}
                 {Math.round(hospital.statistics.averageFeesAcrossDepartments)}

@@ -283,6 +283,8 @@ const Header = ({ onSearchStateChange }: Props) => {
     }
   };
 
+  
+
   return (
     <>
       <header className="sticky sm:-top-[72px] top-0 z-30">
@@ -540,7 +542,7 @@ const Header = ({ onSearchStateChange }: Props) => {
             onClick={closeMenu}
           ></div>
         )}
-        {showResults && searchQuery && (
+        {location && showResults && searchQuery && (
           <div className="w-full bg-white dark:bg-slate-900 shadow-lg z-20">
             <SearchResults searchQuery={searchQuery} latitude={latitude} longitude={longitude}/>
           </div>
