@@ -11,12 +11,14 @@ import Logo from "./Logo";
 import DarkModeToggle from "./DarkModeToggle";
 import GoogleTranslate from "./GoogleTranslate";
 import SearchResults from "./SearchResults";
+import { useRouter } from "next/navigation";
 
 type Props = {
   onSearchStateChange?: (isSearching: boolean) => void;
+  input?: string|"";
 };
 
-const Header = ({ onSearchStateChange }: Props) => {
+const Header = ({ onSearchStateChange,input }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,15 +30,16 @@ const Header = ({ onSearchStateChange }: Props) => {
   const [showLogo, setShowLogo] = useState(true);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(input);
   const [showResults, setShowResults] = useState(false);
   // let latitude = 19.0760;
   // let longitude = 72.8777;
-  const[latitude, setLatitude] = useState(19.0760);
-  const[longitude, setLongitude] = useState(72.8777);
+  const [latitude, setLatitude] = useState(19.076);
+  const [longitude, setLongitude] = useState(72.8777);
   const [accuracy, setAccuracy] = useState<number | null>(null); // Store accuracy
   const [status, setStatus] = useState<string>("Getting location..."); // Status message
   const [watchId, setWatchId] = useState<number | null>(null);
+  const router = useRouter();
   const toggleSearch = () => {
     if (window.innerWidth < 640) {
       setIsSearchOpen(!isSearchOpen);
@@ -137,7 +140,7 @@ const Header = ({ onSearchStateChange }: Props) => {
           setLatitude(latitude);
           setLongitude(longitude);
           setAccuracy(accuracy);
-          
+
           setStatus(
             `Location found (accuracy: ±${accuracy.toFixed(2)} meters)`
           );
@@ -272,7 +275,12 @@ const Header = ({ onSearchStateChange }: Props) => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setShowResults(!!searchQuery);
+    // setShowResults(!!searchQuery);
+    router.push(
+      `/search?searchQuery=${encodeURIComponent(
+        searchQuery!!
+      )}&latitude=${latitude}&longitude=${longitude}`
+    );
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -282,8 +290,6 @@ const Header = ({ onSearchStateChange }: Props) => {
       setShowResults(false);
     }
   };
-
-  
 
   return (
     <>
@@ -544,7 +550,11 @@ const Header = ({ onSearchStateChange }: Props) => {
         )}
         {location && showResults && searchQuery && (
           <div className="w-full bg-white dark:bg-slate-900 shadow-lg z-20">
-            <SearchResults searchQuery={searchQuery} latitude={latitude} longitude={longitude}/>
+            <SearchResults
+              searchQuery={searchQuery}
+              latitude={latitude}
+              longitude={longitude}
+            />
           </div>
         )}
       </header>

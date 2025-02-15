@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Calendar,
-  Clock,
   Globe,
   Languages,
   Mail,
@@ -20,11 +19,13 @@ import {
   MessageCircle,
   Share2,
   Heart,
+  ChevronRight,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { motion } from "framer-motion";
 
 interface Department {
   deptId: string;
@@ -79,9 +80,7 @@ const DoctorProfile = () => {
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
-        const response = await fetch(
-          `/api/fetchDoctorCardData/${id}`
-        );
+        const response = await fetch(`/api/fetchDoctorCardData/${id}`);
         const data = await response.json();
         console.log(data.data);
         setDoctor(data.data);
@@ -97,7 +96,7 @@ const DoctorProfile = () => {
     // if(id){
     //   fetchDoctorData();
     // }
-  }, []);
+  }, [id]); // Added id to the dependency array
 
   if (isLoading) {
     return (
@@ -128,7 +127,10 @@ const DoctorProfile = () => {
   };
 
   const InfoCard = ({ icon: Icon, title, content }: any) => (
-    <div className="flex items-center gap-3 bg-blue-50/50 dark:bg-blue-950/30 p-4 rounded-lg hover:bg-blue-100/50 dark:hover:bg-blue-950/50 transition-colors">
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="flex items-center gap-3 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+    >
       <Icon className="text-blue-600 dark:text-blue-400" size={24} />
       <div>
         <p className="font-semibold text-gray-900 dark:text-gray-100">
@@ -136,149 +138,166 @@ const DoctorProfile = () => {
         </p>
         <p className="text-gray-600 dark:text-gray-300">{content}</p>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4">
-      <div className="container mx-auto px-4 max-w-7xl space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 py-8">
+      <div className="container mx-auto px-4 max-w-7xl space-y-8">
         {/* Header Section */}
-        <Card className="border-none shadow-lg bg-white dark:bg-gray-800">
-          <CardContent className="p-4">
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start">
+        <Card className="border-none shadow-xl bg-white dark:bg-gray-800 overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start">
               {/* Left Column - Avatar and Stats */}
-              <div className="w-full lg:w-1/4 space-y-3">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full lg:w-1/4 space-y-4"
+              >
                 <div className="relative group">
-                  <Avatar className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-lg">
+                  <Avatar className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 rounded-2xl shadow-lg">
                     <AvatarImage
                       src={profileData.imageUrl}
                       alt={profileData.name}
                       className="object-cover"
                     />
-                    <AvatarFallback className="text-3xl bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200">
+                    <AvatarFallback className="text-4xl bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200">
                       {profileData?.name?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="absolute top-2 right-2 space-x-1">
+                  <div className="absolute top-2 right-2 space-x-2">
                     <Button
                       size="icon"
                       variant="secondary"
-                      className="h-8 w-8 rounded-full opacity-90 hover:opacity-100"
+                      className="h-10 w-10 rounded-full opacity-90 hover:opacity-100 bg-white dark:bg-gray-800 shadow-md"
                     >
-                      <Heart className="h-4 w-4" />
+                      <Heart className="h-5 w-5 text-red-500" />
                     </Button>
                     <Button
                       size="icon"
                       variant="secondary"
-                      className="h-8 w-8 rounded-full opacity-90 hover:opacity-100"
+                      className="h-10 w-10 rounded-full opacity-90 hover:opacity-100 bg-white dark:bg-gray-800 shadow-md"
                     >
-                      <Share2 className="h-4 w-4" />
+                      <Share2 className="h-5 w-5 text-blue-500" />
                     </Button>
                   </div>
                 </div>
 
                 {/* Rating Badge */}
-                <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg">
-                  <Star className="text-yellow-400" size={20} />
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-500 p-4 rounded-lg shadow-md"
+                >
+                  <Star className="text-white" size={24} />
                   <div>
-                    <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                    <span className="text-2xl font-bold text-white">
                       {profileData.ratings}
                     </span>
-                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                    <p className="text-sm text-yellow-100">
                       ({profileData.totalReviews} reviews)
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Quick Stats */}
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg text-center">
-                    <Building2
-                      className="mx-auto text-blue-600 dark:text-blue-400 mb-1"
-                      size={18}
-                    />
-                    <p className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                <div className="grid grid-cols-2 gap-3">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded-lg text-center shadow-md"
+                  >
+                    <Building2 className="mx-auto text-white mb-2" size={24} />
+                    <p className="text-xs font-medium text-blue-100">
                       Experience
                     </p>
-                    <p className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                    <p className="text-lg font-bold text-white">
                       {profileData.experience}+ Yrs
                     </p>
-                  </div>
-                  <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg text-center">
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-lg text-center shadow-md"
+                  >
                     <MessageCircle
-                      className="mx-auto text-blue-600 dark:text-blue-400 mb-1"
-                      size={18}
+                      className="mx-auto text-white mb-2"
+                      size={24}
                     />
-                    <p className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                    <p className="text-xs font-medium text-green-100">
                       Consults
                     </p>
-                    <p className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                      10,000+
-                    </p>
-                  </div>
+                    <p className="text-lg font-bold text-white">10,000+</p>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right Column - Doctor Info and Booking */}
-              <div className="lg:w-3/4 space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="lg:w-3/4 space-y-6"
+              >
                 <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100">
                       Dr. {profileData.name}
                     </h1>
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
+                    >
                       Verified ✓
                     </Badge>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {profileData.departments.map((dept) => (
                       <Badge
                         key={dept.deptId}
                         variant="outline"
-                        className="text-xs bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/50"
+                        className="text-sm px-3 py-1 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                       >
                         {dept.dept.name}
                       </Badge>
                     ))}
                   </div>
 
-                  <ScrollArea className="h-20">
+                  <ScrollArea className="h-24 mb-4">
                     <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                       {profileData.bio}
                     </p>
                   </ScrollArea>
                 </div>
 
-                <Separator className="my-4" />
+                <Separator className="my-6" />
 
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="grid sm:grid-cols-2 gap-4">
                   {/* Mobile View - Consultation Sheet */}
                   <Sheet>
                     <SheetTrigger asChild>
                       <Button
-                        className="w-full sm:hidden bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
-                        size="sm"
+                        className="w-full sm:hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg"
+                        size="lg"
                       >
-                        <Video className="mr-2 h-4 w-4" />
+                        <Video className="mr-2 h-5 w-5" />
                         Book Consultation
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="bottom" className="h-80">
-                      <div className="space-y-4 pt-4">
-                        <h3 className="text-lg font-semibold text-center mb-4">
+                    <SheetContent side="bottom" className="h-96">
+                      <div className="space-y-6 pt-6">
+                        <h3 className="text-xl font-semibold text-center mb-4">
                           Choose Consultation Type
                         </h3>
-                        <div className="grid gap-3">
-                          <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white h-12">
-                            <Video className="mr-2 h-4 w-4" />
+                        <div className="grid gap-4">
+                          <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-14 text-lg shadow-md">
+                            <Video className="mr-3 h-6 w-6" />
                             Online Consultation (₹{profileData.fees.online})
                           </Button>
                           <Button
                             variant="outline"
-                            className="w-full border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 h-12"
+                            className="w-full border-blue-600 dark:border-blue-500 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 h-14 text-lg shadow-sm"
                           >
-                            <Calendar className="mr-2 h-4 w-4" />
+                            <Calendar className="mr-3 h-6 w-6" />
                             In-person Visit (₹{profileData.fees.offline})
                           </Button>
                         </div>
@@ -287,82 +306,90 @@ const DoctorProfile = () => {
                   </Sheet>
 
                   {/* Desktop View - Direct Buttons */}
-                  <Button className="hidden sm:flex bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white h-11">
-                    <Video className="mr-2 h-4 w-4" />
+                  <Button className="hidden sm:flex bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 text-lg shadow-lg">
+                    <Video className="mr-2 h-5 w-5" />
                     Book Online Consultation
                   </Button>
                   <Button
                     variant="outline"
-                    className="hidden sm:flex border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 h-11"
+                    className="hidden sm:flex border-blue-600 dark:border-blue-500 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 h-12 text-lg shadow-md"
                   >
-                    <Calendar className="mr-2 h-4 w-4" />
+                    <Calendar className="mr-2 h-5 w-5" />
                     Schedule In-person Visit
                   </Button>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </CardContent>
         </Card>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
+        <div className="grid lg:grid-cols-3 gap-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="lg:col-span-2"
+          >
             <Tabs defaultValue="about" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 bg-blue-50 dark:bg-blue-950/30">
+              <TabsList className="grid w-full grid-cols-4 bg-blue-100 dark:bg-blue-900/50 rounded-lg p-1">
                 <TabsTrigger
                   value="about"
-                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white dark:data-[state=active]:bg-blue-500"
+                  className="data-[state=active]:bg-white dark:data-[state=active]:bg-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-200 rounded-md transition-all duration-300"
                 >
                   About
                 </TabsTrigger>
                 <TabsTrigger
                   value="practice"
-                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white dark:data-[state=active]:bg-blue-500"
+                  className="data-[state=active]:bg-white dark:data-[state=active]:bg-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-200 rounded-md transition-all duration-300"
                 >
                   Practice
                 </TabsTrigger>
                 <TabsTrigger
                   value="location"
-                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white dark:data-[state=active]:bg-blue-500"
+                  className="data-[state=active]:bg-white dark:data-[state=active]:bg-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-200 rounded-md transition-all duration-300"
                 >
                   Location
                 </TabsTrigger>
                 <TabsTrigger
                   value="reviews"
-                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white dark:data-[state=active]:bg-blue-500"
+                  className="data-[state=active]:bg-white dark:data-[state=active]:bg-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-200 rounded-md transition-all duration-300"
                 >
                   Reviews
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="about" className="space-y-4 mt-6">
-                <Card className="bg-white dark:bg-gray-800">
+              <TabsContent value="about" className="space-y-6 mt-6">
+                <Card className="bg-white dark:bg-gray-800 shadow-lg">
                   <CardContent className="space-y-6 p-6">
                     <InfoCard
                       icon={Languages}
                       title="Languages Spoken"
                       content={profileData.languages.join(", ")}
                     />
-                    <div className="grid gap-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                         Key Achievements
                       </h3>
                       {profileData.achievements.map((achievement, index) => (
-                        <div
+                        <motion.div
                           key={index}
-                          className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.1 }}
+                          className="flex items-center gap-3 text-gray-600 dark:text-gray-300"
                         >
                           <div className="h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400" />
                           <span>{achievement}</span>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="practice" className="space-y-4 mt-6">
-                <Card className="bg-white dark:bg-gray-800">
+              <TabsContent value="practice" className="space-y-6 mt-6">
+                <Card className="bg-white dark:bg-gray-800 shadow-lg">
                   <CardContent className="space-y-6 p-6">
                     <InfoCard
                       icon={Globe}
@@ -389,41 +416,59 @@ const DoctorProfile = () => {
               </TabsContent>
 
               <TabsContent value="location">
-                <Card className="bg-white dark:bg-gray-800">
+                <Card className="bg-white dark:bg-gray-800 shadow-lg">
                   <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="aspect-video bg-blue-50 dark:bg-blue-950/30 rounded-lg flex items-center justify-center">
-                        <MapPin className="w-12 h-12 text-blue-600 dark:text-blue-400" />
-                        <span className="text-gray-600 dark:text-gray-300 ml-2">
-                          Google Maps Integration
-                        </span>
+                    <div className="space-y-6">
+                      <div className="aspect-video bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center overflow-hidden">
+                        <motion.div
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ duration: 0.5 }}
+                          className="text-center"
+                        >
+                          <MapPin className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                          <span className="text-gray-600 dark:text-gray-300 text-lg">
+                            Google Maps Integration
+                          </span>
+                        </motion.div>
                       </div>
-                      <div className="bg-blue-50/50 dark:bg-blue-950/30 p-4 rounded-lg">
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-blue-50/50 dark:bg-blue-900/30 p-6 rounded-lg shadow-inner"
+                      >
+                        <h3 className="font-semibold text-xl text-gray-900 dark:text-gray-100 mb-3">
                           Address
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
+                        <p className="text-gray-600 dark:text-gray-300 text-lg">
                           {profileData.hospital.address}
                         </p>
-                      </div>
+                      </motion.div>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
+
               <TabsContent value="reviews">
-                <Card className="bg-white dark:bg-gray-800">
+                <Card className="bg-white dark:bg-gray-800 shadow-lg">
                   <CardContent className="p-6">
                     <div className="space-y-6">
-                      <div className="bg-blue-50/50 dark:bg-blue-950/30 p-6 rounded-lg">
+                      <motion.div
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-lg shadow-md"
+                      >
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                          <div className="flex items-center gap-2">
-                            <Star className="text-yellow-400" size={32} />
-                            <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                          <div className="flex items-center gap-3">
+                            <Star className="text-yellow-300" size={40} />
+                            <span className="text-4xl font-bold text-white">
                               {profileData.ratings}
                             </span>
                           </div>
                           <div className="space-y-1">
-                            <div className="text-gray-600 dark:text-gray-300">
+                            <div className="text-blue-100">
                               out of 5 ({profileData.totalReviews} verified
                               reviews)
                             </div>
@@ -431,8 +476,8 @@ const DoctorProfile = () => {
                               {[1, 2, 3, 4, 5].map((star) => (
                                 <Star
                                   key={star}
-                                  className="text-yellow-400"
-                                  size={16}
+                                  className="text-yellow-300"
+                                  size={20}
                                   fill={
                                     star <= Math.floor(profileData.ratings)
                                       ? "currentColor"
@@ -443,23 +488,26 @@ const DoctorProfile = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
 
                       {/* Sample Reviews */}
                       {[1, 2, 3].map((review) => (
-                        <div
+                        <motion.div
                           key={review}
-                          className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 space-y-3 hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors"
+                          initial={{ y: 20, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: review * 0.1 }}
+                          className="border border-gray-100 dark:border-gray-700 rounded-lg p-6 space-y-3 hover:bg-blue-50/30 dark:hover:bg-blue-900/20 transition-colors shadow-md"
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <Avatar className="h-10 w-10">
+                              <Avatar className="h-12 w-12">
                                 <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
                                   P{review}
                                 </AvatarFallback>
                               </Avatar>
                               <div>
-                                <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                <h4 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
                                   Patient {review}
                                 </h4>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -472,115 +520,127 @@ const DoctorProfile = () => {
                                 <Star
                                   key={star}
                                   className="text-yellow-400"
-                                  size={14}
+                                  size={16}
                                   fill={star <= 5 ? "currentColor" : "none"}
                                 />
                               ))}
                             </div>
                           </div>
-                          <p className="text-gray-600 dark:text-gray-300">
-                            Great experience with Dr. Gulati. Very professional
-                            and knowledgeable. The consultation was thorough and
-                            he explained everything clearly.
+                          <p className="text-gray-600 dark:text-gray-300 text-lg">
+                            Great experience with Dr. {profileData.name}. Very
+                            professional and knowledgeable. The consultation was
+                            thorough and they explained everything clearly.
                           </p>
-                        </div>
+                        </motion.div>
                       ))}
 
                       <Button
                         variant="outline"
-                        className="w-full border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30"
+                        className="w-full border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-lg h-12 shadow-md"
                       >
                         View All Reviews
+                        <ChevronRight className="ml-2 h-5 w-5" />
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
             </Tabs>
-          </div>
+          </motion.div>
 
           {/* Side Panel */}
-          <div className="space-y-6">
-            <Card className="bg-white dark:bg-gray-800 sticky top-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="space-y-6"
+          >
+            <Card className="bg-white dark:bg-gray-800 sticky top-6 shadow-xl">
               <CardHeader className="border-b border-gray-100 dark:border-gray-700">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
                   Consultation Fees
                 </h2>
               </CardHeader>
               <CardContent className="space-y-6 p-6">
-                <div className="bg-blue-50/50 dark:bg-blue-950/30 p-6 rounded-lg">
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-lg shadow-md"
+                >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <Video
-                        className="text-blue-600 dark:text-blue-400"
-                        size={28}
-                      />
+                      <Video className="text-white" size={32} />
                       <div>
-                        <div className="font-semibold text-gray-900 dark:text-gray-100">
+                        <div className="font-semibold text-white text-lg">
                           Online Consultation
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm text-blue-100">
                           Video call with doctor
                         </div>
                       </div>
                     </div>
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    <div className="text-3xl font-bold text-white">
                       ₹{profileData.fees.online}
                     </div>
                   </div>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
+                  <Button className="w-full bg-white text-blue-600 hover:bg-blue-50 text-lg h-12 shadow-md">
                     Book Online
                   </Button>
-                </div>
+                </motion.div>
 
-                <div className="bg-blue-50/50 dark:bg-blue-950/30 p-6 rounded-lg">
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-lg shadow-md"
+                >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <Calendar
-                        className="text-blue-600 dark:text-blue-400"
-                        size={28}
-                      />
+                      <Calendar className="text-white" size={32} />
                       <div>
-                        <div className="font-semibold text-gray-900 dark:text-gray-100">
+                        <div className="font-semibold text-white text-lg">
                           In-person Visit
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm text-green-100">
                           Visit at clinic
                         </div>
                       </div>
                     </div>
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    <div className="text-3xl font-bold text-white">
                       ₹{profileData.fees.offline}
                     </div>
                   </div>
                   <Button
                     variant="outline"
-                    className="w-full border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30"
+                    className="w-full border-white text-white hover:bg-green-400/20 text-lg h-12 shadow-md"
                   >
                     Book Visit
                   </Button>
-                </div>
+                </motion.div>
 
-                <div className="p-4 bg-blue-50/50 dark:bg-blue-950/30 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg shadow-inner"
+                >
+                  <h3 className="font-semibold text-xl text-gray-900 dark:text-gray-100 mb-4">
                     Available Time Slots
                   </h3>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     {["10:00 AM", "11:30 AM", "2:00 PM", "4:30 PM"].map(
                       (time) => (
-                        <div
+                        <motion.div
                           key={time}
-                          className="text-center p-2 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm"
+                          whileHover={{ scale: 1.05 }}
+                          className="text-center p-3 border border-blue-200 dark:border-blue-700 rounded-lg bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-lg shadow-sm hover:shadow-md transition-shadow"
                         >
                           {time}
-                        </div>
+                        </motion.div>
                       )
                     )}
                   </div>
-                </div>
+                </motion.div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
