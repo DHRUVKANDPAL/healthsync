@@ -1,9 +1,16 @@
 import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function POST(request: NextRequest) {
-  const { data, amount, patientId: userId,doctorId,to,from,depId } = await request.json();
+  const {
+    data,
+    amount,
+    patientId: userId,
+    doctorId,
+    to,
+    from,
+    depId,
+  } = await request.json();
   await prisma.transaction.create({
     data: {
       orderCreationId: data.orderCreationId,
@@ -14,8 +21,8 @@ export async function POST(request: NextRequest) {
       userId: userId,
     },
   });
-  //TODO: Create Online Meet 
-  await prisma.onlineMeet.create({
+  //TODO: Create Offline Meet
+  await prisma.offlineMeet.create({
     data: {
       deptId: depId,
       doctorId: doctorId,
@@ -24,7 +31,9 @@ export async function POST(request: NextRequest) {
       from: from,
       
     },
-  })
-  
+  });
+
+
+
   return NextResponse.json({ status: 200 });
 }

@@ -149,8 +149,8 @@ model DoctorinDept {
   assignedAt DateTime @default(now())
   isAvailable Boolean? @default(true)
   consulatationFees Float? @default(500)
-  onlineAppointments OnlineMeet[] 
-  offlineAppointments OfflineMeet[]
+  // onlineAppointments OnlineMeet[] 
+  // offlineAppointments OfflineMeet[]
   @@id([deptId, doctorId])
 }
 
@@ -160,7 +160,7 @@ model OnlineMeet {
   doctorId    String
   patientId   String
   patient     Patient @relation(fields: [patientId], references: [id],onDelete: Cascade)
-  doctorInDept DoctorinDept @relation(fields: [deptId, doctorId], references: [deptId, doctorId], onDelete: Cascade)
+  // doctorInDept DoctorinDept @relation(fields: [deptId, doctorId], references: [deptId, doctorId], onDelete: Cascade)
   to DateTime
   from        DateTime
   isCompleted Boolean? @default(false)
@@ -176,7 +176,7 @@ model OfflineMeet {
   to DateTime
   from        DateTime
   patient     Patient @relation(fields: [patientId], references: [id],onDelete: Cascade)
-  doctorInDept DoctorinDept @relation(fields: [deptId, doctorId], references: [deptId, doctorId], onDelete: Cascade)
+  // doctorInDept DoctorinDept @relation(fields: [deptId, doctorId], references: [deptId, doctorId], onDelete: Cascade)
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
 }

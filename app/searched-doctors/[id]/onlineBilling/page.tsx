@@ -29,7 +29,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import Script from "next/script";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
 
 // Sample time slots
 const timeSlots = [
@@ -51,18 +52,11 @@ export default function DoctorBillingPage() {
     end: string;
   } | null>(null);
 
-  // Sample doctor data
-  // const doctor = {
-  //   name: "Dr. Jane Smith",
-  //   email: "jane.smith@example.com",
-  //   contact: "+1 (555) 123-4567",
-  //   department: "Cardiology",
-  //   consultationFee: 150,
-  //   image: "/placeholder.svg?height=200&width=200",
-  // };
-  const {id}=useParams();
+  
+  const { id } = useParams();
   const [doctor, setDoctor] = useState<any>(null);
   const [patient, setPatient] = useState<any>(null);
+  const router = useRouter();
   useEffect(() => {
     const fetchDoctorAndPatientData = async () => {
       try {
@@ -81,7 +75,10 @@ export default function DoctorBillingPage() {
         if (doctorResult.status === "fulfilled" && doctorResult.value.success) {
           setDoctor(doctorResult.value.doctorData);
         } else {
-          console.error("Error fetching doctor data:", (doctorResult as PromiseRejectedResult).reason);
+          console.error(
+            "Error fetching doctor data:",
+            (doctorResult as PromiseRejectedResult).reason
+          );
         }
 
         if (
@@ -90,18 +87,18 @@ export default function DoctorBillingPage() {
         ) {
           setPatient(patientResult.value.user);
         } else {
-          console.error("Error fetching patient data:", (patientResult as PromiseRejectedResult).reason);
+          console.error(
+            "Error fetching patient data:",
+            (patientResult as PromiseRejectedResult).reason
+          );
         }
       } catch (error) {
         console.error("Unexpected error:", error);
       }
-
-
-      
     };
 
     fetchDoctorAndPatientData();
-  }, [])
+  }, []);
 
   const handleTimeSlotChange = (value: string) => {
     const [start, end] = value.split(",");
@@ -114,7 +111,6 @@ export default function DoctorBillingPage() {
       "HH:mm"
     )}`;
   };
-
 
   const createOrderId = async () => {
     try {
@@ -174,9 +170,9 @@ export default function DoctorBillingPage() {
                 amount: doctor.consultationFee,
                 patientId: patient.id,
                 doctorId: doctor.id,
-                to:timeSlot?.end,
-                from:timeSlot?.start,
-                depId:doctor.depId
+                to: timeSlot?.end,
+                from: timeSlot?.start,
+                depId: doctor.depId,
               }),
               headers: { "Content-Type": "application/json" },
             });
@@ -204,7 +200,7 @@ export default function DoctorBillingPage() {
     }
   };
 
-  if(doctor==null){
+  if (doctor == null) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100 p-4 md:p-8 flex items-center justify-center">
         <Card className="w-full max-w-3xl shadow-lg">
@@ -232,59 +228,92 @@ export default function DoctorBillingPage() {
     );
   }
 
-  // if(patient==null){
-  //   return <div>Try Emergency</div>;
-  // }
+  if (patient == null) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100 p-4 md:p-8 flex items-center justify-center">
+        <Card className="w-full max-w-3xl shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl font-bold text-primary">
+              Doctor Appointment Billing
+            </CardTitle>
+            <CardDescription>
+              Book your appointment and process payment
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1 space-y-16">
+                <div className="text-center space-y-6 pt-4">
+                  <h2 className="text-3xl font-semibold font-ubuntu-font text-primary p-4">
+                    Seems like you are not logged in!!!
+                  </h2>
+                  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button variant="outline" onClick={() => router.push("/patient-auth")}>Login</Button>
+                    <Button variant="destructive" onClick={() => router.push("/emergency")}>
+                      Try Emergency
+                    </Button>
+                  </div>
+                  <div className="text-muted-foreground font-medium text-red-500 pb-4">Note : Patient is required to login to book an appointment. Exception is made while using emergency services. Extra charges may apply on using emergency services.</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100 p-4 md:p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 flex items-center justify-center">
       <Script
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
-      <Card className="w-full max-w-3xl shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-primary">
+      <Card className="w-full max-w-3xl shadow-xl rounded-2xl overflow-hidden">
+        <CardHeader className="text-center p-6 bg-gray-50">
+          <CardTitle className="text-3xl font-extrabold text-primary-600 mb-2">
             Doctor Appointment Billing
           </CardTitle>
-          <CardDescription>
-            Book your appointment and process payment
+          <CardDescription className="text-gray-500">
+            Book your appointment and process payment securely
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-1 space-y-4">
+        <CardContent className="space-y-6 p-6">
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex-1 space-y-6">
               <img
                 src={doctor.image || "/placeholder.svg"}
                 alt={doctor.name}
-                className="w-32 h-32 rounded-full mx-auto border-4 border-primary shadow-md"
+                className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-blue-200 shadow-md"
               />
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-primary">
+                <h2 className="text-2xl font-semibold text-gray-800">
                   {doctor.name}
                 </h2>
-                <p className="text-sm text-muted-foreground">
-                  {doctor.department}
+                <p className="text-sm text-gray-500">
+                  {doctor.allDept?.map((d: any) => d.dept.name).join(", ")}
                 </p>
               </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm">
-                  <Mail className="w-4 h-4 text-primary" />
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <Mail className="w-5 h-5 text-blue-400" />
                   <span>{doctor.email}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Phone className="w-4 h-4 text-primary" />
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <Phone className="w-5 h-5 text-blue-400" />
                   <span>{doctor.contact}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Stethoscope className="w-4 h-4 text-primary" />
-                  <span>{doctor.department}</span>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <Stethoscope className="w-5 h-5 text-blue-400" />
+                  <Badge className="bg-blue-100 text-blue-600 hover:bg-blue-200">
+                    {doctor.department}
+                  </Badge>
                 </div>
               </div>
             </div>
-            <div className="flex-1 space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            <div className="flex-1 space-y-6">
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">
                   Select Date
                 </label>
                 <Popover>
@@ -293,14 +322,14 @@ export default function DoctorBillingPage() {
                       variant={"outline"}
                       className={cn(
                         "w-full justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
+                        !date && "text-gray-500"
                       )}
                     >
                       <CalendarClock className="mr-2 h-4 w-4" />
                       {date ? format(date, "PPP") : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto p-0 mt-1">
                     <Calendar
                       mode="single"
                       selected={date}
@@ -310,8 +339,8 @@ export default function DoctorBillingPage() {
                   </PopoverContent>
                 </Popover>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">
                   Select Time Slot
                 </label>
                 <Select onValueChange={handleTimeSlotChange}>
@@ -331,30 +360,36 @@ export default function DoctorBillingPage() {
                 </Select>
               </div>
               {date && timeSlot && (
-                <div className="mt-4 p-3 bg-primary/10 rounded-md">
-                  <h4 className="font-semibold mb-2">Selected Appointment:</h4>
-                  <p>{format(date, "MMMM d, yyyy")}</p>
-                  <p>{formatTimeSlot(timeSlot.start, timeSlot.end)}</p>
-                  <p className="text-xs text-muted-foreground">
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                  <h4 className="font-semibold text-gray-700 mb-3">
+                    Selected Appointment:
+                  </h4>
+                  <p className="text-gray-600">
+                    {format(date, "MMMM d, yyyy")}
+                  </p>
+                  <p className="text-gray-600">
+                    {formatTimeSlot(timeSlot.start, timeSlot.end)}
+                  </p>
+                  <p className="text-xs text-gray-500">
                     Start: {timeSlot.start}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    End: {timeSlot.end}
-                  </p>
+                  <p className="text-xs text-gray-500">End: {timeSlot.end}</p>
                 </div>
               )}
             </div>
           </div>
-          <div className="bg-primary/10 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold mb-2">Consultation Fee</h3>
-            <p className="text-3xl font-bold text-primary">
+          <div className="bg-blue-50 p-5 rounded-lg">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+              Consultation Fee
+            </h3>
+            <p className="text-3xl font-extrabold text-blue-600">
               &#8377;{doctor.consultationFee.toFixed(2)}
             </p>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="p-6 bg-gray-50">
           <Button
-            className="w-full text-lg"
+            className="w-full text-lg font-semibold rounded-md shadow-md"
             size="lg"
             disabled={!date || !timeSlot}
             onClick={processPayment}

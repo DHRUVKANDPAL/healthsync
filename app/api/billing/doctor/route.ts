@@ -1,6 +1,7 @@
 
 import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { off } from "process";
 
 export async function POST(req:NextRequest) {
    const { id } = await req.json();
@@ -14,7 +15,13 @@ export async function POST(req:NextRequest) {
             include:{
                dept:{
                   select:{
-                     name:true
+                     name:true,
+                     hospital:{
+                        select:{
+                           id:true,
+                           name:true
+                        }
+                     }
                   }
                }
             }
@@ -36,7 +43,8 @@ export async function POST(req:NextRequest) {
      image: doctor?.imageUrl,
      department: doctor?.departments[0]?.dept.name,
      consultationFee: onlineFee,
-     depId: doctor?.departments[0]?.deptId
+     depId: doctor?.departments[0]?.deptId,
+     allDept:doctor?.departments
    };
    console.log(doctorData);
    return new Response(JSON.stringify({doctorData, success: true }), {

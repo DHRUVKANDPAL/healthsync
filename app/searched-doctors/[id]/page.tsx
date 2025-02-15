@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 interface Doctor {
   id: string;
@@ -52,7 +53,7 @@ interface Doctor {
     address: string;
     timings: string;
   };
-  views:string
+  views: string;
 }
 
 const fallbackData: Doctor = {
@@ -61,7 +62,13 @@ const fallbackData: Doctor = {
   imageUrl: "/images/doctor.jpg",
   email: "john.doe@example.com",
   contactno: "123-456-7890",
-  departments: [],
+  departments: [
+    { deptId: "1", dept: { name: "Cardiology" } },
+    {
+      deptId: "2",
+      dept: { name: "Neurology" },
+    },
+  ],
   bio: "Experienced and dedicated doctor with expertise in various fields.",
   ratings: 4.5,
   totalReviews: 150,
@@ -116,7 +123,7 @@ const DoctorProfile = () => {
     contactno: doctor?.contactno || "Contact not available",
     departments: doctor?.departments || [],
   };
-
+  const router=useRouter();
   const InfoCard = ({ icon: Icon, title, content }: any) => (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -131,7 +138,9 @@ const DoctorProfile = () => {
       </div>
     </motion.div>
   );
-
+  async function handleOnlineBilling() {
+    router.push(`/searched-doctors/${id}/onlineBilling`);
+  }
   return (
     <>
       {/* <Header /> */}
@@ -139,9 +148,7 @@ const DoctorProfile = () => {
         <div className="container flex h-16 items-center px-4 max-w-7xl mx-auto">
           <div className="mr-8">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-[#00E5B0]">
-                HealthSync
-              </span>
+              <Logo/>
             </Link>
           </div>
           <nav className="flex items-center space-x-6 text-sm font-medium flex-1">
@@ -152,7 +159,7 @@ const DoctorProfile = () => {
               Home
             </Link>
             <Link
-              href="/about"
+              href="/about-us"
               className="transition-colors hover:text-[#00E5B0] text-gray-200"
             >
               About Us
@@ -164,7 +171,7 @@ const DoctorProfile = () => {
               Discuss
             </Link>
             <Link
-              href="/contact"
+              href="/contact-us"
               className="transition-colors hover:text-[#00E5B0] text-gray-200"
             >
               Contact Us
@@ -364,7 +371,7 @@ const DoctorProfile = () => {
                     </Sheet>
 
                     {/* Desktop View - Direct Buttons */}
-                    <Button className="hidden sm:flex bg-primary text-primary-foreground hover:bg-primary/90 h-12 text-lg shadow-lg">
+                    <Button className="hidden sm:flex bg-primary text-primary-foreground hover:bg-primary/90 h-12 text-lg shadow-lg" onClick={handleOnlineBilling}>
                       <Video className="mr-2 h-5 w-5" />
                       Book Online Consultation
                     </Button>

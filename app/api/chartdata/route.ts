@@ -49,7 +49,7 @@ export async function GET(
       count: results[index].status === "fulfilled" ? results[index].value : 0,
     }));
     chartData.reverse();
-    console.log(chartData);
+    // console.log(chartData);
     return new Response(JSON.stringify({ chartData, success: true }), {
       headers: { "Content-Type": "application/json" },
       status: 200,
