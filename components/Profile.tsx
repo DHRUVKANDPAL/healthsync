@@ -36,7 +36,7 @@ interface Patient {
   isVerified?: boolean;
   medHis?: any[]; // Replace 'any' with the appropriate type if available
   session?: any[]; // Replace 'any' with the appropriate type for PatientSession
-  queue?: any[]; // Replace 'any' with the appropriate type for Queue
+   // Replace 'any' with the appropriate type for Queue
   createdAt?: string;
   updatedAt?: string;
 

@@ -11,7 +11,7 @@ export async function GET(
      },
      include: {
        departments: true,
-       queue:true,
+
      },
   })
   
@@ -28,7 +28,7 @@ export async function GET(
    contactNo:user?.contactno,
    email:user?.email,
    ratings:user?.ratings,
-   queue:user?.queue,
+
    offlineConsultationFees:user?.departments[0]?.consulatationFees,
    onlineConsultationFees:onlineFee,
    isAvailable:user?.departments[0]?.isAvailable,

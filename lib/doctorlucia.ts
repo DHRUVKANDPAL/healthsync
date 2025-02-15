@@ -61,7 +61,6 @@ export const getDoctor = async () => {
         imageUrl:true,
         dob:true,
         aadharNo:true,
-        queue:true,
         departments:{
           select: {
             dept:{
