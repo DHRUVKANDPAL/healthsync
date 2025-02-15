@@ -142,7 +142,7 @@ const Header = ({ onSearchStateChange }: Props) => {
             `Location found (accuracy: ±${accuracy.toFixed(2)} meters)`
           );
           fetchLocation({ latitude, longitude });
-          console.log(latitude, longitude, status);
+          console.log(latitude, longitude, accuracy);
           // 2. Start watching for position changes
           setStatus("Refining location...");
           currentWatchId = navigator.geolocation.watchPosition(
@@ -164,7 +164,7 @@ const Header = ({ onSearchStateChange }: Props) => {
                     2
                   )} meters)`
                 );
-                console.log(latitude, longitude, status);
+                console.log(latitude, longitude, accuracy);
                 fetchLocation({ latitude: newLat, longitude: newLng });
               }
               // Stop watching when sufficient accuracy is achieved
@@ -184,8 +184,8 @@ const Header = ({ onSearchStateChange }: Props) => {
             },
             {
               enableHighAccuracy: true,
-              maximumAge: 0,
-              timeout: 20000,
+              maximumAge: 2000,
+              timeout: 45000,
             }
           );
           setWatchId(currentWatchId); //store the watchId
@@ -240,8 +240,8 @@ const Header = ({ onSearchStateChange }: Props) => {
         },
         {
           enableHighAccuracy: true,
-          maximumAge: 3000,
-          timeout: 6000,
+          maximumAge: 2000,
+          timeout: 10000,
         }
       );
     } else {
