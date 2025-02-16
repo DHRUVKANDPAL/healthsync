@@ -80,6 +80,13 @@ export const hospitalSignIn = async (
       return { success: false, error: "Invalid Credentials!" };
     }
 
+
+    //For existing sessions
+    const sessionId = cookies().get(hospitallucia.sessionCookieName)?.value || null;
+    if (sessionId) {
+      console.log("Logout session ID", sessionId);
+      await hospitallucia.invalidateSession(sessionId);
+    }
     const session = await hospitallucia.createSession(hospital.id, {});
     const sessionCookie = await hospitallucia.createSessionCookie(session.id);
     cookies().set(
@@ -96,6 +103,14 @@ export const hospitalSignIn = async (
 
 export const hospitalLogout = async () => {
   try {
+    const sessionId = cookies().get(hospitallucia.sessionCookieName)?.value || null;
+    if (!sessionId) {
+      return null;
+    }
+    console.log("Logout session ID",sessionId);
+
+    await hospitallucia.invalidateSession(sessionId);
+
     const sessionCookie = await hospitallucia.createBlankSessionCookie();
     cookies().set(
       sessionCookie.name,
@@ -109,3 +124,44 @@ export const hospitalLogout = async () => {
   //  location.reload();
   revalidatePath("/hospital-dash");
 };
+
+
+export const hospitalLogoutFromAllDevices = async () => {
+  try {
+
+    const sessionId = cookies().get(hospitallucia.sessionCookieName)?.value || null;
+    if (!sessionId) {
+      return null;
+    }
+    const { user } = await hospitallucia.validateSession(sessionId);
+    console.log("Logout session ID", sessionId);
+    console.log("user id ", user?.id);
+
+    await hospitallucia.invalidateUserSessions(user?.id!!);
+
+    const sessionCookie = await hospitallucia.createBlankSessionCookie();
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+    redirect("/hospital-dash");
+  } catch (error) {
+    console.log("Error");
+  }
+  //  location.reload();
+  revalidatePath("/hospital-dash");
+};
+
+
+export async function invalidateSession(sessionId: string): Promise<void> {
+  await prisma.hospitalSession.delete({ where: { id: sessionId } });
+}
+
+export async function invalidateUserSessions(userId: string): Promise<void> {
+  await prisma.hospitalSession.deleteMany({
+    where: {
+      userId: userId,
+    },
+  });
+}

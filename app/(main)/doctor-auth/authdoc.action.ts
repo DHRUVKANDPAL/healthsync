@@ -71,6 +71,14 @@ export const doctorSignIn = async (
       return { success: false, error: "Invalid Credentials!" };
     }
 
+    //For existing sessions
+    const sessionId = cookies().get(doctorlucia.sessionCookieName)?.value || null;
+    if (sessionId) {
+      console.log("Logout session ID", sessionId);
+      await doctorlucia.invalidateSession(sessionId);
+    }
+
+
     const session = await doctorlucia.createSession(doctor.id, {});
     const sessionCookie = await doctorlucia.createSessionCookie(session.id);
     cookies().set(
@@ -87,6 +95,41 @@ export const doctorSignIn = async (
 
 export const doctorLogout = async () => {
   try {
+
+    const sessionId = cookies().get(doctorlucia.sessionCookieName)?.value || null;
+    if (!sessionId) {
+      return null;
+    }
+    console.log("Logout session ID",sessionId);
+
+    await doctorlucia.invalidateSession(sessionId);
+
+    const sessionCookie = await doctorlucia.createBlankSessionCookie();
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+    redirect("/doctor-dash");
+  } catch (error) {
+    console.log("Error");
+  }
+  //  location.reload();
+  revalidatePath("/doctor-dash");
+};
+
+export const doctorLogoutFromAllDevices = async () => {
+  try {
+    const sessionId = cookies().get(doctorlucia.sessionCookieName)?.value || null;
+    if (!sessionId) {
+      return null;
+    }
+    const { user } = await doctorlucia.validateSession(sessionId);
+    console.log("Logout session ID", sessionId);
+    console.log("user id ", user?.id);
+
+    await doctorlucia.invalidateUserSessions(user?.id!!);
+
     const sessionCookie = await doctorlucia.createBlankSessionCookie();
     cookies().set(
       sessionCookie.name,
@@ -157,6 +200,9 @@ export const doctorsignupDummy = async (
         hashedPassword: hashedPassword,
       },
     });
+
+
+
     const session = await doctorlucia.createSession(doctor.id, {});
     const sessionCookie = await doctorlucia.createSessionCookie(session.id);
     cookies().set(
@@ -170,3 +216,16 @@ export const doctorsignupDummy = async (
     return { error: "Something went wrong", success: false };
   }
 };
+
+
+export async function invalidateSession(sessionId: string): Promise<void> {
+  await prisma.hospitalSession.delete({ where: { id: sessionId } });
+}
+
+export async function invalidateUserSessions(userId: string): Promise<void> {
+  await prisma.hospitalSession.deleteMany({
+    where: {
+      userId: userId,
+    },
+  });
+}
