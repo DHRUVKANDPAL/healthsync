@@ -103,19 +103,19 @@ export const doctorLogout = async () => {
     console.log("Logout session ID",sessionId);
 
     await doctorlucia.invalidateSession(sessionId);
-
+    console.log("Invalidated session");
     const sessionCookie = await doctorlucia.createBlankSessionCookie();
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes
     );
-    redirect("/doctor-dash");
   } catch (error) {
     console.log("Error");
   }
+  redirect("/doctor-dash");
   //  location.reload();
-  revalidatePath("/doctor-dash");
+  // revalidatePath("/doctor-dash");
 };
 
 export const doctorLogoutFromAllDevices = async () => {
@@ -136,10 +136,11 @@ export const doctorLogoutFromAllDevices = async () => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    redirect("/doctor-dash");
+    
   } catch (error) {
     console.log("Error");
   }
+  redirect("/doctor-dash");
   //  location.reload();
   revalidatePath("/doctor-dash");
 };

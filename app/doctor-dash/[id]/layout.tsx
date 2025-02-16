@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { Search } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 import { DoctorSidebar } from "@/components/DoctorSidebar";
+import { doctorLogout } from "@/app/(main)/doctor-auth/authdoc.action";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -71,7 +72,7 @@ export default function RootLayout({
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await doctorLogout();
       toast.success("Logged out successfully");
       router.push("/doctor-auth");
     } catch (error) {

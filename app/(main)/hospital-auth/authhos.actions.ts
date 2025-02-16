@@ -117,12 +117,13 @@ export const hospitalLogout = async () => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    redirect("/hospital-dash");
+    
   } catch (error) {
     console.log("Error");
   }
+  redirect("/hospital-dash");
   //  location.reload();
-  revalidatePath("/hospital-dash");
+  // revalidatePath("/hospital-dash");
 };
 
 
@@ -145,12 +146,13 @@ export const hospitalLogoutFromAllDevices = async () => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    redirect("/hospital-dash");
+    
   } catch (error) {
     console.log("Error");
   }
+  redirect("/hospital-dash");
   //  location.reload();
-  revalidatePath("/hospital-dash");
+  // revalidatePath("/hospital-dash");
 };
 
 
