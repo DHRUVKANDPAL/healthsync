@@ -1,168 +1,195 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import { IoClose } from "react-icons/io5";
-import { IoIosArrowDown } from "react-icons/io";
+import React, { useState, useEffect } from "react";
+import { ChevronDown, Stethoscope, Hospital } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
-type Props = {};
-
-const Hero = (props: Props) => {
+const Hero = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const HeroImg = [
+  const heroImages = [
     {
       id: 1,
       src: "https://i.imghippo.com/files/12v761724049730.jpg",
-      alt: "hero1",
+      alt: "Modern healthcare facility",
     },
     {
       id: 2,
       src: "https://i.imghippo.com/files/uKlNc1729324077.jpg",
-      alt: "hero2",
+      alt: "Medical professionals collaborating",
     },
     {
       id: 3,
       src: "https://i.imghippo.com/files/Rz1xY1729325434.jpg",
-      alt: "hero3",
+      alt: "Advanced medical technology",
     },
   ];
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 640);
-    };
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsLoginDropdownOpen(false);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    document.addEventListener("mousedown", handleClickOutside);
-
     const slideInterval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % HeroImg.length);
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 7000);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      document.removeEventListener("mousedown", handleClickOutside);
-      clearInterval(slideInterval);
-    };
+    return () => clearInterval(slideInterval);
   }, []);
 
-  const toggleLoginDropdown = () =>
-    setIsLoginDropdownOpen(!isLoginDropdownOpen);
-
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % HeroImg.length);
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 },
   };
 
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prevSlide) => (prevSlide - 1 + HeroImg.length) % HeroImg.length
-    );
+  const staggerChildren = {
+    animate: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   return (
-    <div className="relative h-[550px] flex items-center overflow-hidden">
-      {HeroImg.map((heroImg, index) => (
+    <div className="relative h-[600px] w-full overflow-hidden">
+      {/* Image Slider */}
+      {heroImages.map((image, index) => (
         <div
-          key={heroImg.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
+          key={image.id}
+          className={cn(
+            "absolute inset-0 transition-opacity duration-1000",
             index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
+          )}
         >
           <Image
-            src={heroImg.src}
-            alt={heroImg.alt}
-            className="absolute inset-0 w-full h-full object-cover sm:max-h-[550px] max-h-[550px]"
-            width={3456}
-            height={3456}
+            src={image.src}
+            alt={image.alt}
+            className="object-cover w-full h-full"
+            width={1920}
+            height={1080}
             priority
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70 dark:from-black/80 dark:via-black/70 dark:to-black/90" />
         </div>
       ))}
 
-      <button
-        onClick={prevSlide}
-        className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black bg-opacity-50 text-white p-2 rounded-full"
+      {/* Content */}
+      <motion.div
+        className="absolute inset-0 z-20 flex items-center justify-center text-center"
+        initial="initial"
+        animate="animate"
+        variants={staggerChildren}
       >
-        &lt;
-      </button>
-      <button
-        onClick={nextSlide}
-        className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black bg-opacity-50 text-white p-2 rounded-full"
-      >
-        &gt;
-      </button>
-
-      <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent dark:from-slate-900/80 dark:to-transparent transition-colors duration-300"></div>
-      <div className="absolute z-10 text-left px-4 sm:px-6 lg:px-8 max-w-2xl ml-4 sm:ml-8 lg:ml-16">
-        <p className="text-sm sm:text-xl font-bold uppercase tracking-wider mb-2 sm:mb-4 text-teal-900 dark:text-teal-300 transition-colors duration-300">
-          CARING FOR LIFE
-        </p>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-teal-50 dark:text-teal-100 drop-shadow-[0_1px_1px_rgba(1,1,1,1)] transition-colors duration-300">
-          Leading Our Way in <span className="text-amber-600">Healthy</span>{" "}
-          Life
-        </h1>
-        {isLoggedIn ? (
-          <button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-teal-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center gap-2 group">
-            Dashboard
-            <IoIosArrowDown className="transform transition-transform duration-300 group-hover:translate-y-1" />
-          </button>
-        ) : (
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={toggleLoginDropdown}
-              className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-blue-50 font-bold py-4 px-6 rounded-md transition duration-300 flex items-center justify-between gap-2 group w-48"
+        <div className="container mx-auto px-4">
+          <motion.div className="max-w-3xl mx-auto" variants={staggerChildren}>
+            <motion.h2
+              className="text-sm sm:text-lg font-semibold text-amber-200 dark:text-amber-100 mb-4 uppercase tracking-wider"
+              variants={fadeInUp}
             >
-              <span>Login/Register</span>
-              {isLoginDropdownOpen ? (
-                <IoClose className="w-5 h-5" />
+              Seamless Healthcare Management
+            </motion.h2>
+
+            <motion.h1
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white dark:text-white mb-6 drop-shadow-2xl"
+              variants={fadeInUp}
+            >
+              Your <span className="text-orange-400">Health</span>, Our{" "}
+              <span className="text-teal-400">Priority</span>
+            </motion.h1>
+
+            <motion.p
+              className="text-lg sm:text-xl text-gray-100 dark:text-gray-200 mb-8 mx-auto max-w-2xl"
+              variants={fadeInUp}
+            >
+              Bringing hospitals, doctors, and patients together on a single
+              platform for better healthcare coordination.
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col items-center gap-4"
+              variants={fadeInUp}
+            >
+              {isLoggedIn ? (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Go to Dashboard
+                    <ChevronDown className="ml-2 h-5 w-5" />
+                  </Button>
+                </motion.div>
               ) : (
-                <IoIosArrowDown
-                  className={`transform transition-transform duration-300 ${
-                    isLoginDropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link href="/patient-auth">
+                      <Button
+                        size="lg"
+                        className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 dark:from-teal-800 dark:to-teal-700 dark:hover:from-teal-900 dark:hover:to-teal-800 text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                      >
+                        Patient Login
+                      </Button>
+                    </Link>
+                  </motion.div>
+
+                  <DropdownMenu modal={false}>
+                    <DropdownMenuTrigger asChild>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="border-2 bg-emerald-300/10 border-emerald-300 dark:border-emerald-400 text-emerald-300 dark:text-emerald-400 hover:bg-emerald-300/20 dark:hover:bg-emerald-400/10 text-lg px-8 py-6 rounded-full backdrop-blur-sm transition-all duration-300"
+                        >
+                          Professional Login
+                          <ChevronDown className="ml-2 h-5 w-5" />
+                        </Button>
+                      </motion.div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="end"
+                      className="w-56 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-emerald-300 dark:border-emerald-400 "
+                    >
+                      <DropdownMenuItem className="hover:bg-emerald-800 dark:hover:bg-emerald-900/30">
+                        <Link
+                          href="/doctor-auth"
+                          className="flex items-center w-full text-emerald-800 dark:text-emerald-300"
+                        >
+                          <Stethoscope className="mr-2 h-4 w-4" />
+                          <span>Doctor Login</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="hover:bg-emerald-800 dark:hover:bg-emerald-900/30">
+                        <Link
+                          href="/hospital-auth"
+                          className="flex items-center w-full text-emerald-800 dark:text-emerald-300"
+                        >
+                          <Hospital className="mr-2 h-4 w-4" />
+                          <span>Hospital Login</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               )}
-            </button>
-            {isLoginDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-teal-600 dark:bg-teal-700 rounded-md shadow-lg z-50 overflow-hidden">
-                <Link
-                  href="/patient-auth"
-                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 dark:hover:bg-teal-600 transition duration-300"
-                >
-                  Patient Login
-                </Link>
-                <Link
-                  href="/doctor-auth"
-                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 dark:hover:bg-teal-600 transition duration-300"
-                >
-                  Doctor Login
-                </Link>
-                <Link
-                  href="/hospital-auth"
-                  className="block px-4 py-2 text-sm text-teal-50 hover:bg-teal-700 dark:hover:bg-teal-600 transition duration-300"
-                >
-                  Hospital Login
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 };

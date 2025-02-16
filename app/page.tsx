@@ -27,7 +27,7 @@ export default function Home() {
         <div className="relative">
           <Hero></Hero>
         </div>
-        <div className="absolute rounded-lg top-[80%] w-full ">
+        <div className="absolute rounded-lg top-[85%] w-full ">
           <Vision></Vision>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default function Home() {
           <ShineBorder  color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
         </div>
       </div>
-      <Chartstats></Chartstats>
+      {/* <Chartstats></Chartstats> */}
       <div className="w-5/6 mx-auto ">
         <Testimonial></Testimonial>
       </div>
