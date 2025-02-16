@@ -219,11 +219,11 @@ export const doctorsignupDummy = async (
 
 
 export async function invalidateSession(sessionId: string): Promise<void> {
-  await prisma.hospitalSession.delete({ where: { id: sessionId } });
+  await prisma.doctorSession.delete({ where: { id: sessionId } });
 }
 
 export async function invalidateUserSessions(userId: string): Promise<void> {
-  await prisma.hospitalSession.deleteMany({
+  await prisma.doctorSession.deleteMany({
     where: {
       userId: userId,
     },
