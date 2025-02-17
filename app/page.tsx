@@ -33,7 +33,7 @@ export default function Home() {
       </div>
       <div className="h-[600px] sm:h-[650px] lg:h-[800px] xl:h-[700px] "></div>
       <Features></Features>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-center dark:bg-slate-900/20 py-10 ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-center py-10 ">
         {/* Left Side - Terminal */}
         <div className="relative flex items-center justify-end px-2 ">
           <Terminal>
@@ -89,7 +89,7 @@ export default function Home() {
         </div>
         {/* Right Side - Information Text */}
         <div className="relative flex items-center justify-start px-2 ">
-          <ShineBorder  color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+          <ShineBorder color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
         </div>
       </div>
       {/* <Chartstats></Chartstats> */}
@@ -104,7 +104,7 @@ export default function Home() {
   );
 
   return (
-    <main className="select-none bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <main className="select-none ">
       <Header onSearchStateChange={setIsSearching} />
       {!isSearching && <MainContent />}
     </main>

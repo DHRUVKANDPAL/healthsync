@@ -109,13 +109,80 @@ export default function RootLayout({
           }}
         />
         <link rel="canonical" href="https://healthsync-alpha.vercel.app" />
-        <meta name="google-site-verification" content="2tZd09eJ5U0jzjc3J802qGxywHG4Pkn_ckfWozi7SHA" />
+        <meta
+          name="google-site-verification"
+          content="2tZd09eJ5U0jzjc3J802qGxywHG4Pkn_ckfWozi7SHA"
+        />
         <meta name="msvalidate.01" content="F58EC3AEFB2BF4428D99AB71DCC624D4" />
       </head>
       <body className={inter.className}>
-        <div className="flex flex-col">
-          {/* <Header></Header> */}
-          {children}
+        <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-sky-50 via-slate-50 to-teal-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+          {/* Background Elements */}
+          <div className="fixed inset-0 pointer-events-none">
+            {/* Top Area Elements - Lighter and more subtle */}
+            <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-gradient-to-br from-sky-200/20 to-cyan-300/15 dark:from-slate-800/40 dark:to-slate-700/30 blur-3xl animate-pulse-slow" />
+            <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-gradient-to-tr from-teal-200/15 to-emerald-300/10 dark:from-slate-800/30 dark:to-slate-700/20 blur-3xl" />
+
+            {/* Middle Area Elements - Softer gradients */}
+            <div className="absolute top-1/3 -left-10 w-80 h-80 rounded-full bg-gradient-to-r from-blue-100/15 to-indigo-200/10 dark:from-slate-950/25 dark:to-slate-900/15 blur-3xl" />
+            <div className="absolute top-1/2 right-1/4 w-64 h-64 rounded-full bg-gradient-to-l from-violet-100/15 to-purple-200/10 dark:from-slate-700/25 dark:to-slate-600/15 blur-3xl" />
+
+            {/* Bottom Area - Softer Centered Glow */}
+            <div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[75rem] h-[40rem] 
+                      bg-gradient-to-t from-teal-200/25 via-cyan-100/15 to-transparent 
+                      blur-3xl rounded-t-full 
+                      dark:opacity-0"
+            />
+
+            {/* Dark Mode Bottom Glow - Slate-focused */}
+            <div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[75rem] h-[40rem] 
+                      bg-gradient-to-t from-teal-700/40 via-blue-800/15 to-transparent
+                      blur-3xl rounded-t-full opacity-0 
+                      dark:opacity-100"
+            />
+
+            {/* Ambient Light Effect - Light Mode (softer) */}
+            <div
+              className="absolute top-1/4 left-1/2 -translate-x-1/2 w-full h-[25rem] 
+                      bg-gradient-to-b from-sky-50/40 to-transparent 
+                      blur-3xl dark:opacity-0"
+            />
+
+            {/* Ambient Light Effect - Dark Mode (slate toned) */}
+            <div
+              className="absolute top-1/4 left-1/2 -translate-x-1/2 w-full h-[25rem] 
+                      bg-gradient-to-b from-slate-900/30 to-transparent 
+                      blur-3xl opacity-0 dark:opacity-100"
+            />
+
+            {/* Refined Particles with Motion - Light Mode (more pastel) */}
+            <div className="absolute top-1/3 left-1/5 w-5 h-5 rounded-full bg-gradient-to-br from-sky-300/30 to-cyan-400/20 blur-sm dark:opacity-0 animate-float-slow" />
+            <div className="absolute top-2/3 right-1/4 w-4 h-4 rounded-full bg-gradient-to-tr from-indigo-300/30 to-violet-400/20 blur-sm dark:opacity-0 animate-float-slower" />
+            <div className="absolute bottom-1/4 left-1/3 w-6 h-6 rounded-full bg-gradient-to-bl from-emerald-300/30 to-teal-400/20 blur-sm dark:opacity-0 animate-float" />
+            <div className="absolute bottom-1/2 right-1/3 w-3 h-3 rounded-full bg-gradient-to-tl from-purple-300/30 to-pink-400/20 blur-sm dark:opacity-0 animate-float-slow" />
+
+            {/* Refined Particles with Motion - Dark Mode (slate toned) */}
+            <div className="absolute top-1/3 left-1/5 w-5 h-5 rounded-full bg-gradient-to-br from-slate-600/30 to-slate-500/20 blur-sm opacity-0 dark:opacity-100 animate-float-slow" />
+            <div className="absolute top-2/3 right-1/4 w-4 h-4 rounded-full bg-gradient-to-tr from-slate-700/30 to-slate-600/20 blur-sm opacity-0 dark:opacity-100 animate-float-slower" />
+            <div className="absolute bottom-1/4 left-1/3 w-6 h-6 rounded-full bg-gradient-to-bl from-slate-500/30 to-slate-400/20 blur-sm opacity-0 dark:opacity-100 animate-float" />
+            <div className="absolute bottom-1/2 right-1/3 w-3 h-3 rounded-full bg-gradient-to-tl from-slate-600/30 to-slate-500/20 blur-sm opacity-0 dark:opacity-100 animate-float-slow" />
+
+            {/* Additional Subtle Light Elements - Light Mode Only */}
+            <div className="absolute top-2/3 left-2/3 w-32 h-32 rounded-full bg-gradient-to-br from-rose-100/15 to-pink-200/10 blur-3xl dark:opacity-0 animate-pulse-slower" />
+            <div className="absolute bottom-1/3 right-1/6 w-24 h-24 rounded-full bg-gradient-to-tr from-amber-100/10 to-yellow-200/5 blur-2xl dark:opacity-0" />
+
+            {/* Additional Subtle Dark Elements - Dark Mode Only */}
+            <div className="absolute top-2/3 left-2/3 w-32 h-32 rounded-full bg-gradient-to-br from-slate-800/25 to-slate-700/15 blur-3xl opacity-0 dark:opacity-100 animate-pulse-slower" />
+            <div className="absolute bottom-1/3 right-1/6 w-24 h-24 rounded-full bg-gradient-to-tr from-slate-700/20 to-slate-600/10 blur-2xl opacity-0 dark:opacity-100" />
+          </div>
+
+          {/* Main Content Container */}
+          <div className="relative z-10">
+            {/* <Header></Header> */}
+            {children}
+          </div>
           <Toaster richColors></Toaster>
           <Analytics></Analytics>
           <SpeedInsights></SpeedInsights>
