@@ -16,6 +16,7 @@ import {
   TypingAnimation,
 } from "@/components/magicui/terminal";
 import { ShineBorder } from "@/components/magicui/shine-border";
+import HowItWorks from "@/components/HowItWorks";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -27,11 +28,53 @@ export default function Home() {
         <div className="relative">
           <Hero></Hero>
         </div>
-        <div className="absolute rounded-lg top-[85%] w-full ">
-          <Vision></Vision>
+        <div className="absolute rounded-lg top-[65%] w-full z-10">
+          {/* <Vision></Vision> */}
+          <HowItWorks></HowItWorks>
         </div>
       </div>
-      <div className="h-[600px] sm:h-[650px] lg:h-[800px] xl:h-[700px] "></div>
+      <div className="h-[1100px] sm:h-[650px] lg:h-[800px] xl:h-[700px]">
+        <div className="relative w-full h-full bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900">
+          {/* Background Elements for Seamless Continuation */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Top Blended Gradient to Match Hero's Bottom */}
+            <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-slate-100 to-transparent dark:from-slate-800 dark:to-transparent" />
+
+            {/* Light Mode Background Elements */}
+            <div className="absolute top-0 -left-32 w-96 h-96 rounded-full bg-teal-50/60 dark:bg-slate-900/60 blur-3xl" />
+            <div className="absolute top-1/4 right-0 w-80 h-80 rounded-full bg-amber-200/30 dark:bg-amber-900/5 blur-3xl" />
+
+            {/* Centered Teal Glow - Light Mode */}
+            <div
+              className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-[20rem] 
+                          bg-gradient-to-t from-teal-300/50 to-teal-200/10 
+                          blur-3xl rounded-t-full 
+                          dark:opacity-0"
+            />
+
+            {/* Dark Mode Glow */}
+            <div
+              className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-[20rem] 
+                          bg-gradient-to-t from-teal-800/60 to-teal-700/5
+                          blur-3xl rounded-t-full opacity-0 
+                          dark:opacity-100"
+            />
+
+            {/* Additional Ambient Elements */}
+            <div className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full bg-emerald-200/30 dark:bg-emerald-900/20 blur-3xl" />
+
+            {/* Light Mode Particles */}
+            <div className="absolute top-1/3 left-1/4 w-4 h-4 rounded-full bg-teal-400/40 blur-sm dark:opacity-0" />
+            <div className="absolute top-2/3 right-1/3 w-3 h-3 rounded-full bg-teal-400/40 blur-sm dark:opacity-0" />
+            <div className="absolute top-1/2 right-1/4 w-2 h-2 rounded-full bg-teal-400/40 blur-sm dark:opacity-0" />
+
+            {/* Dark Mode Particles */}
+            <div className="absolute top-1/3 left-1/4 w-4 h-4 rounded-full bg-teal-600/40 blur-sm opacity-0 dark:opacity-100" />
+            <div className="absolute top-2/3 right-1/3 w-3 h-3 rounded-full bg-teal-600/40 blur-sm opacity-0 dark:opacity-100" />
+            <div className="absolute top-1/2 right-1/4 w-2 h-2 rounded-full bg-teal-600/40 blur-sm opacity-0 dark:opacity-100" />
+          </div>
+        </div>
+      </div>
       <Features></Features>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-center py-10 ">
         {/* Left Side - Terminal */}

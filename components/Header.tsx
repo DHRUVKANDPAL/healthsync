@@ -4,23 +4,48 @@ import { FiPhoneCall } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
 import { CiSearch } from "react-icons/ci";
+import { Menu, X, Search } from "lucide-react";
+import {
+  Phone,
+  Clock,
+  Mail,
+  MapPin,
+  Award,
+  Ambulance,
+  Heart,
+} from "lucide-react";
 import { IoIosArrowDown } from "react-icons/io";
-import { IoMenu } from "react-icons/io5";
+import { IoMenu, IoClose } from "react-icons/io5";
 import Link from "next/link";
 import Logo from "./Logo";
 import DarkModeToggle from "./DarkModeToggle";
 import GoogleTranslate from "./GoogleTranslate";
 import SearchResults from "./SearchResults";
 import { useRouter } from "next/navigation";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter,
+  SheetClose,
+} from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 type Props = {
   onSearchStateChange?: (isSearching: boolean) => void;
-  input?: string|"";
-  lat?: number|23.0225;
-  long?: number|78.4888;
+  input?: string | "";
+  lat?: number | 23.0225;
+  long?: number | 78.4888;
 };
 
-const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
+const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,21 +59,27 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
   const closeMenu = () => setIsMenuOpen(false);
   const [searchQuery, setSearchQuery] = useState(input);
   const [showResults, setShowResults] = useState(false);
-  // let latitude = 19.0760;
-  // let longitude = 72.8777;
   const [latitude, setLatitude] = useState(lat);
   const [longitude, setLongitude] = useState(long);
-  const [accuracy, setAccuracy] = useState<number | null>(null); // Store accuracy
-  const [status, setStatus] = useState<string>("Getting location..."); // Status message
+  const [accuracy, setAccuracy] = useState<number | null>(null);
+  const [status, setStatus] = useState<string>("Getting location...");
   const [watchId, setWatchId] = useState<number | null>(null);
   const router = useRouter();
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+
   const toggleSearch = () => {
     if (window.innerWidth < 640) {
       setIsSearchOpen(!isSearchOpen);
     }
   };
-  const toggleLoginDropdown = () =>
-    setIsLoginDropdownOpen(!isLoginDropdownOpen);
+
+  const toggleLoginDropdown = () => {
+    if (isSmallScreen) {
+      setActiveSubmenu(activeSubmenu === "login" ? null : "login");
+    } else {
+      setIsLoginDropdownOpen(!isLoginDropdownOpen);
+    }
+  };
 
   useEffect(() => {
     if (!isSearchOpen) {
@@ -60,18 +91,23 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
       setShowLogo(false);
     }
   }, [isSearchOpen]);
+
   useEffect(() => {
-    setIsSmallScreen(window.innerWidth < 640);
-  }, []);
+    const handleResize = () => {
+      const smallScreen = window.innerWidth < 640;
+      setIsSmallScreen(smallScreen);
+      if (!smallScreen && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMenuOpen]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        event.target instanceof Node &&
-        !menuRef.current.contains(event.target)
-      ) {
-        closeMenu();
-      }
       if (
         searchRef.current &&
         event.target instanceof Node &&
@@ -87,19 +123,10 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
       }
     };
 
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 640);
-    };
-
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
     document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isLoginDropdownOpen]);
 
-    return () => {
-      window.removeEventListener("resize", checkScreenSize);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isLoginDropdownOpen, closeMenu]);
   const fetchLocation = async ({
     latitude,
     longitude,
@@ -113,29 +140,26 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`); // More robust error checking
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
 
-      // Check if the response has the expected data before accessing it
       if (data && data.display_name) {
         setLocation(data.display_name.split(",")[0]);
       } else {
         setLocation("Location name not found");
       }
     } catch (error: any) {
-      //added type any since we dont know what type of error
       console.error("Error fetching location:", error);
       setLocation(`Error fetching location: ${error.message}`);
     }
   };
 
   useEffect(() => {
-    let currentWatchId: number | null = null; // Store watchId in a local variable
+    let currentWatchId: number | null = null;
 
     if ("geolocation" in navigator) {
-      // 1. Try to get an initial, potentially cached, position
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude, accuracy } = position.coords;
@@ -148,10 +172,8 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
           );
           fetchLocation({ latitude, longitude });
           console.log(latitude, longitude, accuracy);
-          // 2. Start watching for position changes
           setStatus("Refining location...");
           currentWatchId = navigator.geolocation.watchPosition(
-            // Store the watchId
             (newPosition) => {
               const {
                 latitude: newLat,
@@ -159,7 +181,6 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                 accuracy: newAccuracy,
               } = newPosition.coords;
 
-              // Update if more accurate or if no previous position
               if (!accuracy || newAccuracy < accuracy) {
                 setLatitude(newLat);
                 setLongitude(newLng);
@@ -172,7 +193,6 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                 console.log(latitude, longitude, accuracy);
                 fetchLocation({ latitude: newLat, longitude: newLng });
               }
-              // Stop watching when sufficient accuracy is achieved
               if (newAccuracy <= 100) {
                 navigator.geolocation.clearWatch(currentWatchId!);
                 setStatus(
@@ -193,14 +213,12 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
               timeout: 45000,
             }
           );
-          setWatchId(currentWatchId); //store the watchId
+          setWatchId(currentWatchId);
         },
         (error) => {
           console.error("getCurrentPosition error:", error);
           setStatus(`Error getting location: ${error.message}`);
-          // Start watchPosition if the initial getCurrentPosition fails
           currentWatchId = navigator.geolocation.watchPosition(
-            // Store the watchId
             (newPosition) => {
               const {
                 latitude: newLat,
@@ -208,7 +226,6 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                 accuracy: newAccuracy,
               } = newPosition.coords;
 
-              // Update if more accurate or if no previous position
               if (!accuracy || newAccuracy < accuracy) {
                 setLatitude(newLat);
                 setLongitude(newLng);
@@ -220,7 +237,6 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                 );
                 fetchLocation({ latitude: newLat, longitude: newLng });
               }
-              // Stop watching when sufficient accuracy is achieved
               if (newAccuracy <= 10) {
                 navigator.geolocation.clearWatch(currentWatchId!);
                 setStatus(
@@ -253,13 +269,12 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
       setStatus("Geolocation not supported");
     }
 
-    // Cleanup function to stop watching when the component unmounts
     return () => {
       if (watchId !== null) {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, [searchQuery]); // Empty dependency array means this effect runs once on mount
+  }, [searchQuery]);
 
   const handleStopTracking = () => {
     if (watchId !== null) {
@@ -277,7 +292,6 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // setShowResults(!!searchQuery);
     router.push(
       `/search?searchQuery=${encodeURIComponent(
         searchQuery!!
@@ -296,25 +310,47 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
   return (
     <>
       <header className="sticky sm:-top-[72px] top-0 z-30">
+        {/* Top info section for desktop */}
         <section className="sm:flex sm:relative hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white dark:bg-slate-800 transition-colors duration-300">
           <Logo></Logo>
-          <ul className="flex justify-around items-center gap-2 sm:gap-10 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs">
+
+          <ul className="flex justify-around items-center gap-2 sm:gap-20 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs">
             <li className="flex items-center justify-center gap-1 sm:gap-4">
-              <FiPhoneCall className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
+              <Phone className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Emergency</p>
                 <p className="text-teal-500 dark:text-teal-400">11111-22222</p>
               </div>
             </li>
+{/* 
             <li className="flex items-center justify-center gap-1 sm:gap-4">
-              <FaRegClock className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
+              <Ambulance className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
+              <div className="text-center sm:text-left">
+                <p className="text-teal-700 dark:text-teal-300">Ambulance</p>
+                <p className="text-teal-500 dark:text-teal-400">22222-33333</p>
+              </div>
+            </li> */}
+
+            <li className="flex items-center justify-center gap-1 sm:gap-4">
+              <Clock className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Work Hour</p>
                 <p className="text-teal-500 dark:text-teal-400">24x7</p>
               </div>
             </li>
+
+            {/* <li className="flex items-center justify-center gap-1 sm:gap-4">
+              <Mail className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
+              <div className="text-center sm:text-left">
+                <p className="text-teal-700 dark:text-teal-300">Email Us</p>
+                <p className="text-teal-500 dark:text-teal-400">
+                  care@healthcare.com
+                </p>
+              </div>
+            </li> */}
+
             <li className="sm:flex hidden items-center justify-center gap-1 sm:gap-4">
-              <GrLocation className="text-teal-500 dark:text-teal-400 h-5 w-5 sm:h-7 sm:w-7" />
+              <MapPin className="text-teal-500 dark:text-teal-400 h-5 w-5 sm:h-7 sm:w-7" />
               <div className="text-center sm:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Location</p>
                 <p className="text-teal-500 dark:text-teal-400">
@@ -322,21 +358,185 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                 </p>
               </div>
             </li>
+
             <li>
-              <div className="fixed top-5 right-5 z-20">
+              <div className="fixed top-5 right-5 z-[100]">
                 <DarkModeToggle />
               </div>
             </li>
           </ul>
         </section>
-        <nav className="bg-blue-900 dark:bg-slate-900 text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 transition-colors duration-300">
-          <div className="flex justify-between items-center w-full sm:w-auto">
-            <button
-              onClick={toggleMenu}
-              className="sm:hidden focus:outline-none"
-            >
-              <IoMenu className="text-teal-50 h-8 w-8" />
-            </button>
+
+        {/* Main navigation */}
+        <nav className="text-teal-950 dark:text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 transition-colors duration-300 z-[1000]">
+          <div className="md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none flex justify-between items-center w-full sm:w-auto md:hidden rounded-full px-4">
+            {/* Mobile menu trigger using shadcn/ui Sheet */}
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild>
+                <button
+                  className="sm:hidden focus:outline-none z-50"
+                  aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                >
+                  <IoMenu className="text-teal-800 dark:text-teal-200 h-8 w-8" />
+                </button>
+              </SheetTrigger>
+              <SheetContent
+                side="left"
+                className="w-72 bg-blue-50 dark:bg-slate-900 p-0 flex flex-col"
+              >
+                <SheetHeader className="px-6 pt-6 pb-2 flex justify-start items-center">
+                  <Logo className="" />
+                  <div className="absolute right-4 top-4">
+                    <DarkModeToggle />
+                  </div>
+                </SheetHeader>
+
+                {/* Location display for mobile */}
+                <div className="px-6 flex flex-col justify-start items-start w-full gap-2 bg-blue-50 dark:bg-slate-900">
+                  <p className="text-teal-800 dark:text-teal-300 text-sm font-medium flex items-center gap-1">
+                    <GrLocation className="text-teal-800 dark:text-teal-300 h-5 w-5 flex-shrink-0" />
+                    <span>Location:</span>
+                  </p>
+                  <span className="text-teal-600 dark:text-teal-400 font-light text-xs">
+                    {location ?? "Fetching location..."}
+                  </span>
+                </div>
+
+                <div className="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent"></div>
+
+                {/* Navigation links */}
+                <div className="flex-grow overflow-y-auto">
+                  <ul className="nav-links bg-blue-50 dark:bg-slate-900 flex flex-col justify-start w-full px-6 text-md">
+                    <SheetClose asChild>
+                      <Link
+                        href="/."
+                        className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 border-b border-teal-100 dark:border-slate-800"
+                      >
+                        Home
+                      </Link>
+                    </SheetClose>
+
+                    {isLoggedIn ? (
+                      <>
+                        <SheetClose asChild>
+                          <Link
+                            href="#"
+                            className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 border-b border-teal-100 dark:border-slate-800"
+                          >
+                            Dashboard
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            href="#"
+                            className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2"
+                          >
+                            Logout
+                          </Link>
+                        </SheetClose>
+                      </>
+                    ) : (
+                      <Accordion
+                        type="single"
+                        collapsible
+                        className="w-full border-none"
+                      >
+                        <AccordionItem
+                          value="login"
+                          className="border-b border-teal-100 dark:border-slate-800"
+                        >
+                          <AccordionTrigger className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 no-underline">
+                            Login
+                          </AccordionTrigger>
+                          <AccordionContent className="bg-teal-100 dark:bg-slate-800 rounded-xl">
+                            <SheetClose asChild>
+                              <Link
+                                href="/patient-auth"
+                                className="block px-6 py-2 text-teal-950 dark:text-teal-50 hover:bg-teal-100 dark:hover:bg-slate-700"
+                              >
+                                Patient Login
+                              </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                              <Link
+                                href="/doctor-auth"
+                                className="block px-6 py-2 text-teal-950 dark:text-teal-50 hover:bg-teal-100 dark:hover:bg-slate-700"
+                              >
+                                Doctor Login
+                              </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                              <Link
+                                href="/hospital-auth"
+                                className="block px-6 py-2 text-teal-950 dark:text-teal-50 hover:bg-teal-100 dark:hover:bg-slate-700"
+                              >
+                                Hospital Login
+                              </Link>
+                            </SheetClose>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    )}
+
+                    <SheetClose asChild>
+                      <Link
+                        href="/pricing"
+                        className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 border-b border-teal-100 dark:border-slate-800"
+                      >
+                        Pricing
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
+                        href="/about-us"
+                        className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 border-b border-teal-100 dark:border-slate-800"
+                      >
+                        About Us
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
+                        href="/discuss"
+                        className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 border-b border-teal-100 dark:border-slate-800"
+                      >
+                        Discuss
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
+                        href="/contact-us"
+                        className="hover:text-teal-600 dark:hover:text-teal-400 px-2 py-2 border-b border-teal-100 dark:border-slate-800"
+                      >
+                        Contact Us
+                      </Link>
+                    </SheetClose>
+                  </ul>
+                </div>
+
+                {/* Mobile footer */}
+                <SheetFooter className="mt-auto px-6 pb-6 pt-12 bg-blue-50 dark:bg-slate-900 w-full border-t border-teal-100 dark:border-slate-800">
+                  <div className="flex flex-col gap-4 w-full">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-teal-800 dark:text-teal-300">
+                        <Phone className="h-4 w-4" />
+                        <span className="text-sm">Emergency: 11111-22222</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-teal-800 dark:text-teal-300">
+                        <Ambulance className="h-4 w-4" />
+                        <span className="text-sm">Ambulance: 22222-33333</span>
+                      </div>
+                    </div>
+
+                    <div className="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent"></div>
+
+                    <p className="text-teal-800 dark:text-teal-300 text-xs text-center">
+                      © 2024 HealthSync. All rights reserved.
+                    </p>
+                  </div>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+
             {!isSearchOpen && showLogo && <Logo className="sm:hidden" />}
             <div
               ref={searchRef}
@@ -347,8 +547,13 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                   <button
                     onClick={toggleSearch}
                     className="focus:outline-none mr-2"
+                    aria-label={isSearchOpen ? "Close search" : "Open search"}
                   >
-                    <CiSearch className="text-teal-50 h-6 w-6" />
+                    {isSearchOpen ? (
+                      <X className="text-teal-800 dark:text-teal-200 h-6 w-6" />
+                    ) : (
+                      <CiSearch className="text-teal-800 dark:text-teal-200 h-6 w-6" />
+                    )}
                   </button>
                   <div
                     className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -365,7 +570,7 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                             handleSearchSubmit(e);
                           }
                         }}
-                        className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
+                        className="bg-white ring-1 dark:bg-slate-800 dark:text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
                         placeholder="Search..."
                       />
                     </form>
@@ -394,52 +599,37 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
               )}
             </div>
           </div>
-          <div
-            ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-64 text-lg sm:text-sm lg:text-lg bg-blue-950 dark:bg-slate-900 transform transition-transform duration-300 ease-in-out ${
-              isMenuOpen ? "translate-x-0" : "-translate-x-full"
-            } sm:relative sm:transform-none sm:w-auto sm:bg-transparent sm:h-auto z-50`}
-          >
-            <div className="absolute right-4 top-4 sm:hidden">
-              <DarkModeToggle />
-            </div>
-            <ul className="nav-links flex flex-col sm:flex-row justify-start sm:justify-between gap-3 sm:gap-8 w-full sm:w-auto mt-20 sm:mt-0 p-6  sm:p-0">
-              <li className="flex absolute top-8 left-6 items-center justify-between w-5/6 gap-4  sm:hidden">
-                <GrLocation className="text-teal-300 h-6 w-6" />
-                <div className="text-left flex-grow">
-                  <p className="text-teal-300  text-md">Location</p>
-                  <p className="text-teal-100 font-light text-sm mt-1">
-                    {location ? location : "Fetching location..."}
-                  </p>
-                </div>
-              </li>
-              <div className="h-px bg-gradient-to-r from-transparent via-teal-400 to-transparent my-2 sm:hidden"></div>
 
+          {/* Desktop menu content */}
+          <div className="hidden md:flex md:justify-center md:items-center md:gap-52 md:p-0 md:w-full">
+            <ul className="nav-links flex flex-row justify-between gap-8 w-auto mt-0 md:bg-transparent md:rounded-full md:px-20 md:backdrop-blur-2xl">
               <Link
                 href="/."
-                className="hover:text-teal-300 md:p-2"
-                onClick={closeMenu}
+                className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
               >
                 Home
               </Link>
               <Link
+                href="/pricing"
+                className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
+              >
+                Pricing
+              </Link>
+              <Link
                 href="/about-us"
-                className="hover:text-teal-300 md:p-2"
-                onClick={closeMenu}
+                className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
               >
                 About Us
               </Link>
               <Link
                 href="/discuss"
-                className="hover:text-teal-300 md:p-2"
-                onClick={closeMenu}
+                className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
               >
                 Discuss
               </Link>
               <Link
                 href="/contact-us"
-                className="hover:text-teal-300 md:p-2"
-                onClick={closeMenu}
+                className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
               >
                 Contact Us
               </Link>
@@ -448,15 +638,13 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
                 <>
                   <Link
                     href="#"
-                    className="hover:text-teal-300"
-                    onClick={closeMenu}
+                    className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
                   >
                     Dashboard
                   </Link>
                   <Link
                     href="#"
-                    className="hover:text-teal-300"
-                    onClick={closeMenu}
+                    className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
                   >
                     Logout
                   </Link>
@@ -464,92 +652,55 @@ const Header = ({ onSearchStateChange,input,lat,long }: Props) => {
               ) : (
                 <>
                   <div
-                    className="relative"
+                    className="relative login-dropdown"
+                    onMouseEnter={() => setIsLoginDropdownOpen(true)}
                     onMouseLeave={() => setIsLoginDropdownOpen(false)}
                   >
-                    <div
-                      className="relative login-dropdown"
-                      onMouseEnter={() => {
-                        if (!isSmallScreen) setIsLoginDropdownOpen(true);
-                      }}
-                      onMouseLeave={() => {
-                        setIsLoginDropdownOpen(false);
-                      }}
-                      onClick={() => toggleLoginDropdown()}
+                    <button
+                      className="hover:text-teal-600 dark:hover:text-teal-400 p-2 flex items-center"
+                      aria-expanded={isLoginDropdownOpen}
                     >
-                      <div
-                        className="hover:text-teal-300 flex justify-center items-center"
-                        onClick={() => toggleLoginDropdown()}
-                      >
-                        <div className="flex justify-between items-center md:p-2 w-full">
-                          Login
-                          <IoIosArrowDown
-                            className={`transform inline transition-transform duration-300 ${
-                              isLoginDropdownOpen ? "rotate-180" : ""
-                            }`}
-                          />
-                        </div>
-                      </div>
-                      {isLoginDropdownOpen && (
-                        <div
-                          className="absolute w-full sm:w-40 top-6 left-0 mt-4 bg-blue-800 dark:bg-slate-800 rounded-md shadow-lg z-50 text-nowrap overflow-hidden"
-                          // onMouseLeave={() => {
-                          //   setIsLoginDropdownOpen(false);
-                          // }}
+                      Login
+                      <IoIosArrowDown
+                        className={`transform transition-transform duration-300 ml-1 ${
+                          isLoginDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isLoginDropdownOpen && (
+                      <div className="absolute w-40 top-full mt-1 bg-teal-50 dark:bg-slate-800 rounded-md shadow-lg z-50 overflow-hidden">
+                        <Link
+                          href="/patient-auth"
+                          className="block px-4 py-2 text-sm text-teal-950 dark:text-teal-50 hover:bg-teal-200 dark:hover:bg-slate-700"
+                          onClick={() => setIsLoginDropdownOpen(false)}
                         >
-                          <Link
-                            href="/patient-auth"
-                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
-                            onClick={() => {
-                              closeMenu();
-                            }}
-                          >
-                            Patient Login
-                          </Link>
-                          <Link
-                            href="/doctor-auth"
-                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
-                            onClick={() => {
-                              closeMenu();
-                            }}
-                          >
-                            Doctor Login
-                          </Link>
-                          <Link
-                            href="/hospital-auth"
-                            className="block px-4 py-2 text-sm text-teal-50 hover:bg-blue-600 dark:hover:bg-slate-700"
-                            onClick={() => {
-                              closeMenu();
-                            }}
-                          >
-                            Hospital Login
-                          </Link>
-                        </div>
-                      )}
-                    </div>
+                          Patient Login
+                        </Link>
+                        <Link
+                          href="/doctor-auth"
+                          className="block px-4 py-2 text-sm text-teal-950 dark:text-teal-50 hover:bg-teal-200 dark:hover:bg-slate-700"
+                          onClick={() => setIsLoginDropdownOpen(false)}
+                        >
+                          Doctor Login
+                        </Link>
+                        <Link
+                          href="/hospital-auth"
+                          className="block px-4 py-2 text-sm text-teal-950 dark:text-teal-50 hover:bg-teal-200 dark:hover:bg-slate-700"
+                          onClick={() => setIsLoginDropdownOpen(false)}
+                        >
+                          Hospital Login
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </>
               )}
             </ul>
-            <div
-              className="h-full flex items-center flex-col justify-end pb-[21rem] sm:hidden "
-              onClick={() => {
-                closeMenu();
-              }}
-            >
-              <Logo className="flex-grow sm:hidden flex items-end justify-center"></Logo>
-              <p className="text-teal-100 sm:hidden text-sm flex text-center justify-center">
-                © 2024 HealthSync. All rights reserved.
-              </p>
-            </div>
           </div>
         </nav>
-        {isMenuOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={closeMenu}
-          ></div>
-        )}
+
+        {/* Search results */}
         {location && showResults && searchQuery && (
           <div className="w-full bg-white dark:bg-slate-900 shadow-lg z-20">
             <SearchResults
