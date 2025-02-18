@@ -315,7 +315,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
           <Logo></Logo>
 
           <ul className="flex justify-around items-center gap-2 sm:gap-20 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs">
-            <li className="flex items-center justify-center gap-1 sm:gap-4">
+            <li className="hidden lg:flex items-center justify-center gap-1 sm:gap-4">
               <Phone className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Emergency</p>
@@ -331,7 +331,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
               </div>
             </li> */}
 
-            <li className="flex items-center justify-center gap-1 sm:gap-4">
+            <li className="items-center justify-center gap-1 sm:gap-4 lg:flex hidden">
               <Clock className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Work Hour</p>
@@ -374,7 +374,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
                 <button
-                  className="sm:hidden focus:outline-none z-50"
+                  className="md:hidden focus:outline-none z-50"
                   aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                 >
                   <IoMenu className="text-teal-800 dark:text-teal-200 h-8 w-8" />
@@ -602,7 +602,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
 
           {/* Desktop menu content */}
           <div className="hidden md:flex md:justify-center md:items-center md:gap-52 md:p-0 md:w-full">
-            <ul className="nav-links flex flex-row justify-between gap-8 w-auto mt-0 md:bg-teal-500/5 dark:md:bg-slate-600/20 md:rounded-full md:px-20 md:backdrop-blur-2xl font-semibold">
+            <ul className="nav-links flex flex-row justify-between gap-4 lg:gap-8 w-auto mt-0 md:bg-teal-500/5 dark:md:bg-slate-600/20 md:rounded-full md:px-20 md:backdrop-blur-2xl font-semibold">
               <Link
                 href="/."
                 className="hover:text-teal-600 dark:hover:text-teal-400 p-2"

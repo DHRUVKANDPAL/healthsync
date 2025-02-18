@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AnimatedList} from "./magicui/animated-list";
 
 import {
   Bell,
@@ -12,6 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { AnimatedListDemo } from "./magicui/animatedListDemo";
+import HospitalCard from "./magicui/HospitalCardDemo";
 
 const Features = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -28,6 +28,9 @@ const Features = () => {
       bgColor: "bg-indigo-100 dark:bg-indigo-900/30",
       borderColor: "border-indigo-200 dark:border-indigo-800",
       image: "imageFeatureSearchDoctors.png",
+      component: (
+        <AnimatedListDemo className=" h-[300px] w-full scale-75 border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_50%)] group-hover:scale-90" />
+      ),
     },
     {
       icon: <QrCode className="w-6 h-6" />,
@@ -72,6 +75,11 @@ const Features = () => {
       bgColor: "bg-rose-100 dark:bg-rose-900/30",
       borderColor: "border-rose-200 dark:border-rose-800",
       image: "imageFeatureSearchDoctors.png",
+      component: (
+        <div className=" h-[300px] w-full scale-75 border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_50%)] group-hover:scale-90">
+          <HospitalCard />
+        </div>
+      ),
     },
     {
       icon: <PillIcon className="w-6 h-6" />,
@@ -279,43 +287,11 @@ const Features = () => {
                         </h3>
                       </div>
 
-                      {/* <motion.div
-                        animate={{ y: [0, -10, 0, 10, 0] }}
-                        transition={{
-                          duration: 5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                        className="relative mb-8 rounded-xl overflow-hidden shadow-2xl"
-                      > */}
-                        <AnimatedListDemo className=" h-[300px] w-full scale-75 border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_50%)] group-hover:scale-90" />
-
-                        {/* <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" /> */}
-                      {/* </motion.div> */}
+                      {features[activeFeature].component || null}
 
                       <p className="text-lg text-white/90 leading-relaxed mb-8">
                         {features[activeFeature].description}
                       </p>
-
-                      {/* <div className="text-center">
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sm font-medium rounded-full text-indigo-700 hover:shadow-lg transition-all duration-300"
-                        >
-                          Learn more
-                          <motion.span
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{
-                              duration: 1,
-                              repeat: Infinity,
-                              repeatDelay: 1,
-                            }}
-                          >
-                            <ArrowRight className="w-4 h-4" />
-                          </motion.span>
-                        </motion.button>
-                      </div> */}
                     </motion.div>
                   </div>
                 </motion.div>

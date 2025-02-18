@@ -206,7 +206,7 @@ const SymptomSearchBar = ({ className }: { className?: string }) => {
                 {results.map((symptom) => (
                   <motion.li
                     key={symptom.id}
-                    className="px-4 py-3 flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer"
+                    className="px-4 py-1 flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer"
                     variants={item}
                     layout
                     onClick={() => setSelectedSymptom(symptom)}
@@ -219,12 +219,12 @@ const SymptomSearchBar = ({ className }: { className?: string }) => {
                         <span className="text-sm font-medium text-slate-900 dark:text-slate-100 flex justify-start">
                           {symptom.name}
                         </span>
-                        <span className="text-xs text-slate-500 dark:text-slate-400 flex justify-start">
+                        {/* <span className="text-xs text-slate-500 dark:text-slate-400 flex justify-start">
                           {symptom.category}
-                        </span>
+                        </span> */}
                       </div>
                     </div>
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                       {symptom.urgency && (
                         <span
                           className={cn(
@@ -236,14 +236,14 @@ const SymptomSearchBar = ({ className }: { className?: string }) => {
                             symptom.urgency.slice(1)}
                         </span>
                       )}
-                    </div>
+                    </div> */}
                   </motion.li>
                 ))}
               </motion.ul>
               <div className="mt-2 px-4 py-3 border-t border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                   <span>Type to refine your search</span>
-                  <span>ESC to close</span>
+                  {/* <span>ESC to close</span> */}
                 </div>
               </div>
             </motion.div>

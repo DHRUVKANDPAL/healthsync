@@ -110,7 +110,7 @@ export default function ContactUs() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-100 dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-800 flex justify-center items-center py-12">
+      <main className="min-h-screen bg-transparent justify-center items-center py-12">
         <div className="container mx-auto px-4">
           <Link
             href="/"
