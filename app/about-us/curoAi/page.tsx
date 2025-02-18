@@ -23,7 +23,7 @@ import { curoAIResponse } from "@/lib/gemini";
 import DarkModeToggle from "@/components/DarkModeToggle";
 
 type Message = {
-  role: "user" | "bot";
+  role: string;
   content: string | any;
 };
 
@@ -139,7 +139,7 @@ const Message = ({ message, isLast }:any) => {
           CuroAI Assistant
         </div>
       </div>
-      <div className="max-w-4xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+      <div className=" bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
         {isLast && !message.content ? (
           <LoadingDots />
         ) : (
@@ -149,6 +149,41 @@ const Message = ({ message, isLast }:any) => {
     </motion.div>
   );
 };
+
+ const processText = (text: string) => {
+   // Updated regex to handle hashtags ending with space
+   const regex =
+     /(\([^)]+\)|\[[^\]]+\]|{[^}]+}|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|#[^ ]+(?= |$)|"[^"]+"|[^()[\]{}#"*`]+)/g;
+
+   const parts = text.match(regex) || [text];
+
+   return parts.map((part, index) => {
+     // Check if the part is a special expression
+     if (
+       (part.startsWith("(") && part.endsWith(")")) ||
+       (part.startsWith("[") && part.endsWith("]")) ||
+       (part.startsWith("{") && part.endsWith("}")) ||
+       (part.startsWith("**") && part.endsWith("**")) ||
+       (part.startsWith("*") && part.endsWith("*")) ||
+       (part.startsWith("`") && part.endsWith("`")) ||
+       part.startsWith("#") || // Changed this condition for hashtags
+       (part.startsWith('"') && part.endsWith('"'))
+     ) {
+       return (
+         <span
+           key={index}
+           className={cn(
+             "font-bold",
+             part.startsWith("#") ? "text-gray-800" : "text-gray-700"
+           )}
+         >
+           {part}
+         </span>
+       );
+     }
+     return part;
+   });
+ };
 
 const renderBotResponse = (content:any) => {
   if (!content || typeof content !== "object") return null;
@@ -166,7 +201,7 @@ const renderBotResponse = (content:any) => {
           {content.home_remedies.detailed_explanation}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {content.home_remedies.remedies.map((remedy:any, index:any) => (
+          {content.home_remedies.remedies.map((remedy: any, index: any) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}
@@ -190,18 +225,20 @@ const renderBotResponse = (content:any) => {
           {content.precautions.detailed_explanation}
         </p>
         <ul className="space-y-3">
-          {content.precautions.precaution_list.map((precaution:any, index:any) => (
-            <motion.li
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-start gap-3 text-slate-600 dark:text-slate-300"
-            >
-              <div className="h-2 w-2 rounded-full bg-yellow-500 mt-2 flex-shrink-0" />
-              <span>{precaution}</span>
-            </motion.li>
-          ))}
+          {content.precautions.precaution_list.map(
+            (precaution: any, index: any) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-start gap-3 text-slate-600 dark:text-slate-300"
+              >
+                <div className="h-2 w-2 rounded-full bg-yellow-500 mt-2 flex-shrink-0" />
+                <span>{precaution}</span>
+              </motion.li>
+            )
+          )}
         </ul>
       </ResponseSection>
 
@@ -218,25 +255,48 @@ const renderBotResponse = (content:any) => {
             Red Flags:
           </h3>
           <ul className="space-y-3">
-            {content.when_to_see_doctor.red_flags.map((flag:any, index:any) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-start gap-3 text-slate-600 dark:text-slate-300"
-              >
-                <div className="h-2 w-2 rounded-full bg-red-500 mt-2 flex-shrink-0" />
-                <span>{flag}</span>
-              </motion.li>
-            ))}
+            {content.when_to_see_doctor.red_flags.map(
+              (flag: any, index: any) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-start gap-3 text-slate-600 dark:text-slate-300"
+                >
+                  <div className="h-2 w-2 rounded-full bg-red-500 mt-2 flex-shrink-0" />
+                  <span>{flag}</span>
+                </motion.li>
+              )
+            )}
+          </ul>
+        </div>
+        <div className="space-y-4 pt-4">
+          <h3 className="font-medium text-red-500 dark:text-red-400">
+            After How Many Days:
+          </h3>
+          <ul className="space-y-3">
+            {content.when_to_see_doctor.after_how_many_days.map(
+              (flag: any, index: any) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-start gap-3 text-slate-600 dark:text-slate-300"
+                >
+                  <div className="h-2 w-2 rounded-full bg-red-500 mt-2 flex-shrink-0" />
+                  <span>{processText(flag)}</span>
+                </motion.li>
+              )
+            )}
           </ul>
         </div>
       </ResponseSection>
 
       <ResponseSection title="Medical Departments" icon={Building2}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {content.relevant_medical_departments.map((dept:any, index:any) => (
+          {content.relevant_medical_departments.map((dept: any, index: any) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
