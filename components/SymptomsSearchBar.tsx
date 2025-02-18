@@ -170,9 +170,9 @@ const SymptomSearchBar = ({ className }: { className?: string }) => {
           onChange={handleInputChange}
           onFocus={handleFocus}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-          className="pl-5 pr-9 py-3 h-14 text-sm rounded-lg focus-visible:ring-offset-0 border-none bg-transparent text-slate-700 dark:text-slate-200"
+          className="pr-5 pl-14 py-3 h-14 text-sm rounded-lg focus-visible:ring-offset-0 border-none bg-transparent text-slate-700 dark:text-slate-200"
         />
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5">
           <AnimatePresence mode="popLayout">
             <motion.div
               key="search"

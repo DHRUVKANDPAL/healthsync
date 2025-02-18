@@ -132,11 +132,11 @@ const HowItWorks: React.FC = () => {
 
   return (
     <div ref={containerRef} className="py-16 mx-auto px-4 md:px-8 max-w-7xl">
-      <div className="relative overflow-hidden bg-gradient-to-br from-white to-blue-50 dark:from-slate-900 dark:to-slate-800 rounded-3xl shadow-xl">
+      <div className="relative overflow-hidden bg-gradient-to-br from-white to-teal-50 dark:from-slate-900 dark:to-slate-800 rounded-3xl shadow-xl">
         <div className="relative z-10 py-16 px-4 md:px-12">
           {/* Section heading */}
           <div className="text-center mb-16">
-            <h2 className="mb-4 text-4xl md:text-5xl pb-2 font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 inline-block text-transparent bg-clip-text">
+            <h2 className="mb-4 text-4xl md:text-5xl pb-2 font-bold bg-gradient-to-r from-teal-600 to-cyan-500 dark:from-teal-400 dark:to-cyan-300 inline-block text-transparent bg-clip-text">
               How HealthSync Works
             </h2>
             <p className="max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
@@ -163,7 +163,7 @@ const HowItWorks: React.FC = () => {
                   {userType === type && (
                     <motion.div
                       layoutId="activePill"
-                      className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-400 dark:from-blue-600 dark:to-cyan-500 rounded-full"
+                      className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-400 dark:from-teal-600 dark:to-cyan-500 rounded-full"
                       initial={false}
                       transition={{ type: "spring", duration: 0.5 }}
                     />
@@ -202,7 +202,7 @@ const HowItWorks: React.FC = () => {
                       <div className="p-6">
                         {/* Step Number Badge */}
                         <div className="flex justify-between items-center mb-6">
-                          <span className="text-lg font-semibold bg-blue-500 text-white dark:bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
+                          <span className="text-lg font-semibold bg-teal-500 text-white dark:bg-teal-600 rounded-full w-8 h-8 flex items-center justify-center">
                             {index + 1}
                           </span>
 
@@ -210,7 +210,7 @@ const HowItWorks: React.FC = () => {
                           <div
                             className={`${
                               isMobile ? "w-10 h-10" : "w-16 h-16"
-                            } flex-shrink-0 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400`}
+                            } flex-shrink-0 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400`}
                           >
                             {React.cloneElement(
                               step.icon as React.ReactElement,

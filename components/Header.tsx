@@ -322,7 +322,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
                 <p className="text-teal-500 dark:text-teal-400">11111-22222</p>
               </div>
             </li>
-{/* 
+            {/* 
             <li className="flex items-center justify-center gap-1 sm:gap-4">
               <Ambulance className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
               <div className="text-center sm:text-left">
@@ -382,7 +382,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
               </SheetTrigger>
               <SheetContent
                 side="left"
-                className="w-72 bg-blue-50 dark:bg-slate-900 p-0 flex flex-col"
+                className="w-72 bg-blue-50 dark:bg-slate-900 p-0 flex flex-col "
               >
                 <SheetHeader className="px-6 pt-6 pb-2 flex justify-start items-center">
                   <Logo className="" />
@@ -602,7 +602,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
 
           {/* Desktop menu content */}
           <div className="hidden md:flex md:justify-center md:items-center md:gap-52 md:p-0 md:w-full">
-            <ul className="nav-links flex flex-row justify-between gap-8 w-auto mt-0 md:bg-transparent md:rounded-full md:px-20 md:backdrop-blur-2xl">
+            <ul className="nav-links flex flex-row justify-between gap-8 w-auto mt-0 md:bg-teal-500/5 dark:md:bg-slate-600/20 md:rounded-full md:px-20 md:backdrop-blur-2xl font-semibold">
               <Link
                 href="/."
                 className="hover:text-teal-600 dark:hover:text-teal-400 p-2"
