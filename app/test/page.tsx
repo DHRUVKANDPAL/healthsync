@@ -6,6 +6,8 @@ import { triage } from "@/lib/gemini";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
 import { doctorsignupDummy } from "../(main)/doctor-auth/authdoc.action";
+import { useLatLong } from "@/hooks/useLatLong";
+import { useLocation } from "@/hooks/useLocation";
 
 type Props = {};
 const da = [
@@ -1742,31 +1744,38 @@ const data = [
 
 
 const page = (props: Props) => {
-  async function handleAddDepartment() {
-    for(let i=0;i<data.length;i++){
-      try {
-        const res = await fetch("/api/test", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ values: data[i] }),
-        });
-        toast.success("Done");
-      } catch (error) {
-        toast.error("Error adding department.");
-      }
-    }
-  }
+  // async function handleAddDepartment() {
+  //   for(let i=0;i<data.length;i++){
+  //     try {
+  //       const res = await fetch("/api/test", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ values: data[i] }),
+  //       });
+  //       toast.success("Done");
+  //     } catch (error) {
+  //       toast.error("Error adding department.");
+  //     }
+  //   }
+  // }
   // async function handleAddDepartment() {
   //   const res=await fetch(`/api/test`);
   //   const data=await res.json();
   //   console.log(data);
   // }
-
+  const {latitude,longitude,location}=useLocation();
+  if(latitude===-1||longitude===-1){
+    return (
+      <div className="min-h-screen flex items-center justify-center font-extrabold text-5xl">Fetching Have patience .... pata nhi kaha kaha se aa jate h </div>
+    )
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* <BeatLoader className="w-[50px] h-[20px]"></BeatLoader> */}
       Test Page
-      <Button onClick={handleAddDepartment}>Handle Add Doc to Dept</Button>
+      {/* <Button onClick={handleAddDepartment}>Handle Add Doc to Dept</Button> */}
+      {`Latitude is ${latitude} and longitude is ${longitude} and Location is ${location}`}
+
     </div>
   );
 };
