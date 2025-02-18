@@ -1763,18 +1763,20 @@ const page = (props: Props) => {
   //   const data=await res.json();
   //   console.log(data);
   // }
-  const {latitude,longitude,location}=useLocation();
+  const {latitude,longitude,location,accuracy}=useLocation();
   if(latitude===-1||longitude===-1){
     return (
       <div className="min-h-screen flex items-center justify-center font-extrabold text-5xl">Fetching Have patience .... pata nhi kaha kaha se aa jate h </div>
     )
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen flex items-center text-center justify-center bg-gradient-to-r dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* <BeatLoader className="w-[50px] h-[20px]"></BeatLoader> */}
       Test Page
       {/* <Button onClick={handleAddDepartment}>Handle Add Doc to Dept</Button> */}
       {`Latitude is ${latitude} and longitude is ${longitude} and Location is ${location}`}
+      <br></br>
+      {`Accuracy is ${accuracy} meters`}
 
     </div>
   );
