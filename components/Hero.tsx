@@ -101,56 +101,6 @@ const Hero = () => {
               className="w-full max-w-3xl mx-auto mt-12 flex flex-col md:flex-row md:items-start justify-center gap-2"
               variants={fadeInUp}
             >
-              {/* Login/Get Started Button */}
-              {/* <div className="flex flex-col items-center justify-center">
-                {isLoggedIn ? (
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Button
-                      size="lg"
-                      className="h-14 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      Go to Dashboard
-                      <ChevronDown className="ml-2 h-5 w-5" />
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Link href="/patient-auth">
-                      <Button
-                        size="lg"
-                        className="h-14 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 dark:from-teal-600 dark:to-teal-700 dark:hover:from-teal-700 dark:hover:to-teal-800 text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-                      >
-                        Get Started / Login
-                      </Button>
-                    </Link>
-                  </motion.div>
-                )}
-              </div> */}
-              {/* Search Bar - hidden on small devices */}
-              <div className="hidden md:block w-full max-w-md">
-                <SymptomSearchBar />
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-3 text-left">
-                  Search for symptoms or health concerns
-                </p>
-              </div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="rounded-l-md overflow-hidden hidden md:block"
-              >
-                <Button
-                  size="lg"
-                  className="h-14 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-lg  rounded-e-full rounded-tl-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Search
-                </Button>
-              </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -165,6 +115,25 @@ const Hero = () => {
                   </Button>
                 </Link>
               </motion.div>
+              {/* Search Bar - hidden on small devices */}
+              <div className="hidden md:block w-full max-w-md">
+                <SymptomSearchBar className="w-[70%]"/>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-3 text-left">
+                  Search for symptoms or health concerns
+                </p>
+              </div>
+              {/* <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="rounded-l-md overflow-hidden hidden md:block"
+              >
+                <Button
+                  size="lg"
+                  className="h-14 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-lg  rounded-e-full rounded-tl-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Search
+                </Button>
+              </motion.div> */}
             </motion.div>
           </motion.div>
         </div>
