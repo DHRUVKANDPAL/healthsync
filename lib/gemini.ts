@@ -347,7 +347,7 @@ export async function curoAIResponse(userInput: string) {
 
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash", // Or another suitable model
+      model: "gemini-2.0-flash-001", // Or another suitable model
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: schema,
@@ -487,7 +487,6 @@ Input Symptoms: "${userInput}"` // Inject the user's input
 
     const responseText = result.response.text();
 
-    // Attempt to parse the JSON.  If it fails, provide a default.
     try {
       const jsonResponse = JSON.parse(responseText);
       return jsonResponse;

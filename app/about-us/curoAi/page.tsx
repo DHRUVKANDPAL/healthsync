@@ -15,37 +15,90 @@ import {
   ArrowUp,
   ChevronDown,
   ChevronUp,
+  Clock,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { curoAIResponse } from "@/lib/gemini";
 import DarkModeToggle from "@/components/DarkModeToggle";
+import DoctorProfileShimmer from "@/components/DoctorProfileShimmer";
+import MessageLoadingShimmer from "./MessageShimmer";
 
 type Message = {
   role: string;
   content: string | any;
 };
 
-const LoadingDots = () => (
-  <div className="flex space-x-2 p-4">
-    <motion.div
-      className="w-2 h-2 bg-violet-500 rounded-full"
-      animate={{ scale: [1, 1.2, 1] }}
-      transition={{ duration: 0.5, repeat: Infinity }}
-    />
-    <motion.div
-      className="w-2 h-2 bg-violet-500 rounded-full"
-      animate={{ scale: [1, 1.2, 1] }}
-      transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
-    />
-    <motion.div
-      className="w-2 h-2 bg-violet-500 rounded-full"
-      animate={{ scale: [1, 1.2, 1] }}
-      transition={{ duration: 0.5, repeat: Infinity, delay: 0.4 }}
-    />
-  </div>
-);
+const shimmerVariants = {
+  initial: {
+    backgroundPosition: "-468px 0",
+  },
+  animate: {
+    backgroundPosition: "468px 0",
+  },
+};
+
+const LoadingDots = () => {
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setElapsedTime((prev) => prev + 0.1);
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <div className="space-y-4">
+      {/* Loading Dots */}
+      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-2">
+        <Clock className="h-4 w-4" />
+        <span>Generating response... ({elapsedTime.toFixed(1)}s)</span>
+      </div>
+
+      <div className="flex space-x-2 mb-4 items-center ">
+        <motion.div
+          className="w-2 h-2 bg-violet-500 rounded-full"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 0.5, repeat: Infinity }}
+        />
+        <motion.div
+          className="w-2 h-2 bg-violet-500 rounded-full"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
+        />
+        <motion.div
+          className="w-2 h-2 bg-violet-500 rounded-full"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 0.5, repeat: Infinity, delay: 0.4 }}
+        />
+      </div>
+
+      {/* Shimmer Lines */}
+      {[1, 2].map((_, index) => (
+        <motion.div
+          key={index}
+          className="h-4 w-full rounded"
+          style={{
+            background:
+              "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
+            backgroundSize: "936px",
+          }}
+          variants={shimmerVariants}
+          initial="initial"
+          animate="animate"
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 0.1 * index,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const ResponseSection = ({
   title,
@@ -102,7 +155,7 @@ const ResponseSection = ({
   );
 };
 
-const Message = ({ message, isLast }:any) => {
+const Message = ({ message, isLast }: any) => {
   const isUser = message.role === "user";
 
   if (isUser) {
@@ -150,42 +203,42 @@ const Message = ({ message, isLast }:any) => {
   );
 };
 
- const processText = (text: string) => {
-   // Updated regex to handle hashtags ending with space
-   const regex =
-     /(\([^)]+\)|\[[^\]]+\]|{[^}]+}|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|#[^ ]+(?= |$)|"[^"]+"|[^()[\]{}#"*`]+)/g;
+const processText = (text: string) => {
+  // Updated regex to handle hashtags ending with space
+  const regex =
+    /(\([^)]+\)|\[[^\]]+\]|{[^}]+}|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|#[^ ]+(?= |$)|"[^"]+"|[^()[\]{}#"*`]+)/g;
 
-   const parts = text.match(regex) || [text];
+  const parts = text.match(regex) || [text];
 
-   return parts.map((part, index) => {
-     // Check if the part is a special expression
-     if (
-       (part.startsWith("(") && part.endsWith(")")) ||
-       (part.startsWith("[") && part.endsWith("]")) ||
-       (part.startsWith("{") && part.endsWith("}")) ||
-       (part.startsWith("**") && part.endsWith("**")) ||
-       (part.startsWith("*") && part.endsWith("*")) ||
-       (part.startsWith("`") && part.endsWith("`")) ||
-       part.startsWith("#") || // Changed this condition for hashtags
-       (part.startsWith('"') && part.endsWith('"'))
-     ) {
-       return (
-         <span
-           key={index}
-           className={cn(
-             "font-bold",
-             part.startsWith("#") ? "text-gray-800" : "text-gray-700"
-           )}
-         >
-           {part}
-         </span>
-       );
-     }
-     return part;
-   });
- };
+  return parts.map((part, index) => {
+    // Check if the part is a special expression
+    if (
+      (part.startsWith("(") && part.endsWith(")")) ||
+      (part.startsWith("[") && part.endsWith("]")) ||
+      (part.startsWith("{") && part.endsWith("}")) ||
+      (part.startsWith("**") && part.endsWith("**")) ||
+      (part.startsWith("*") && part.endsWith("*")) ||
+      (part.startsWith("`") && part.endsWith("`")) ||
+      part.startsWith("#") || // Changed this condition for hashtags
+      (part.startsWith('"') && part.endsWith('"'))
+    ) {
+      return (
+        <span
+          key={index}
+          className={cn(
+            "font-bold",
+            part.startsWith("#") ? "text-gray-800" : "text-gray-700"
+          )}
+        >
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+};
 
-const renderBotResponse = (content:any) => {
+const renderBotResponse = (content: any) => {
   if (!content || typeof content !== "object") return null;
 
   return (
