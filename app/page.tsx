@@ -17,6 +17,7 @@ import {
 } from "@/components/magicui/terminal";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import HowItWorks from "@/components/HowItWorks";
+import PricingSection from "@/components/PricingSection";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -76,8 +77,8 @@ export default function Home() {
         </div>
       </div>
       <Features></Features>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-center py-10 ">
-        {/* Left Side - Terminal */}
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-center justify-center py-10 ">
+        
         <div className="relative flex items-center justify-end px-2 ">
           <Terminal>
             <TypingAnimation>&gt; HealthSync on the way!</TypingAnimation>
@@ -130,11 +131,11 @@ export default function Home() {
             </TypingAnimation>
           </Terminal>
         </div>
-        {/* Right Side - Information Text */}
         <div className="relative flex items-center justify-start px-2 ">
           <ShineBorder color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
         </div>
-      </div>
+      </div> */}
+      <PricingSection />
       {/* <Chartstats></Chartstats> */}
       <div className="w-5/6 mx-auto ">
         <Testimonial></Testimonial>

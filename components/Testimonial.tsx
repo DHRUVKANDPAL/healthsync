@@ -1,5 +1,5 @@
 import React from "react";
-import { Quote } from "lucide-react";
+import { motion } from "framer-motion";
 import {
   Carousel,
   CarouselContent,
@@ -7,106 +7,193 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Quote, Star, CalendarDays } from "lucide-react";
 
-const testimonials = [
+interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  avatar?: string;
+  rating?: number;
+  createdAt: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     name: "Rajiv Verma",
     role: "Frequent Traveler",
     content:
-      "As a frequent traveler, I often need to visit hospitals in different cities. This platform has been a lifesaver. I could easily complete my registration online before arriving at the hospital. No more waiting in long queues or dealing with paperwork. Everything is managed smoothly, and I feel confident that my records are secure and accessible whenever needed. The staff is always prepared for my arrival, making each visit efficient and stress-free.",
+      "As a frequent traveler, I often need to visit hospitals in different cities. This platform has been a lifesaver. I could easily complete my registration online before arriving at the hospital.",
+    avatar: "/api/placeholder/32/32",
+    rating: 5,
+    createdAt: "2024-02-15",
   },
   {
     name: "Anita Sharma",
     role: "Regular Patient",
     content:
-      "I was able to book an appointment for my check-up in just a few minutes. The entire process was smooth, and I loved how I could manage everything from home. It saved me a lot of time, and the staff at the hospital were already prepared when I arrived. No more waiting in line or dealing with unnecessary paperwork! The online platform is intuitive and user-friendly, making healthcare access simpler than ever before.",
+      "I was able to book an appointment for my check-up in just a few minutes. The process was smooth and efficient.",
+    avatar: "/api/placeholder/32/32",
+    rating: 5,
+    createdAt: "2024-02-14",
   },
   {
     name: "Rohan Mehta",
     role: "Tech Professional",
     content:
-      "This platform made it easy for me to track my medical records and appointments. I no longer have to keep paper records or worry about losing important documents. Everything is organized and accessible online, which has been a huge relief. The digital system ensures all my medical history is in one place, making it simple to share with healthcare providers when needed. The security measures in place give me peace of mind.",
+      "This platform made it easy for me to track my medical records and appointments. Everything is organized and accessible online.",
+    avatar: "/api/placeholder/32/32",
+    rating: 4,
+    createdAt: "2024-02-13",
   },
   {
     name: "Priya Singh",
     role: "Business Executive",
     content:
-      "As a busy professional, finding time to register for hospital visits has always been difficult. This platform made it incredibly easy to handle everything online. The process was simple and stress-free. I didn't have to worry about anything when I arrived at the hospital. The appointment scheduling system is flexible and accommodating to my packed schedule. The reminder system ensures I never miss an appointment.",
-  },
-  {
-    name: "Vikram Patel",
-    role: "First-time User",
-    content:
-      "I was initially hesitant to use an online platform for my hospital appointments, but this service exceeded my expectations. It was so easy to navigate, and I could complete the entire registration in minutes. The best part is that all my information was securely stored, and the hospital had everything they needed when I arrived. The customer support team was very helpful in guiding me through the process.",
-  },
-  {
-    name: "Sanjana Rao",
-    role: "Regular User",
-    content:
-      "The convenience of this platform has been a game-changer. I was able to complete my registration online, book an appointment, and even receive reminders about my upcoming visits. It has made accessing healthcare so much easier for me. The integration with the hospital systems means my information is always up-to-date and accurate. Regular notifications about upcoming appointments help me stay organized.",
+      "As a busy professional, finding time for hospital visits has always been challenging. This platform made it incredibly easy to handle everything online.",
+    avatar: "/api/placeholder/32/32",
+    rating: 5,
+    createdAt: "2024-02-12",
   },
 ];
 
-const Testimonial = () => {
+const TestimonialCard = ({ testimonial, index }: any) => {
   return (
-    <div className="py-16 px-4 bg-gradient-to-b from-transparent to-teal-50/50 dark:to-transparent">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-teal-600 to-blue-600 dark:from-teal-300 dark:to-blue-400 bg-clip-text text-transparent mb-4">
-          What Our Users Say
-        </h2>
-        <p className="text-xl text-center text-teal-600 dark:text-teal-300 mb-12 font-medium">
-          Real experiences from our valued community
-        </p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.4,
+        delay: index * 0.1,
+        ease: "easeOut",
+      }}
+      whileHover={{
+        scale: 1.02,
+        transition: {
+          duration: 0.2,
+          ease: "easeInOut",
+        },
+      }}
+      className="h-full relative perspective-1000"
+    >
+      <div className="rounded-xl h-full bg-white dark:bg-gray-900 shadow-lg hover:shadow-xl dark:shadow-primary/5 transition-all duration-300">
+        {/* Main Content Area */}
+        <div className="p-4 md:p-6 flex flex-col h-full">
+          {/* Quote and Content */}
+          <div className="mb-4 relative">
+            <Quote className="absolute w-8 h-8 -left-1 -top-2 text-primary/10 dark:text-primary/5" />
+            <p className="pt-4 text-sm md:text-base text-foreground/80 dark:text-foreground/70 leading-relaxed">
+              {testimonial.content}
+            </p>
+          </div>
 
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-2 md:-ml-4">
-            {testimonials.map((testimonial, index) => (
-              <CarouselItem
-                key={index}
-                className="pl-2 md:pl-4 sm:basis-1/2 lg:basis-1/3"
-              >
-                <Card className="h-[450px] border border-teal-100 dark:border-slate-700 bg-white dark:bg-slate-800/50 backdrop-blur-sm transition-all duration-500 hover:shadow-xl hover:shadow-teal-500/10 dark:hover:shadow-slate-700/30 hover:-translate-y-1">
-                  <CardContent className="p-6 h-full flex flex-col">
-                    <Quote className="w-8 h-8 text-teal-500 dark:text-teal-300 mb-4 flex-shrink-0" />
-                    <CardHeader className="p-0 flex-grow flex flex-col">
-                      <div className="flex-grow overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-teal-200 dark:scrollbar-thumb-slate-700 scrollbar-track-transparent">
-                        <CardDescription className="text-slate-600 dark:text-slate-300 text-base leading-relaxed">
-                          {testimonial.content}
-                        </CardDescription>
-                      </div>
-                      <div className="border-t border-teal-100 dark:border-slate-700 pt-4 mt-4 flex-shrink-0">
-                        <CardTitle className="text-lg font-semibold text-teal-700 dark:text-teal-300 mb-1">
-                          {testimonial.name}
-                        </CardTitle>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
-                          {testimonial.role}
-                        </p>
-                      </div>
-                    </CardHeader>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:flex -left-12 hover:bg-teal-50 dark:hover:bg-slate-800 border-teal-100 dark:border-slate-700" />
-          <CarouselNext className="hidden md:flex -right-12 hover:bg-teal-50 dark:hover:bg-slate-800 border-teal-100 dark:border-slate-700" />
-        </Carousel>
+          {/* Card Footer */}
+          <div className="mt-auto pt-4 border-t border-border/10 dark:border-border/5">
+            <div className="flex items-start md:items-center gap-3 flex-col md:flex-row md:justify-between">
+              {/* User Info */}
+              <div className="flex items-center gap-3">
+                <Avatar className="w-10 h-10 ring-2 ring-primary/10 ring-offset-2 ring-offset-background">
+                  <AvatarImage
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                  />
+                  <AvatarFallback className="bg-primary/5 text-primary">
+                    {testimonial.name
+                      .split(" ")
+                      .map((n: any) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h4 className="font-medium text-foreground dark:text-foreground/90">
+                    {testimonial.name}
+                  </h4>
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground/80">
+                    {testimonial.role}
+                  </p>
+                </div>
+              </div>
+
+              {/* Rating and Date */}
+              <div className="flex flex-col gap-1 items-start md:items-end w-full md:w-auto">
+                <div className="flex gap-0.5">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 text-teal-500 dark:text-teal-400 fill-teal-500 dark:fill-teal-400"
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <CalendarDays className="w-3 h-3" />
+                  {new Date(testimonial.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-export default Testimonial;
+const TestimonialCarousel = () => {
+  return (
+    <section className="w-full py-12 md:py-16 bg-transparent">
+      <div className="container px-4 mx-auto">
+        <div className="space-y-8 md:space-y-12 overflow-hidden">
+          {/* Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <motion.h2
+              className="text-4xl md:text-5xl pb-2 font-bold bg-gradient-to-r from-teal-600 to-cyan-500 dark:from-teal-400 dark:to-cyan-300 inline-block text-transparent bg-clip-text"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              What Our Users Say
+            </motion.h2>
+            <motion.p
+              className="text-base md:text-lg text-teal-600 dark:text-teal-500"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              See how we're making healthcare management easier
+            </motion.p>
+          </div>
+
+          {/* Carousel */}
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full "
+          >
+            <CarouselContent className="-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem
+                  key={index}
+                  className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+                >
+                  <TestimonialCard testimonial={testimonial} index={index} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <CarouselPrevious className="static translate-x-0 translate-y-0 hover:bg-primary hover:text-primary-foreground transition-colors" />
+              <CarouselNext className="static translate-x-0 translate-y-0 hover:bg-primary hover:text-primary-foreground transition-colors" />
+            </div>
+          </Carousel>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default TestimonialCarousel;

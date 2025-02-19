@@ -110,7 +110,7 @@ const Features = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 overflow-hidden relative bg-white dark:bg-slate-900">
+    <section className="py-16 sm:py-20 md:py-24  relative bg-transparent">
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <motion.div
           className="absolute -top-10 -left-10 w-40 h-40 bg-blue-200 dark:bg-blue-900/40 rounded-full opacity-20"
@@ -152,7 +152,7 @@ const Features = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-12 sm:mb-16 relative">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600 dark:from-violet-400 dark:to-indigo-400 pb-2 inline-block">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600 dark:from-teal-400 dark:to-cyan-400 pb-2 inline-block">
             Healthcare Reimagined
           </h2>
           <p className="mt-6 max-w-2xl text-lg sm:text-xl text-slate-600 dark:text-slate-300 mx-auto">
