@@ -211,7 +211,7 @@ export default function PricingSection() {
               className="h-full will-change-transform "
             >
               <Card
-                className={`h-full relative bg-white dark:bg-gray-800 transform-gpu hover:scale-105 transition-all duration-500 ease-in-out
+                className={`h-full relative bg-white dark:bg-slate-900 transform-gpu hover:scale-105 transition-all duration-500 ease-in-out
                 ${
                   plan.highlight
                     ? "border-2 border-blue-500 dark:border-blue-400 shadow-xl dark:shadow-blue-500/20"

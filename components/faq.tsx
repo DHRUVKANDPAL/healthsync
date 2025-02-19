@@ -6,6 +6,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
 const faqItems = [
   {
     id: "item-1",
@@ -49,26 +55,35 @@ const faqItems = [
 
 const Faq = () => {
   return (
-    <section className="faq-section my-8">
-      <h2 className="text-2xl font-bold text-center mb-6 text-teal-900 dark:text-teal-100 transition-colors duration-300 mt-20">
-        Frequently Asked Questions
-      </h2>
-      <Accordion type="single" collapsible className="w-full">
-        {faqItems.map((item) => (
-          <AccordionItem
-            key={item.id}
-            value={item.id}
-            className="border-b border-slate-300 dark:border-slate-700"
-          >
-            <AccordionTrigger className="dark:text-teal-200 dark:hover:text-teal-300 transition-colors duration-300">
-              {item.question}
-            </AccordionTrigger>
-            <AccordionContent className="text-slate-700 dark:text-slate-300 transition-colors duration-300">
-              {item.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+    <section className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-12">
+      <div className="space-y-8">
+        <div className="text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent dark:from-teal-400 dark:to-cyan-400 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-sm sm:text-base">
+            Find answers to common questions about our healthcare platform.
+            Can't find what you're looking for? Contact our support team.
+          </p>
+        </div>
+
+        <Accordion type="single" collapsible className="w-full">
+          {faqItems.map((item) => (
+            <AccordionItem
+              key={item.id}
+              value={item.id}
+              className="border-b dark:border-gray-700 last:border-none"
+            >
+              <AccordionTrigger className="text-left py-6 text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200 hover:no-underline">
+                <span className="pr-8">{item.question}</span>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600 dark:text-gray-300 text-sm sm:text-base pb-6">
+                {item.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </section>
   );
 };
