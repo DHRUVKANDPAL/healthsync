@@ -203,7 +203,7 @@ const SymptomSearchBar = ({ className }: { className?: string }) => {
               onChange={handleInputChange}
               onFocus={handleFocus}
               onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-              className="pr-5 pl-14 py-3 h-14 text-sm rounded-lg focus-visible:ring-offset-0 border-none bg-transparent text-slate-700 dark:text-slate-200"
+              className="pr-5 pl-14 py-3 h-14 text-sm rounded-lg focus-visible:ring-offset-0 border-none bg-transparent text-slate-700 dark:bg-slate-900 dark:text-slate-200"
             />
             <div className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5">
               <AnimatePresence mode="popLayout">
@@ -279,7 +279,7 @@ const SymptomSearchBar = ({ className }: { className?: string }) => {
       >
         <Button
           size="lg"
-          className="h-14 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-lg  rounded-e-full rounded-tl-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+          className="h-14 bg-gradient-to-r from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 hover:from-emerald-600 hover:to-teal-700 text-white text-lg  rounded-e-full rounded-tl-2xl shadow-lg hover:shadow-xl transition-all duration-300"
           onClick={handleSearchSubmit}
         >
           Search
