@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -198,7 +199,7 @@ export default function PricingSection() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center max-w-7xl mx-auto"
         >
           {pricingPlans.map((plan, index) => (
             <motion.div
@@ -208,7 +209,9 @@ export default function PricingSection() {
                 y: -5,
                 transition: { duration: 0.2, ease: "easeOut" },
               }}
-              className={`h-full will-change-transform ${index||"hidden lg:block"}`}
+              className={`h-full will-change-transform max-w-md ${
+                index || "hidden lg:block"
+              }`}
             >
               <Card
                 className={`h-full relative bg-white dark:bg-slate-900 transform-gpu hover:scale-105 transition-all duration-500 ease-in-out
@@ -228,14 +231,14 @@ export default function PricingSection() {
 
                 <CardHeader className="pb-4">
                   <div className="mb-2">
-                    <Badge variant="outline" className="text-sm font-normal">
+                    <Badge variant="outline" className="text-xs font-normal">
                       {plan.subtitle}
                     </Badge>
                   </div>
-                  <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-50">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-gray-50">
                     {plan.title}
                   </CardTitle>
-                  <CardDescription className="mt-2 text-gray-600 dark:text-gray-400">
+                  <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
                     {plan.description}
                   </CardDescription>
                   <div className="mt-4 space-y-1">
@@ -246,7 +249,7 @@ export default function PricingSection() {
                       {plan.billing}
                     </div>
                     {plan.yearlyPrice && (
-                      <div className="text-sm text-blue-600 dark:text-blue-400">
+                      <div className="text-xs text-blue-600 dark:text-blue-400">
                         Save with yearly: {plan.yearlyPrice}
                       </div>
                     )}
@@ -263,12 +266,12 @@ export default function PricingSection() {
                         transition={{ delay: idx * 0.1 }}
                         className="flex gap-3"
                       >
-                        <feature.icon className="w-5 h-5 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-1" />
+                        <feature.icon className="w-4 h-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-1" />
                         <div>
-                          <div className="text-gray-900 dark:text-gray-100 font-medium">
+                          <div className="text-gray-900 dark:text-gray-100 font-medium text-sm">
                             {feature.text}
                           </div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                          <div className="text-[0.5rem] text-gray-600 dark:text-gray-400">
                             {feature.subtext}
                           </div>
                         </div>
@@ -276,6 +279,8 @@ export default function PricingSection() {
                     ))}
                   </ul>
 
+                </CardContent>
+                <CardFooter>
                   <Button
                     className={`w-full h-12 transition-colors duration-200
                       ${
@@ -286,7 +291,8 @@ export default function PricingSection() {
                   >
                     {plan.buttonText}
                   </Button>
-                </CardContent>
+
+                </CardFooter>
               </Card>
             </motion.div>
           ))}

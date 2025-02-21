@@ -34,7 +34,7 @@ export default function Home() {
           <HowItWorks></HowItWorks>
         </div>
       </div>
-      <div className="h-[1100px] sm:h-[650px] lg:h-[800px] xl:h-[700px]">
+      <div className="h-[1100px] xs:h-[1000px] sm:h-[900px] md:h-[650px]">
         <div className="relative w-full h-full bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900">
           {/* Background Elements for Seamless Continuation */}
           <div className="absolute inset-0 overflow-hidden">
