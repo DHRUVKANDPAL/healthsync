@@ -36,6 +36,7 @@ model Patient {
   // queue Queue[]
   onlineAppointments OnlineMeet[]
   offlineAppointments OfflineMeet[]
+  proExpiryDate DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

@@ -25,7 +25,8 @@ const testimonials: Testimonial[] = [
     role: "Frequent Traveler",
     content:
       "As a frequent traveler, I often need to visit hospitals in different cities. This platform has been a lifesaver. I could easily complete my registration online before arriving at the hospital.",
-    avatar: "/api/placeholder/32/32",
+    avatar:
+      "https://media.licdn.com/dms/image/v2/D4E03AQFuJudYH0sz6g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1696803675263?e=2147483647&v=beta&t=qlxdBkEpMZgWKE9zI0k7uN0QFH6To61kkuS3J-7h4Zc",
     rating: 5,
     createdAt: "2024-02-15",
   },
@@ -34,7 +35,8 @@ const testimonials: Testimonial[] = [
     role: "Regular Patient",
     content:
       "I was able to book an appointment for my check-up in just a few minutes. The process was smooth and efficient.",
-    avatar: "/api/placeholder/32/32",
+    avatar:
+      "https://robohash.org/67571c5bcadba2bb2aaf6557dccb4094?set=set4&bgset=&size=400x400",
     rating: 5,
     createdAt: "2024-02-14",
   },
@@ -43,7 +45,8 @@ const testimonials: Testimonial[] = [
     role: "Tech Professional",
     content:
       "This platform made it easy for me to track my medical records and appointments. Everything is organized and accessible online.",
-    avatar: "/api/placeholder/32/32",
+    avatar:
+      "https://eldermoraes.com/wp-content/uploads/2020/10/avatar-1000x1000-1-300x300.png",
     rating: 4,
     createdAt: "2024-02-13",
   },
@@ -52,7 +55,8 @@ const testimonials: Testimonial[] = [
     role: "Business Executive",
     content:
       "As a busy professional, finding time for hospital visits has always been challenging. This platform made it incredibly easy to handle everything online.",
-    avatar: "/api/placeholder/32/32",
+    avatar:
+      "https://gravatar.com/avatar/67571c5bcadba2bb2aaf6557dccb4094?s=400&d=retro&r=pg",
     rating: 5,
     createdAt: "2024-02-12",
   },
@@ -94,7 +98,7 @@ const TestimonialCard = ({ testimonial, index }: any) => {
               {/* User Info */}
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10 ring-2 ring-primary/10 ring-offset-2 ring-offset-background">
-                  <AvatarImage
+                  <AvatarImage 
                     src={testimonial.avatar}
                     alt={testimonial.name}
                   />
