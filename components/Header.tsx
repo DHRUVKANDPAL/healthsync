@@ -676,7 +676,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
                     </button>
 
                     {isLoginDropdownOpen && (
-                      <div className="absolute w-40 top-full mt-1 bg-teal-50 dark:bg-slate-800 rounded-md shadow-lg z-50 overflow-hidden">
+                      <div className="absolute w-40 top-8 mt-1 bg-teal-50 dark:bg-slate-800 rounded-md shadow-lg z-50 overflow-hidden">
                         <Link
                           href="/patient-auth"
                           className="block px-4 py-2 text-sm text-teal-950 dark:text-teal-50 hover:bg-teal-200 dark:hover:bg-slate-700"
