@@ -117,7 +117,7 @@ const Hero = () => {
               </motion.div>
               {/* Search Bar - hidden on small devices */}
               <div className="hidden md:block w-full max-w-md">
-                <SymptomSearchBar className="w-[70%]"/>
+                <SymptomSearchBar className="" variant="hero" />
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-3 text-left">
                   Search for symptoms or health concerns
                 </p>

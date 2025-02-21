@@ -198,7 +198,7 @@ export default function PricingSection() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
         >
           {pricingPlans.map((plan, index) => (
             <motion.div
@@ -208,7 +208,7 @@ export default function PricingSection() {
                 y: -5,
                 transition: { duration: 0.2, ease: "easeOut" },
               }}
-              className="h-full will-change-transform "
+              className={`h-full will-change-transform ${index||"hidden lg:block"}`}
             >
               <Card
                 className={`h-full relative bg-white dark:bg-slate-900 transform-gpu hover:scale-105 transition-all duration-500 ease-in-out

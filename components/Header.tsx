@@ -37,6 +37,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SymptomSearchBar from "./SymptomsSearchBar";
 
 type Props = {
   onSearchStateChange?: (isSearching: boolean) => void;
@@ -68,7 +69,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   const toggleSearch = () => {
-    if (window.innerWidth < 640) {
+    if (window.innerWidth < 768) {
       setIsSearchOpen(!isSearchOpen);
     }
   };
@@ -94,7 +95,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
 
   useEffect(() => {
     const handleResize = () => {
-      const smallScreen = window.innerWidth < 640;
+      const smallScreen = window.innerWidth < 768;
       setIsSmallScreen(smallScreen);
       if (!smallScreen && isMenuOpen) {
         setIsMenuOpen(false);
@@ -311,37 +312,37 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
     <>
       <header className="sticky md:-top-[72px] top-0 z-30">
         {/* Top info section for desktop */}
-        <section className="md:flex sm:relative hidden flex-col sm:flex-row sm:justify-around sm:items-center py-4 bg-white dark:bg-slate-800 transition-colors duration-300">
+        <section className="md:flex md:relative hidden flex-col md:flex-row md:justify-around md:items-center py-4 bg-white dark:bg-slate-800 transition-colors duration-300">
           <Logo></Logo>
 
-          <ul className="flex justify-around items-center gap-2 sm:gap-20 mt-2 sm:mt-0 sm:ml-6 w-full sm:w-auto sm:text-sm text-xs">
-            <li className="hidden lg:flex items-center justify-center gap-1 sm:gap-4">
-              <Phone className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
-              <div className="text-center sm:text-left">
+          <ul className="flex justify-around items-center gap-2 md:gap-20 mt-2 md:mt-0 md:ml-6 w-full md:w-auto md:text-sm text-xs">
+            <li className="hidden lg:flex items-center justify-center gap-1 md:gap-4">
+              <Phone className="text-teal-500 dark:text-teal-400 h-4 w-4 md:h-6 md:w-6" />
+              <div className="text-center md:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Emergency</p>
                 <p className="text-teal-500 dark:text-teal-400">11111-22222</p>
               </div>
             </li>
             {/* 
-            <li className="flex items-center justify-center gap-1 sm:gap-4">
-              <Ambulance className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
-              <div className="text-center sm:text-left">
+            <li className="flex items-center justify-center gap-1 md:gap-4">
+              <Ambulance className="text-teal-500 dark:text-teal-400 h-4 w-4 md:h-6 md:w-6" />
+              <div className="text-center md:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Ambulance</p>
                 <p className="text-teal-500 dark:text-teal-400">22222-33333</p>
               </div>
             </li> */}
 
-            <li className="items-center justify-center gap-1 sm:gap-4 lg:flex hidden">
-              <Clock className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
-              <div className="text-center sm:text-left">
+            <li className="items-center justify-center gap-1 md:gap-4 lg:flex hidden">
+              <Clock className="text-teal-500 dark:text-teal-400 h-4 w-4 md:h-6 md:w-6" />
+              <div className="text-center md:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Work Hour</p>
                 <p className="text-teal-500 dark:text-teal-400">24x7</p>
               </div>
             </li>
 
-            {/* <li className="flex items-center justify-center gap-1 sm:gap-4">
-              <Mail className="text-teal-500 dark:text-teal-400 h-4 w-4 sm:h-6 sm:w-6" />
-              <div className="text-center sm:text-left">
+            {/* <li className="flex items-center justify-center gap-1 md:gap-4">
+              <Mail className="text-teal-500 dark:text-teal-400 h-4 w-4 md:h-6 md:w-6" />
+              <div className="text-center md:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Email Us</p>
                 <p className="text-teal-500 dark:text-teal-400">
                   care@healthcare.com
@@ -349,9 +350,9 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
               </div>
             </li> */}
 
-            <li className="sm:flex hidden items-center justify-center gap-1 sm:gap-4">
-              <MapPin className="text-teal-500 dark:text-teal-400 h-5 w-5 sm:h-7 sm:w-7" />
-              <div className="text-center sm:text-left">
+            <li className="md:flex hidden items-center justify-center gap-1 md:gap-4">
+              <MapPin className="text-teal-500 dark:text-teal-400 h-5 w-5 md:h-7 md:w-7" />
+              <div className="text-center md:text-left">
                 <p className="text-teal-700 dark:text-teal-300">Location</p>
                 <p className="text-teal-500 dark:text-teal-400">
                   {location ? location : "Fetching location..."}
@@ -368,8 +369,8 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
         </section>
 
         {/* Main navigation */}
-        <nav className="text-teal-950 dark:text-teal-50 flex flex-col sm:flex-row justify-around items-center h-auto sm:h-16 py-4 sm:py-0 px-6 transition-colors duration-300 z-[1000]">
-          <div className="md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none flex justify-between items-center w-full sm:w-auto md:hidden rounded-full px-4">
+        <nav className="text-teal-950 dark:text-teal-50 flex flex-col md:flex-row justify-around items-center h-auto md:h-16 py-4 md:py-0 px-3 sm:px-6 transition-colors duration-300 z-[1000]">
+          <div className="md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none flex justify-between items-center w-full md:w-auto md:hidden rounded-full sm:px-4 gap-2">
             {/* Mobile menu trigger using shadcn/ui Sheet */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
@@ -537,11 +538,8 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
               </SheetContent>
             </Sheet>
 
-            {!isSearchOpen && showLogo && <Logo className="sm:hidden" />}
-            <div
-              ref={searchRef}
-              className="search flex items-center ml-4 sm:ml-0"
-            >
+            {!isSearchOpen && showLogo && <Logo className="md:hidden" />}
+            <div ref={searchRef} className="search flex items-center md:ml-0">
               {isSmallScreen ? (
                 <>
                   <button
@@ -555,7 +553,16 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
                       <CiSearch className="text-teal-800 dark:text-teal-200 h-6 w-6" />
                     )}
                   </button>
-                  <div
+                  <SymptomSearchBar
+                    variant="header"
+                    isSearchOpen={isSearchOpen}
+                    onSearchSubmit={handleSearchSubmit}
+                    searchQuery={searchQuery}
+                    onSearchChange={handleSearchChange}
+                    containerWidth="sm:w-64 "
+                    inputClassName="bg-white w-[95%] sm:w-[90%] ring-1 dark:bg-slate-800 dark:text-teal-50"
+                  />
+                  {/* <div
                     className={`transition-all duration-300 ease-in-out overflow-hidden ${
                       isSearchOpen ? "w-48" : "w-0"
                     }`}
@@ -574,7 +581,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
                         placeholder="Search..."
                       />
                     </form>
-                  </div>
+                  </div> */}
                 </>
               ) : (
                 <div className="flex items-center">
@@ -591,7 +598,7 @@ const Header = ({ onSearchStateChange, input, lat, long }: Props) => {
                           handleSearchSubmit(e);
                         }
                       }}
-                      className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 m-1 sm:w-56 md:w-64"
+                      className="bg-blue-800 dark:bg-slate-800 text-teal-50 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-teal-500 w-44 sm:w-56 md:w-64"
                       placeholder="Search..."
                     />
                   </form>
