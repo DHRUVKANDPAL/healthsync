@@ -560,7 +560,6 @@ const Header2 = ({ onSearchStateChange, input, lat, long }: Props) => {
             </li>
           </ul>
         </section>
-        <PromoBanner />
         {/* Main navigation */}
         <nav className="text-teal-950 dark:text-teal-50 flex flex-col md:flex-row justify-around items-center h-auto md:h-16 py-4 md:py-0 px-3 sm:px-6 transition-colors duration-300 z-[1000]">
           <div className="md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none flex justify-between items-center w-full md:w-auto md:hidden rounded-full sm:px-4 gap-2">
@@ -911,6 +910,8 @@ const Header2 = ({ onSearchStateChange, input, lat, long }: Props) => {
           </div>
         )}
       </header>
+
+      <PromoBanner />
     </>
   );
 };

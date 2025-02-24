@@ -18,6 +18,7 @@ import {
 import { ShineBorder } from "@/components/magicui/shine-border";
 import HowItWorks from "@/components/HowItWorks";
 import PricingSection from "@/components/PricingSection";
+import Header2 from "./pricing/header2";
 
 export default function Home() {
   const isMobile = useIsMobile();
